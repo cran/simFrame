@@ -1,0 +1,80 @@
+useDynLib(simFrame)
+
+# import packages
+import(lattice)
+import(methods)
+
+# import specific functions from packages
+importFrom(stats4, plot, summary)
+
+# S3 functions
+export(
+#    clusterAssign,
+    ContControl,
+    DARContControl,
+    DCARContControl,
+    DataControl,
+    getProb,
+    NAControl,
+    runSim,
+    SampleControl, 
+    SampleSetup,
+    SimControl,
+    SimResult, 
+    SimResults, 
+    simSample,
+    Strata,
+    srs,
+    ups
+)
+
+# S4 classes
+exportClasses(
+    BasicVector,
+    ContControl,
+    DARContControl,
+    DCARContControl,
+    DataControl,
+    NAControl,
+    NumericMatrix,
+    OptCall,
+    OptCharacter,
+    OptContControl,
+    OptNAControl,
+    OptNumeric,
+    SampleControl,
+    SampleSetup,
+    SimControl,
+    SimResult,
+    SimResults,
+    Strata,
+    VirtualContControl,
+    VirtualDataControl,
+    VirtualNAControl,
+    VirtualSampleControl
+)
+
+# S4 generics
+exportMethods(
+    clusterSetup,
+    clusterRunSimulation,
+    contaminate,
+    draw,
+    generate,
+    getStrataLegend,
+    getStrataSplit,
+    getStrataTable,
+    getStratumSizes,
+    getStratumValues,
+    plot,
+    runSimulation,
+    setNA,
+    setup,
+    simApply,
+    simBwplot,
+    simDensityplot,
+    simSapply,
+    simXyplot,
+    stratify,
+    summary
+)
