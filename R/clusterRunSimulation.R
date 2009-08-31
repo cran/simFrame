@@ -1,7 +1,7 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
+#         Vienna University of Technology
+# ---------------------------------------
 
 ## for convenience: construct "SimControl" object and re-call function
 setMethod("clusterRunSimulation", 

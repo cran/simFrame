@@ -8,7 +8,7 @@
 Produce box-and-whisker plots.
 }
 \usage{
-\S4method{simBwplot}{SimResults}(x, true = NULL, epsilon, NArate, \dots)
+\S4method{simBwplot}{SimResults}(x, true = NULL, epsilon, NArate, select, \dots)
 }
 \arguments{
   \item{x}{the simulation results to be plotted, i.e., an object of class 
@@ -21,8 +21,11 @@ Produce box-and-whisker plots.
   \item{NArate}{a numeric value specifying a missing value rate.  If 
     supplied, the values corresponding to that missing value rate are 
     extracted from the simulation results and plotted.}
+  \item{select}{a character vector specifying the columns to be plotted.  It 
+    must be a subset of the \code{colnames} slot of \code{x}, which is the 
+    default.}
   \item{\dots}{additional arguments to be passed down to 
-    \code{\link[lattice]{bwplot}}.}
+    \code{\link[lattice:xyplot]{bwplot}}.}
 }
 \section{Methods}{
 \describe{
@@ -33,7 +36,7 @@ Produce box-and-whisker plots.
 \author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}, 
-  \code{\link[lattice]{bwplot}}, \code{\linkS4class{SimResults}}
+  \code{\link[lattice:xyplot]{bwplot}}, \code{\linkS4class{SimResults}}
 }
 \examples{
 ## for reproducibility

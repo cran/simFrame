@@ -6,7 +6,7 @@
 Artificial EU-SILC data
 }
 \description{
-This data set is artificially generated from real Austrian EU-SILC (European 
+This data set is synthetically generated from real Austrian EU-SILC (European 
 Union Statistics on Income and Living Conditions) data.
 }
 \usage{data(eusilc)}
@@ -20,9 +20,9 @@ Union Statistics on Income and Living Conditions) data.
       OECD scale.}
     \item{eqIncome}{a simplified version of the equivalized household income.}
     \item{pid}{the personal ID.}
-    \item{id}{the combined household ID personal ID.  The first five digits 
-      represent the household ID, the last two digits the personal ID (both 
-      with leading zeros).}
+    \item{id}{the household ID combined with the personal ID.  The first five 
+      digits represent the household ID, the last two digits the personal ID 
+      (both with leading zeros).}
     \item{age}{the person's age.}
     \item{gender}{the person's gender.}
     \item{ecoStat}{the person's economic status.}
@@ -47,12 +47,12 @@ sizes of Austria and its regions.
 
 Some variable names are different from the standardized names used by the 
 statistical agencies, as the latter are rather cryptic codes.  Moreover, as 
-household income components are not yet available in the artificial data set, 
+household income components are not yet available in the synthetic data set, 
 the equivalized household income is computed only from the personal net income 
 of the household members.
 }
 \source{
-This is an artificial data set based on Austrian EU-SILC data from 2006.  The 
+This is a synthetic data set based on Austrian EU-SILC data from 2006.  The 
 original sample was provided by Statistics Austria.
 }
 \references{

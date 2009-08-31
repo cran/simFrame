@@ -8,7 +8,7 @@
 Produce x-y plots.
 }
 \usage{
-\S4method{simXyplot}{SimResults}(x, true = NULL, epsilon, NArate, \dots)
+\S4method{simXyplot}{SimResults}(x, true = NULL, epsilon, NArate, select, \dots)
 }
 \arguments{
   \item{x}{the simulation results to be plotted, i.e., an object of class 
@@ -21,6 +21,9 @@ Produce x-y plots.
   \item{NArate}{a numeric value specifying a missing value rate.  If
     supplied, the values corresponding to that missing value rate are 
     extracted from the simulation results and plotted.}
+  \item{select}{a character vector specifying the columns to be plotted.  It 
+    must be a subset of the \code{colnames} slot of \code{x}, which is the 
+    default.}
   \item{\dots}{additional arguments to be passed down to 
     \code{\link[lattice]{xyplot}}.}
 }

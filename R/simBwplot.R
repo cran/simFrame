@@ -3,11 +3,9 @@
 #         Vienna University of Technology
 # ---------------------------------------
 
-# TODO: add argument specifying which columns to plot
-
 setMethod("simBwplot", 
     signature(x = "SimResults"),
-    function(x, true = NULL, epsilon, NArate, ...) {
+    function(x, true = NULL, epsilon, NArate, select, ...) {
         
         # initializations
         values <- x@values
@@ -65,8 +63,17 @@ setMethod("simBwplot",
             }
         }
         
+        # check specified columns
+        if(missing(select)) select <- x@colnames
+        else {
+            if(!is.character(select)) {
+                stop("'select' must be a character vector")
+            }
+            if(!all(select %in% x@colnames)) stop("undefined columns selected")
+        }
+        
         # call internal function
-        internalSimBwplot(values, x@design, x@colnames, true=true, ...)
+        internalSimBwplot(values, x@design, select, true=true, ...)
     })
 
 

@@ -23,6 +23,6 @@ simBwplot(x, \dots)
 \author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}, 
-  \code{\link[lattice]{bwplot}}, \code{\linkS4class{SimResults}}
+  \code{\link[lattice:xyplot]{bwplot}}, \code{\linkS4class{SimResults}}
 }
 \keyword{hplot}

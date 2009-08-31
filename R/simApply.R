@@ -1,7 +1,7 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
+#         Vienna University of Technology
+# ---------------------------------------
 
 ## 'simApply' returns data.frame with information about design 
 

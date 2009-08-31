@@ -1,13 +1,11 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
-
-# TODO: add argument specifying which columns to plot
+#         Vienna University of Technology
+# ---------------------------------------
 
 setMethod("simDensityplot", 
     signature(x = "SimResults"),
-    function(x, true = NULL, epsilon, NArate, ...) {
+    function(x, true = NULL, epsilon, NArate, select, ...) {
         
         # initializations
         values <- x@values
@@ -65,8 +63,17 @@ setMethod("simDensityplot",
             }
         }
         
+        # check specified columns
+        if(missing(select)) select <- x@colnames
+        else {
+            if(!is.character(select)) {
+                stop("'select' must be a character vector")
+            }
+            if(!all(select %in% x@colnames)) stop("undefined columns selected")
+        }
+        
         # call internal function
-        internalSimDensityplot(values, x@design, x@colnames, true=true, ...)
+        internalSimDensityplot(values, x@design, select, true=true, ...)
     })
 
 

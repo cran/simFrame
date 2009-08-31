@@ -1,6 +1,6 @@
 Package: simFrame
-Version: 0.1
-Date: 2009-08-12
+Version: 0.1.1
+Date: 2009-08-31
 Title: Simulation Framework
 Author: Andreas Alfons
 Maintainer: Andreas Alfons <alfons@statistik.tuwien.ac.at>
@@ -10,6 +10,6 @@ Suggests: MASS
 Description: A general framework for statistical simulation.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2009-08-12 18:45:59 UTC; alfons
+Packaged: 2009-08-31 19:30:37 UTC; alfons
 Repository: CRAN
-Date/Publication: 2009-08-13 08:59:43
+Date/Publication: 2009-09-03 09:25:49

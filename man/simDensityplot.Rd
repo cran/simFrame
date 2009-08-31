@@ -23,6 +23,6 @@ simDensityplot(x, \dots)
 \author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
   \code{\link{simBwplot}}, \code{\link{simXyplot}}, 
-  \code{\link[lattice]{densityplot}}, \code{\linkS4class{SimResults}}
+  \code{\link[lattice:histogram]{densityplot}}, \code{\linkS4class{SimResults}}
 }
 \keyword{hplot}

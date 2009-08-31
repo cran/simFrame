@@ -102,7 +102,8 @@ Programming}, \bold{37}(1), 78--90.
 }
 \author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
-  \code{\link[snow]{makeCluster}}, \code{\link[snow]{clusterSetupRNG}}, 
+  \code{\link[snow:snow-startstop]{makeCluster}}, 
+  \code{\link[snow:snow-rand]{clusterSetupRNG}}, 
   \code{\link{runSimulation}}, \code{\linkS4class{SimControl}}, 
   \code{\linkS4class{SimResults}}, \code{\link{simBwplot}}, 
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}

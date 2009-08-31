@@ -3,11 +3,9 @@
 #         Vienna University of Technology
 # ---------------------------------------
 
-# TODO: add argument specifying which columns to plot
-
 setMethod("simXyplot", 
     signature(x = "SimResults"),
-    function(x, true = NULL, epsilon, NArate, ...) {
+    function(x, true = NULL, epsilon, NArate, select, ...) {
         
         # initializations
         values <- x@values
@@ -71,14 +69,22 @@ setMethod("simXyplot",
             xnam <- "NArate"
         } else stop("unexpected problem with 'x'")  # just to be safe
         
+        # check specified columns
+        if(missing(select)) select <- x@colnames
+        else {
+            if(!is.character(select)) {
+                stop("'select' must be a character vector")
+            }
+            if(!all(select %in% x@colnames)) stop("undefined columns selected")
+        }
+        
         # if missing value rates are plotted on x-axis and NArate is a matrix, 
         # the display on the x-axis should be more of a categorical nature 
         # (corresponding to the rows of NArate)
         at <- if(haveNArate && is(x@NArate, "matrix")) 1:nNA else NULL
         
         # call internal function
-        internalSimXyplot(values, xnam, x@design, 
-            x@colnames, at=at, true=true, ...)
+        internalSimXyplot(values, xnam, x@design, select, at=at, true=true, ...)
     })
 
 

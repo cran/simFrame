@@ -1,7 +1,7 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
+#         Vienna University of Technology
+# ---------------------------------------
 
 clusterAssign <- function(cl, x, value) {
     ans <- clusterCall(cl, 

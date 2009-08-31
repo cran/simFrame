@@ -1,7 +1,7 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
+#         Vienna University of Technology
+# ---------------------------------------
 
 ## 'simSapply' uses 'sapply' to return vector, matrix or list
 

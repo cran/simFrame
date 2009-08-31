@@ -1,7 +1,7 @@
-# --------------------------------------
+# ---------------------------------------
 # Author: Andreas Alfons
-#         Vienna University of Techology
-# --------------------------------------
+#         Vienna University of Techonlogy
+# ---------------------------------------
 
 ## use 'snow' cluster for parallel computing (what about multicore?)
 

@@ -12,8 +12,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.1\cr
-Date: \tab 2009-08-12\cr
+Version: \tab 0.1.1\cr
+Date: \tab 2009-08-31\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
 Imports: \tab methods, stats4\cr
 License: \tab GPL (>= 2)\cr

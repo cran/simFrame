@@ -159,6 +159,48 @@ designSimulation <- function(i, x, setup, control) {
     } else manageSimulation(sam, control)
 }
 
+### use an argument 'modify = c("sample", "population")' in the method for 
+### design based simulation (or something like that)
+### add contamination and nonresponse to population
+#designSimulationMP <- function(i, x, setup, control) {
+#    # initializations
+#    neps <- length(control@contControl)
+#    nNA <- length(control@NAControl)
+#    useOrig <- "orig" %in% argNames(control@fun)
+#    # get results
+#    if(neps) {
+#        if(nNA) {
+#            # contamination, missings
+#        } else {
+#            # contamination, no missings
+#            lapply(1:neps, 
+#                function(e) {
+#                    cx <- try(contaminate(x, control@contControl, e))
+#                    if(class(cx) == "try-error") {
+#                        # TODO
+#                    }
+#                    csam <- drawS3(cx, setup, i)
+#                    if(nrow(csam) == 0) return(list(values=numeric()))
+#                    ca <- as.call(c(control@fun, control@dots))
+#                    ca$x <- csam
+#                    if(useOrig) ca$orig <- draw(x, setup, i)
+#                    res <- eval(ca)
+#                    if(class(res) == "try-error") return(list(values=numeric()))
+#                    getSimResult(eval(ca))
+#                })
+#        }
+#    } else {
+#        if(nNA) {
+#            # no contamination, missings
+#        } else {
+#            # no contamination, no missings
+#            # this branch should be left out 
+#            #(no data modifications - use existing functions)
+#        }
+#        
+#    }
+#}
+
 # 'i' as first argument is necessary for parallel computing  with 'parLapply'
 modelSimulation <- function(i, x, control) {
     md <- try(generate(x))

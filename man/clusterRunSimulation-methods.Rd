@@ -36,10 +36,9 @@ Run a simulation experiment on a \code{snow} cluster.
 }}
 \author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
-  \code{\link[snow]{makeCluster}}, \code{\link[snow]{clusterSetupRNG}}, 
-  \code{\link{runSimulation}}, \code{\linkS4class{SimControl}}, 
-  \code{\linkS4class{SimResults}}, \code{\link{simBwplot}}, 
-  \code{\link{simDensityplot}}, \code{\link{simXyplot}}
+  \code{\link{clusterRunSimulation}}, \code{\link{runSimulation}}, 
+  \code{\linkS4class{SimControl}}, \code{\linkS4class{SimResults}}, 
+  \code{\link{simBwplot}}, \code{\link{simDensityplot}}, \code{\link{simXyplot}}
 }
 \keyword{methods}
 \keyword{design}

@@ -1,0 +1,9 @@
+Changes in simFrame version 0.1.1
+
+    + Argument 'select' added to plot functions for specifying columns to be 
+      plotted.
+    
+    + Row names of example data 'eusilc' are now sorted from 1 to the number of 
+      rows.
+    
+    + Fixed cross-references in some help files.

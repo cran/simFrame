@@ -14,7 +14,7 @@ Objects can be created by calls of the form \code{new("DataControl", \dots)} or
     \item{\code{size}:}{Object of class \code{"numeric"} giving the number of 
       observations to be generated.}
     \item{\code{distribution}:}{Object of class \code{"function"} generating 
-      the data, e.g., \code{\link[stats]{rnorm}} (the default) or 
+      the data, e.g., \code{\link[stats:Normal]{rnorm}} (the default) or 
       \code{\link[MASS]{mvrnorm}}.  It should take a positive integer as 
       its first argument, giving the number of observations to be generated, 
       and return an object that can be coerced to a \code{data.frame}.}
