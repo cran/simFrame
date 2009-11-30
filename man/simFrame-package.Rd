@@ -12,8 +12,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.1.1\cr
-Date: \tab 2009-08-31\cr
+Version: \tab 0.1.12\cr
+Date: \tab 2009-11-30\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
 Imports: \tab methods, stats4\cr
 License: \tab GPL (>= 2)\cr
@@ -59,6 +59,7 @@ VirtualNAControl-class
                         Class "VirtualNAControl"
 VirtualSampleControl-class
                         Class "VirtualSampleControl"
+aggregate-methods       Method for aggregating simulation results
 clusterRunSimulation    Run a simulation experiment on a snow cluster
 clusterRunSimulation-methods
                         Methods for running a simulation experiment on
@@ -113,4 +114,4 @@ Andreas Alfons
 
 Maintainer: Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}
 }
-\keyword{ package }
+\keyword{package}

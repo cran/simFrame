@@ -30,3 +30,12 @@ setMethod("initialize", "DCARContControl",
         if(is.null(args$distribution)) .Object@distribution <- rnorm
         callNextMethod()  # call method for superclass (or default)
     })
+
+# insertion of missing values
+setMethod("initialize", "NAControl", 
+    function(.Object, ...) {
+        args <- list(...)
+        # use standard normal distribution as default for contamination data
+        .Object@intoContamination <- isTRUE(.Object@intoContamination)
+        callNextMethod()  # call method for superclass (or default)
+    })

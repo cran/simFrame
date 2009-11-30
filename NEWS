@@ -1,3 +1,14 @@
+Changes in simFrame version 0.1.2
+
+    + Class "NAControl" now contains a slot that specifies whether missing 
+      values should also be inserted into contaminated observations.
+    
+    + Added 'aggregate' method for objects of class "SimResults".
+    
+    + In function 'contaminate', the column ".contaminated" is always appended, 
+      even if 'epsilon' is 0 or 'x' does not have any rows. 
+
+
 Changes in simFrame version 0.1.1
 
     + Argument 'select' added to plot functions for specifying columns to be 

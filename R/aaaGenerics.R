@@ -112,6 +112,7 @@ setGeneric("stratify",
 
 
 ## S4 generics for existing S3 generics (just to be safe)
+setGeneric("aggregate")
 setGeneric("length")
 setGeneric("plot")
 setGeneric("summary")

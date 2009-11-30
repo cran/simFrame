@@ -30,6 +30,9 @@ Objects can be created by calls of the form \code{new("NAControl", \dots)} or
     \item{\code{aux}:}{Object of class \code{"character"} specifying an 
       auxiliary variable (column) whose values are used as probability weights 
       for selecting the values to be set to \code{NA}.}
+    \item{\code{intoContamination}:}{Object of class \code{"logical"} 
+      indicating whether missing values should also be inserted into 
+      contaminated observations.}
   }
 }
 \section{Extends}{

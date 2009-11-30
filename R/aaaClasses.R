@@ -177,15 +177,19 @@ setClassUnion("OptNAControl", c("NULL", "VirtualNAControl"))
 
 # select values randomly for each target variable
 validNAControlObject <- function(object) {
-    ok <- c(length(object@group) <= 1, length(object@aux) <= 1)
+    ok <- c(length(object@group) <= 1, length(object@aux) <= 1, 
+        length(object@intoContamination) == 1)
     msg <- c("'group' must not specify more than one variable", 
-        "'aux' must not specify more than one variable")
+        "'aux' must not specify more than one variable", 
+        "'intoContamination' must be a single logical")
     if(all(ok)) TRUE
     else msg[!ok]
 }
 
 setClass("NAControl",
-    representation(group = "character", aux = "character"),
+    representation(group = "character", aux = "character", 
+        intoContamination = "logical"),
+    prototype(intoContamination=FALSE),
     contains = "VirtualNAControl", 
     validity = validNAControlObject)
 

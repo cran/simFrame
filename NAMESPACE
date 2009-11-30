@@ -5,6 +5,7 @@ import(lattice)
 import(methods)
 
 # import specific functions from packages
+importFrom(stats, aggregate)
 importFrom(stats4, plot, summary)
 
 # S3 functions
@@ -56,6 +57,7 @@ exportClasses(
 
 # S4 generics
 exportMethods(
+    aggregate,
     clusterSetup,
     clusterRunSimulation,
     contaminate,

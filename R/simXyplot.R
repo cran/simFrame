@@ -135,7 +135,7 @@ panelSimXyplot <- function(x, y, true = NULL, ...) {
 }
 
 ## prepanel function
-prepanelSimXyplot <- function(x, y, true = NULL, horizontal = TRUE, ...) {
+prepanelSimXyplot <- function(x, y, true = NULL, ...) {
     if(length(true) == 0) list()
     else {
 # FIXME: default axis limits if relation is "sliced" or "free"

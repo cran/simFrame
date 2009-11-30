@@ -23,8 +23,9 @@ setMethod("setNA",
             stop("'aux' must not specify more than one variable")
         }
         useAux <- as.logical(length(aux))  # 'aux' supplied
-        contaminated <- x$.contaminated
-        isContaminated <- !is.null(contaminated)
+        if(control@intoContamination) contaminated <- NULL
+        else contaminated <- x$.contaminated
+        isContaminated <- !control@intoContamination && !is.null(contaminated)
         # get population size and number of observations/groups to be set NA
         if(useGroup) {
             gr <- x[, group]  # group of each individual

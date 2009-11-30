@@ -23,10 +23,10 @@ automatically, depending on the structure of results.
 }}
 \section{Details}{
   The results of simulation experiments with at most one contamination level 
-  and at most one missing value rate are visualized by (conditional) boxplots.  
-  For simulations involving different contamination levels or missing value 
-  rates, the average results are plotted against the contamination levels or 
-  missing value rates.
+  and at most one missing value rate are visualized by (conditional) 
+  box-and-whisker plots.  For simulations involving different contamination 
+  levels or missing value rates, the average results are plotted against the 
+  contamination levels or missing value rates.
   
   Currently no plot function is implemented for simulations with more than one 
   contamination level and more than one missing value rate.

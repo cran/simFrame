@@ -8,7 +8,11 @@ setMethod("contaminate",
     function(x, control, i = 1) {
         # initializations
         epsilon <- control@epsilon[i]
-        if(epsilon == 0 || any(dim(x) == 0)) return(x)  # nothing to do
+#        if(epsilon == 0 || any(dim(x) == 0)) return(x)  # nothing to do
+        if(epsilon == 0 || nrow(x) == 0) {
+            x$.contaminated <- rep.int(FALSE, nrow(x))
+            return(x)
+        } else if(ncol(x) == 0) return(x)  # nothing to do
         target <- control@target
         if(is.null(target)) target <- getNames(x)
         group <- control@group
