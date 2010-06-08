@@ -2,13 +2,33 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{SimResults-class}
-\alias{summary,SimResults-method}
+\alias{SimResults}
+\alias{getValues,SimResults-method}
+\alias{getAdd,SimResults-method}
+\alias{getDesign,SimResults-method}
+\alias{getColnames,SimResults-method}
+\alias{getEpsilon,SimResults-method}
+\alias{getNArate,SimResults-method}
+\alias{getSeed,SimResults-method}
+\alias{getCall,SimResults-method}
+\alias{show,SimResults-method}
+%% aliases to avoid confusion due to capitalization
+\alias{simResults-class}
+\alias{simresults-class}
+\alias{Simresults-class}
+\alias{simResults}
+\alias{simresults}
+\alias{Simresults}
 
 \title{Class "SimResults"}
 \description{Class for simulation results.}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SimResults", \dots)} or 
 \code{SimResults(\dots)}.
+
+However, objects are expected to be created by the function 
+\code{\link{runSimulation}} or \code{\link{clusterRunSimulation}}, these 
+constructor functions are not supposed to be called by the user. 
 }
 \section{Slots}{
   \describe{
@@ -33,22 +53,60 @@ Objects can be created by calls of the form \code{new("SimResults", \dots)} or
        used to run the simulation experiment, or \code{NULL}.}
   }
 }
-\section{Methods}{
+\section{Accessor methods}{
   \describe{
-    \item{plot}{\code{signature(x = "SimResults", y = "missing")}: selects a 
-      suitable graphical representation of the simulation results 
-      automatically.}
-    \item{simBwplot}{\code{signature(x = "SimResults")}: conditional 
-      box-and-whisker plot of simulation results.}
-    \item{simDensityplot}{\code{signature(x = "SimResults")}: conditional 
-      kernel density plot of simulation results.}
-    \item{simXyplot}{\code{signature(x = "SimResults")}: conditional x-y 
-      plot of simulation results.}
-    \item{summary}{\code{signature(x = "SimResults")}: summarize 
-      simulation results.}
+    \item{\code{getValues}}{\code{signature(x = "SimResults")}: get slot 
+      \code{values}.}
+    \item{\code{getAdd}}{\code{signature(x = "SimResults")}: get slot 
+      \code{add}.}
+    \item{\code{getDesign}}{\code{signature(x = "SimResults")}: get slot 
+      \code{design}.}
+    \item{\code{getColnames}}{\code{signature(x = "SimResults")}: get slot 
+      \code{colnames}.}
+    \item{\code{getEpsilon}}{\code{signature(x = "SimResults")}: get slot 
+      \code{epsilon}.}
+    \item{\code{getNArate}}{\code{signature(x = "SimResults")}: get slot 
+      \code{NArate}.}
+    \item{\code{getSeed}}{\code{signature(x = "SimResults")}: get slot 
+      \code{seed}.}
+    \item{\code{getCall}}{\code{signature(x = "SimResults")}: get slot 
+      \code{call}.}
   }
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+    \item{\code{aggregate}}{\code{signature(x = "SimResults")}: aggregate 
+      simulation results.}
+    \item{\code{head}}{\code{signature(x = "SimResults")}: returns the first 
+      parts of simulation results.}
+    \item{\code{plot}}{\code{signature(x = "SimResults", y = "missing")}: 
+      selects a suitable graphical representation of the simulation results 
+      automatically.}
+    \item{\code{show}}{\code{signature(object = "SimResults")}: print 
+      simulation results on the \R console.}
+    \item{\code{simBwplot}}{\code{signature(x = "SimResults")}: conditional 
+      box-and-whisker plot of simulation results.}
+    \item{\code{simDensityplot}}{\code{signature(x = "SimResults")}: 
+      conditional kernel density plot of simulation results.}
+    \item{\code{simXyplot}}{\code{signature(x = "SimResults")}: conditional x-y 
+      plot of simulation results.}
+    \item{\code{summary}}{\code{signature(x = "SimResults")}: produce a summary 
+      of simulation results.}
+    \item{\code{tail}}{\code{signature(x = "SimResults")}: returns the last 
+      parts of simulation results.}
+  }
+}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
+}
+\note{
+  There are no mutator methods available since the slots are not supposed to 
+  be changed by the user.
+}
+\author{Andreas Alfons}
 \seealso{
   \code{\link{runSimulation}}, \code{\link{simBwplot}}, 
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}

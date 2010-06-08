@@ -7,10 +7,10 @@ setMethod("generate",
     signature(control = "DataControl"),
     function(control) {
         # initializations
-        size <- control@size
-        distribution <- control@distribution
-        dots <- control@dots
-        nam <- control@colnames
+        size <- getSize(control)
+        distribution <- getDistribution(control)
+        dots <- getDots(control)
+        nam <- getColnames(control)
         # generate data
         values <- do.call(distribution, c(size, dots))
         if(is.null(dim(values)) && is.null(nam)) nam <- "V1" 

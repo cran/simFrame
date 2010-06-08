@@ -5,13 +5,15 @@
 
 ## convenience wrapper for 'setup'
 
-simSample <- function(x, design = character(), group = character(), 
-        method = srs, size = NULL, prob = NULL, ..., k = 1) {
+simSample <- function(x, design = character(), grouping = character(), 
+        collect = FALSE, fun = srs, size = NULL, 
+        prob = NULL, ..., k = 1) {
     # define control object
-    control <- SampleControl(design=design, group=group, 
-        method=method, size=size, prob=prob, dots=list(...), k=k)
+    control <- SampleControl(design=design, grouping=grouping, 
+        collect=collect, fun=fun, size=size, prob=prob, dots=list(...), k=k)
     # call 'setup'
     res <- setup(x, control)
-    res@call <- match.call()
+    call <- match.call()
+    setCall(res, call)
     res
 }

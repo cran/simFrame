@@ -1,3 +1,48 @@
+Changes in simFrame version 0.2
+
+    + Argument 'average' added to plot function 'simXyplot' that specifies 
+      whether the mean or median is used to compute averages.
+    
+    + replaced example data, which is now called 'eusilcP' and has household 
+      income components.
+    
+    + added accessor and mutator functions 'getFoo' and 'setFoo' for slots 
+      (here "foo" stands for the name of the slot). If no method 'setFoo' is 
+      available, this means that the slot is not supposed to be changed by the 
+      user.
+    
+    + renamed slots "group" to "grouping" and "method" to "fun" (where 
+      available) since functions named 'getGroup', 'getMethod' and 'setMethod' 
+      already exist and cannot be used for accessor and mutator functions, 
+      respectively.
+    
+    + renamed function 'getProb' to 'inclusionProb' to allow accessor method 
+      for slot "prob".
+    
+    + removed class "SimResult" to avoid confusion.
+    
+    + added 'show' methods and improved existing ones.
+    
+    + added 'summary', 'head' and 'tail' methods.
+    
+    + restructured help.
+    
+    + added demos for design-based simulation, model-based simulation and 
+      parallel computing.
+    
+    + classes "SampleControl" and "SampleSetup" now contain a slot that 
+      indicates whether groups are collected after sampling individuals or 
+      sampled directly.
+    
+    + class "SampleSetup" now contains a slot that stores the seed of the 
+      random number generator before and after setting up the samples.
+    
+    + made various improvements for plot functions if simulation results with 
+      multiple contamination levels or missing value rates are supplied.
+
+
+
+
 Changes in simFrame version 0.1.2
 
     + Class "NAControl" now contains a slot that specifies whether missing 
@@ -18,3 +63,4 @@ Changes in simFrame version 0.1.1
       rows.
     
     + Fixed cross-references in some help files.
+    

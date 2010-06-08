@@ -1,7 +1,23 @@
 \name{runSimulation}
 \Rdversion{1.1}
+\docType{methods}
 \alias{runSimulation}
+\alias{runSimulation-methods}
+\alias{runSimulation,ANY,ANY,ANY,missing-method}
+\alias{runSimulation,data.frame,missing,missing,SimControl-method}
+\alias{runSimulation,data.frame,missing,numeric,SimControl-method}
+\alias{runSimulation,data.frame,SampleSetup,missing,SimControl-method}
+\alias{runSimulation,data.frame,VirtualSampleControl,missing,SimControl-method}
+\alias{runSimulation,VirtualDataControl,missing,missing,SimControl-method}
+\alias{runSimulation,VirtualDataControl,missing,numeric,SimControl-method}
 \alias{runSim}
+%% aliases to avoid confusion due to capitalization
+\alias{runsimulation}
+\alias{Runsimulation}
+\alias{RunSimulation}
+\alias{runsimulation-methods}
+\alias{Runsimulation-methods}
+\alias{RunSimulation-methods}
 
 \title{Run a simulation experiment}
 \description{
@@ -40,24 +56,22 @@ runSim(\dots)
     to \code{fun}.  For \code{runSim}, arguments to be passed to 
     \code{runSimulation}.}
   \item{SAE}{a logical indicating whether small area estimation will be used in 
-    the simulation.}
+    the simulation experiment.}
 }
 \details{
   For convenience, the slots of \code{control} may be supplied as arguments.
   
   There are some requirements for slot \code{fun} of the control object 
-  \code{control}.  The function must return a numeric vector or an object of 
-  class \code{"SimResult"}, which consists of a slot \code{values} (a numeric 
-  vector) and a slot \code{add} (additional results of any class, e.g., 
-  statistical models).  Note that the latter is computationally more 
-  expensive.  Returning a list with components \code{values} and \code{add} 
-  is also accepted and slightly faster than using a \code{"SimResult"} 
-  object.  A \code{data.frame} is passed to \code{fun} in every simulation 
-  run.  The corresponding argument must be called \code{x}.  If comparisons 
-  with the original data need to be made, e.g., for evaluating the quality of 
-  imputation methods, the function should have an argument called \code{orig}.  
-  If different domains are used in the simulation, the indices of the current 
-  domain can be passed to the function via an argument called \code{domain}.
+  \code{control}.  The function must return a numeric vector, or a list with 
+  the two components \code{values} (a numeric vector) and \code{add} 
+  (additional results of any class, e.g., statistical models).  Note that the 
+  latter is computationally slightly more expensive.  A \code{data.frame} is 
+  passed to \code{fun} in every simulation run.  The corresponding argument 
+  must be called \code{x}.  If comparisons with the original data need to be 
+  made, e.g., for evaluating the quality of imputation methods, the function 
+  should have an argument called \code{orig}.  If different domains are used 
+  in the simulation, the indices of the current domain can be passed to the 
+  function via an argument called \code{domain}.
 
   For small area estimation, the following points have to be kept in mind.  The 
   \code{design} for splitting the data must be supplied and \code{SAE} 
@@ -76,40 +90,90 @@ runSim(\dots)
 \value{
   An object of class \code{"SimResults"}.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+  \item{\code{x = "ANY", setup = "ANY", nrep = "ANY", control = "missing"}}{
+    convenience wrapper that allows the slots of \code{control} to be supplied 
+    as arguments}
+  \item{\code{x = "data.frame", setup = "missing", nrep = "missing", 
+    control = "SimControl"}}{run a simulation experiment based on real data 
+    without repetitions (probably useless, but for completeness).}
+  \item{\code{x = "data.frame", setup = "missing", nrep = "numeric", 
+    control = "SimControl"}}{run a simulation experiment based on real data 
+    with repetitions.}
+  \item{\code{x = "data.frame", setup = "SampleSetup", nrep = "missing", 
+    control = "SimControl"}}{run a design-based simulation experiment with 
+    previously set up samples.}
+  \item{\code{x = "data.frame", setup = "VirtualSampleControl", 
+    nrep = "missing", control = "SimControl"}}{run a design-based simulation 
+    experiment.}
+  \item{\code{x = "VirtualDataControl", setup = "missing", nrep = "missing", 
+    control = "SimControl"}}{run a model-based simulation experiment without 
+    repetitions (probably useless, but for completeness).}
+  \item{\code{x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
+    control = "SimControl"}}{run a model-based simulation experiment with 
+    repetitions.}
+  }
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{SimControl}}, \code{\linkS4class{SimResults}}, 
+  \code{"\linkS4class{SimControl}"}, \code{"\linkS4class{SimResults}"}, 
   \code{\link{simBwplot}}, \code{\link{simDensityplot}}, \code{\link{simXyplot}}
 }
 \examples{
-## for reproducibility
-set.seed(1234)
+#### design-based simulation
+set.seed(12345)  # for reproducibility
+data(eusilcP)    # load data
+
+## control objects for sampling and contamination
+sc <- SampleControl(size = 500, k = 50)
+cc <- DARContControl(target = "eqIncome", epsilon = 0.02, 
+    fun = function(x) x * 25)
+
+## function for simulation runs
+sim <- function(x) {
+    c(mean = mean(x$eqIncome), trimmed = mean(x$eqIncome, 0.02))
+}
+
+## run simulation and explore results
+results <- runSimulation(eusilcP, 
+    sc, contControl = cc, fun = sim)
+head(results)
+aggregate(results)
+tv <- mean(eusilcP$eqIncome)  # true population mean
+plot(results, true = tv)
+
+
+
+#### model-based simulation
+set.seed(12345)  # for reproducibility
 
 ## function for generating data
-grnorm <- function(n, means) {
+rgnorm <- function(n, means) {
     group <- sample(1:2, n, replace=TRUE)
     data.frame(group=group, value=rnorm(n) + means[group])
 }
 
 ## control objects for data generation and contamination
-means <- c(0, 0.5)
-dc <- DataControl(size = 500, distribution = grnorm, 
+means <- c(0, 0.25)
+dc <- DataControl(size = 500, distribution = rgnorm, 
     dots = list(means = means))
 cc <- DCARContControl(target = "value", 
-    epsilon = 0.1, dots = list(mean = 10))
+    epsilon = 0.02, dots = list(mean = 15))
 
 ## function for simulation runs
 sim <- function(x) {
     c(mean = mean(x$value), 
-        trimmed = mean(x$value, trim = 0.1), 
+        trimmed = mean(x$value, trim = 0.02), 
         median = median(x$value))
 }
 
-## run simulation
+## run simulation and explore results
 results <- runSimulation(dc, nrep = 50, 
     contControl = cc, design = "group", fun = sim)
-
-## plot results
+head(results)
+aggregate(results)
 plot(results, true = means)
 }
 \keyword{design}
+\keyword{methods}

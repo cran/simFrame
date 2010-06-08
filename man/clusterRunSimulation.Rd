@@ -1,6 +1,21 @@
 \name{clusterRunSimulation}
 \Rdversion{1.1}
+\docType{methods}
 \alias{clusterRunSimulation}
+\alias{clusterRunSimulation-methods}
+\alias{clusterRunSimulation,ANY,ANY,ANY,ANY,missing-method}
+\alias{clusterRunSimulation,ANY,data.frame,missing,numeric,SimControl-method}
+\alias{clusterRunSimulation,ANY,data.frame,SampleSetup,missing,SimControl-method}
+\alias{clusterRunSimulation,ANY,data.frame,VirtualSampleControl,missing,SimControl-method}
+\alias{clusterRunSimulation,ANY,VirtualDataControl,missing,numeric,SimControl-method}
+%% aliases to avoid confusion due to capitalization
+\alias{clusterrunsimulation}
+\alias{clusterRunsimulation}
+\alias{clusterrunSimulation}
+\alias{ClusterRunSimulation}
+\alias{Clusterrunsimulation}
+\alias{ClusterrunSimulation}
+\alias{ClusterRunsimulation}
 
 \title{Run a simulation experiment on a snow cluster}
 \description{
@@ -39,7 +54,7 @@ clusterRunSimulation(cl, x, setup, nrep, control,
     to \code{fun}.  For \code{runSim}, arguments to be passed to 
     \code{runSimulation}.}
   \item{SAE}{a logical indicating whether small area estimation will be used in 
-    the simulation.}
+    the simulation experiment.}
 }
 \details{
   Statistical simulation is embarrassingly parallel, hence computational 
@@ -55,18 +70,16 @@ clusterRunSimulation(cl, x, setup, nrep, control,
   \code{clusterSetupRNG}.
   
   There are some requirements for slot \code{fun} of the control object 
-  \code{control}.  The function must return a numeric vector or an object of 
-  class \code{"SimResult"}, which consists of a slot \code{values} (a numeric 
-  vector) and a slot \code{add} (additional results of any class, e.g., 
-  statistical models).  Note that the latter is computationally more 
-  expensive.  Returning a list with components \code{values} and \code{add} 
-  is also accepted and slightly faster than using a \code{"SimResult"} 
-  object.  A \code{data.frame} is passed to \code{fun} in every simulation 
-  run.  The corresponding argument must be called \code{x}.  If comparisons 
-  with the original data need to be made, e.g., for evaluating the quality of 
-  imputation methods, the function should have an argument called \code{orig}.  
-  If different domains are used in the simulation, the indices of the current 
-  domain can be passed to the function via an argument called \code{domain}.
+  \code{control}.  The function must return a numeric vector, or a list with 
+  the two components \code{values} (a numeric vector) and \code{add} 
+  (additional results of any class, e.g., statistical models).  Note that the 
+  latter is computationally slightly more expensive.  A \code{data.frame} is 
+  passed to \code{fun} in every simulation run.  The corresponding argument 
+  must be called \code{x}.  If comparisons with the original data need to be 
+  made, e.g., for evaluating the quality of imputation methods, the function 
+  should have an argument called \code{orig}.  If different domains are used 
+  in the simulation, the indices of the current domain can be passed to the 
+  function via an argument called \code{domain}.
   
   For small area estimation, the following points have to be kept in mind.  The 
   slot \code{design} of \code{control} for splitting the data must be supplied 
@@ -83,6 +96,26 @@ clusterRunSimulation(cl, x, setup, nrep, control,
 \value{
   An object of class \code{"SimResults"}.
 }
+\section{Methods}{
+\describe{
+  \item{\code{cl = "ANY", x = "ANY", setup = "ANY", nrep = "ANY", 
+    control = "missing"}}{convenience wrapper that allows the slots of 
+    \code{control} to be supplied as arguments}
+  \item{\code{cl = "ANY", x = "data.frame", setup = "missing", nrep = "numeric", 
+    control = "SimControl"}}{run a simulation experiment based on real data 
+    with repetitions on a \code{snow} cluster.}
+  \item{\code{cl = "ANY", x = "data.frame", setup = "SampleSetup", 
+    nrep = "missing", control = "SimControl"}}{run a design-based simulation 
+    experiment with previously set up samples on a \code{snow} cluster.}
+  \item{\code{cl = "ANY", x = "data.frame", setup = "VirtualSampleControl", 
+    nrep = "missing", control = "SimControl"}}{run a design-based simulation 
+    experiment on a \code{snow} cluster.}
+  \item{\code{cl = "ANY", x = "VirtualDataControl", setup = "missing", 
+    nrep = "numeric", control = "SimControl"}}{run a model-based simulation 
+    experiment with repetitions on a \code{snow} cluster.}
+  }
+}
+\author{Andreas Alfons}
 \references{
 L'Ecuyer, P., Simard, R., Chen E and Kelton, W. (2002) An object-oriented 
 random-number package with many long streams and substreams. \emph{Operations 
@@ -100,17 +133,62 @@ Tierney, L., Rossini, A. and Li, N. (2009) \code{snow}: A parallel computing
 framework for the \R system. \emph{International Journal of Parallel 
 Programming}, \bold{37}(1), 78--90.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
   \code{\link[snow:snow-startstop]{makeCluster}}, 
   \code{\link[snow:snow-rand]{clusterSetupRNG}}, 
-  \code{\link{runSimulation}}, \code{\linkS4class{SimControl}}, 
-  \code{\linkS4class{SimResults}}, \code{\link{simBwplot}}, 
+  \code{\link{runSimulation}}, \code{"\linkS4class{SimControl}"}, 
+  \code{"\linkS4class{SimResults}"}, \code{\link{simBwplot}}, 
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}
 }
 \examples{
 \dontrun{
-# these examples require at least dual core processor
+## these examples requires at least dual core processor
+
+
+## design-based simulation
+data(eusilcP)  #load data
+
+# start snow cluster
+cl <- makeCluster(2, type = "SOCK")
+
+# load package and data on workers
+clusterEvalQ(cl, {
+    library(simFrame)
+    data(eusilcP)
+})
+
+# set up random number stream
+clusterSetupRNG(cl, seed = "12345")
+
+# control objects for sampling and contamination
+sc <- SampleControl(size = 500, k = 50)
+cc <- DARContControl(target = "eqIncome", epsilon = 0.02, 
+    fun = function(x) x * 25)
+
+# function for simulation runs
+sim <- function(x) {
+    c(mean = mean(x$eqIncome), trimmed = mean(x$eqIncome, 0.02))
+}
+
+# export objects to workers
+clusterExport(cl, c("sc", "cc", "sim"))
+
+# run simulation on snow cluster
+results <- clusterRunSimulation(cl, eusilcP, 
+    sc, contControl = cc, fun = sim)
+
+# stop snow cluster
+stopCluster(cl)
+
+# explore results
+head(results)
+aggregate(results)
+tv <- mean(eusilcP$eqIncome)  # true population mean
+plot(results, true = tv)
+
+
+
+## model-based simulation
 
 # start snow cluster
 cl <- makeCluster(2, type = "SOCK")
@@ -118,38 +196,44 @@ cl <- makeCluster(2, type = "SOCK")
 # load package on workers
 clusterEvalQ(cl, library(simFrame))
 
-# setup random number stream
-clusterSetupRNG(cl, seed = "1234")
+# set up random number stream
+clusterSetupRNG(cl, seed = "12345")
 
 # function for generating data
-grnorm <- function(n, means) {
+rgnorm <- function(n, means) {
     group <- sample(1:2, n, replace=TRUE)
     data.frame(group=group, value=rnorm(n) + means[group])
 }
 
 # control objects for data generation and contamination
-means <- c(0, 0.5)
-dc <- DataControl(size = 500, distribution = grnorm, 
+means <- c(0, 0.25)
+dc <- DataControl(size = 500, distribution = rgnorm, 
     dots = list(means = means))
 cc <- DCARContControl(target = "value", 
-    epsilon = 0.1, dots = list(mean = 10))
+    epsilon = 0.02, dots = list(mean = 15))
 
 # function for simulation runs
 sim <- function(x) {
     c(mean = mean(x$value), 
-        trimmed = mean(x$value, trim = 0.1), 
+        trimmed = mean(x$value, trim = 0.02), 
         median = median(x$value))
 }
 
 # export objects to workers
-clusterExport(cl, c("grnorm", "means", "dc", "cc", "sim"))
+clusterExport(cl, c("rgnorm", "means", "dc", "cc", "sim"))
 
-# run simulation
+# run simulation on snow cluster
 results <- clusterRunSimulation(cl, dc, nrep = 100, 
     contControl = cc, design = "group", fun = sim)
 
-# plot results
+# stop snow cluster
+stopCluster(cl)
+
+# explore results
+head(results)
+aggregate(results)
 plot(results, true = means)
 }
 }
 \keyword{design}
+\keyword{methods}

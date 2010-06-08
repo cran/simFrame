@@ -7,39 +7,41 @@ setMethod("setNA",
     signature(x = "data.frame", control = "NAControl"),
     function(x, control, i = 1) {
         # initializations
-        target <- control@target
+        target <- getTarget(control)
         if(is.null(target)) target <- getNames(x)
         tl <- length(target)
-        if(is(control@NArate, "numeric")) NArate <- control@NArate[i]
-        else NArate <- rep(control@NArate[i,], length.out=tl)
+        NArate <- getNArate(control)
+        if(is(NArate, "numeric")) NArate <- NArate[i]
+        else NArate <- rep(NArate[i,], length.out=tl)
         if(all(NArate == 0) || any(dim(x) == 0)) return(x)  # nothing to do
-        group <- control@group
-        if(length(group) > 1) {
-            stop("'group' must not specify more than one variable")
+        grouping <- getGrouping(control)
+        if(length(grouping) > 1) {
+            stop("'grouping' must not specify more than one variable")
         }
-        useGroup <- as.logical(length(group))  # 'group' supplied
-        aux <- control@aux
+        useGroup <- as.logical(length(grouping))  # 'grouping' supplied
+        aux <- getAux(control)
         if(length(aux) > 1) {
             stop("'aux' must not specify more than one variable")
         }
         useAux <- as.logical(length(aux))  # 'aux' supplied
-        if(control@intoContamination) contaminated <- NULL
+        intoContamination <- getIntoContamination(control)
+        if(intoContamination) contaminated <- NULL
         else contaminated <- x$.contaminated
-        isContaminated <- !control@intoContamination && !is.null(contaminated)
+        isContaminated <- !intoContamination && !is.null(contaminated)
         # get population size and number of observations/groups to be set NA
         if(useGroup) {
-            gr <- x[, group]  # group of each individual
+            groups <- x[, grouping]  # group of each individual
             if(useAux || isContaminated) {
-                Nobj <- nrow(x)
-                spl <- split(1:Nobj, getFactor(gr))
-                N <- length(spl)
+                Ntotal <- nrow(x)
+                split <- split(1:Ntotal, getFactor(groups))
+                N <- length(split)
             } else {
-                ugr <- unique(gr)  # unique groups
-                N <- length(ugr)  # number of groups
+                uniqueGroups <- unique(groups)  # unique groups
+                N <- length(uniqueGroups)  # number of groups
             }
             if(isContaminated) {
                 # don't set to NA if any in the group is contaminated
-                contaminated <- sapply(spl, function(i) any(contaminated[i]))
+                contaminated <- sapply(split, function(i) any(contaminated[i]))
             }
         } else N <- nrow(x)
         n <- ceiling(NArate * N)
@@ -56,8 +58,8 @@ setMethod("setNA",
             if(any(aux < 0)) aux <- aux - min(aux)  # add small value?
             if(useGroup) {
                 # use the group means (much faster than medians)
-                #aux <- sapply(spl, function(i) median(aux[i]))
-                aux <- sapply(spl, function(i) mean(aux[i]))
+                #aux <- sapply(split, function(i) median(aux[i]))
+                aux <- sapply(split, function(i) mean(aux[i]))
             }
         } else aux <- NULL
         # get indices
@@ -71,11 +73,11 @@ setMethod("setNA",
             if(useAux || isContaminated) {
                 ind <- apply(ind, 2, 
                     function(i) {
-                        ans <- logical(Nobj)
-                        ans[unlist(spl[i])] <- TRUE
+                        ans <- logical(Ntotal)
+                        ans[unlist(split[i])] <- TRUE
                         ans
                     })
-            } else ind <- apply(ind, 2, function(i) gr %in% ugr[i])
+            } else ind <- apply(ind, 2, function(i) groups %in% uniqueGroups[i])
         }
         ## do not append logical variables indicating the values set to NA
         ## using 'is.na' in the function for the simulation runs is much faster
@@ -126,4 +128,3 @@ getIndicesSetNA <- function(N, size, aux = NULL, contaminated = logical()) {
     ans[samplex(x, size, aux)] <- TRUE
     ans
 }
-

@@ -2,9 +2,17 @@
 \Rdversion{1.1}
 \alias{simFrame-package}
 \alias{simFrame}
+%% aliases to avoid confusion due to capitalization
+\alias{simframe-package}
+\alias{SimFrame-package}
+\alias{Simframe-package}
+\alias{simframe}
+\alias{SimFrame}
+\alias{Simframe}
+
 \docType{package}
 \title{
-Simulation Framework
+Simulation framework
 }
 \description{
 A general framework for statistical simulation.
@@ -12,10 +20,11 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.1.12\cr
-Date: \tab 2009-11-30\cr
+Version: \tab 0.2\cr
+Date: \tab 2010-06-08\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
-Imports: \tab methods, stats4\cr
+Imports: \tab lattice, methods, stats, stats4, utils\cr
+Suggests: \tab laeken, mvtnorm, robCompositions\cr
 License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr
 }
@@ -45,12 +54,13 @@ SampleSetup             Create objects of class "SampleSetup"
 SampleSetup-class       Class "SampleSetup"
 SimControl              Create objects of class "SimControl"
 SimControl-class        Class "SimControl"
-SimResult               Create objects of class "SimResult"
-SimResult-class         Class "SimResult"
 SimResults              Create objects of class "SimResults"
 SimResults-class        Class "SimResults"
 Strata                  Create objects of class "Strata"
 Strata-class            Class "Strata"
+SummarySampleSetup      Create objects of class "SummarySampleSetup"
+SummarySampleSetup-class
+                        Class "SummarySampleSetup"
 VirtualContControl-class
                         Class "VirtualContControl"
 VirtualDataControl-class
@@ -61,53 +71,39 @@ VirtualSampleControl-class
                         Class "VirtualSampleControl"
 aggregate-methods       Method for aggregating simulation results
 clusterRunSimulation    Run a simulation experiment on a snow cluster
-clusterRunSimulation-methods
-                        Methods for running a simulation experiment on
-                        a snow cluster
 clusterSetup            Set up multiple samples on a snow cluster
-clusterSetup-methods    Methods for setting up multiple samples on a
-                        snow cluster
 contaminate             Contaminate data
-contaminate-methods     Methods for contaminating data
 draw                    Draw a sample
-draw-methods            Methods for drawing a sample
-eusilc                  Artificial EU-SILC data
+eusilcP                 Synthetic EU-SILC data
 generate                Generate data
-generate-methods        Methods for generating data
-getProb                 Inclusion probabilities
+getAdd                  Accessor and mutator functions for objects
 getStrataLegend         Utility functions for stratifying data
-getStrataLegend-methods
-                        Methods for Function getStrataLegend
-getStrataSplit-methods
-                        Methods for Function getStrataSplit
-getStrataTable-methods
-                        Methods for Function getStrataTable
-getStratumSizes-methods
-                        Methods for Function getStratumSizes
-getStratumValues-methods
-                        Methods for Function getStratumValues
+head-methods            Methods for returning the first parts of an
+                        object
+inclusionProb           Inclusion probabilities
+length-methods          Methods for getting the length of an object
 plot-methods            Plot simulation results
 runSimulation           Run a simulation experiment
-runSimulation-methods   Methods for running a simulation experiment
 setNA                   Set missing values
-setNA-methods           Methods for setting missing values
 setup                   Set up multiple samples
-setup-methods           Methods for setting up multiple samples
 simApply                Apply a function to subsets
-simApply-methods        Methods for applying a function to subsets
 simBwplot               Box-and-whisker plots
-simBwplot-methods       Methods for producing box-and-whisker plots
 simDensityplot          Kernel density plots
-simDensityplot-methods
-                        Methods for producing kernel density plots
+simFrame-package        Simulation Framework
 simSample               Set up multiple samples
-simSapply-methods       Methods for applying a function to subsets
 simXyplot               X-Y plots
-simXyplot-methods       Methods for producing x-y plots
 srs                     Random sampling
 stratify                Stratify data
-stratify-methods        Methods for stratifying data
+summary-methods         Methods for producing a summary of an object
+tail-methods            Methods for returning the last parts of an
+                        object
 }
+}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
 }
 \author{
 Andreas Alfons

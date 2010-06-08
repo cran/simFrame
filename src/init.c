@@ -9,7 +9,7 @@
 #include "simFrame.h"
 
 static const R_CallMethodDef callMethods[] = {
-        {"getProb", &getProb, 2},
+        {"inclusionProb", &inclusionProb, 2},
         {NULL, NULL, 0}
 };
 

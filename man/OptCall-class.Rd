@@ -2,6 +2,10 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{OptCall-class}
+%% aliases to avoid confusion due to capitalization
+\alias{optCall-class}
+\alias{optcall-class}
+\alias{Optcall-class}
 
 \title{Class "OptCall"}
 \description{Virtual class used internally for convenience.}
@@ -11,7 +15,7 @@
 \section{Methods}{
 No methods defined with class "OptCall" in the signature.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\author{Andreas Alfons}
 \examples{
 showClass("OptCall")
 }

@@ -49,23 +49,25 @@ setClass("VirtualSampleControl",
 
 # sampling according to function 'simSample'
 validSampleControlObject <- function(object) {
-    l <- getSelectionLength(object@group)
+    l <- getSelectionLength(object@grouping)
     ok <- c(is.na(l) || l <= 1, 
         is.null(object@size) || length(object@size),
-        is.null(object@prob) || length(object@prob))
-    msg <- c("'group' must not specify more than one variable",
+        is.null(object@prob) || length(object@prob), 
+        length(object@collect) == 1)
+    msg <- c("'grouping' must not specify more than one variable",
         "'size' must have positive length",
-        "'prob' must have positive length")
+        "'prob' must have positive length", 
+        "'collect' must be a single logical")
     if(all(ok)) TRUE
     else msg[!ok]
 }
 
 setClass("SampleControl",
-    representation(design = "BasicVector", group = "BasicVector", 
-        method = "function", size = "OptNumeric", prob = "OptNumeric", 
-        dots = "list"),
-    prototype(design = character(), group = character(), 
-        size = NULL, prob = NULL),
+    representation(design = "BasicVector", grouping = "BasicVector", 
+        collect = "logical", fun = "function", size = "OptNumeric", 
+        prob = "OptNumeric", dots = "list"),
+    prototype(design = character(), grouping = character(), 
+        collect = FALSE, size = NULL, prob = NULL),
     contains = "VirtualSampleControl",
     validity = validSampleControlObject)
 
@@ -76,16 +78,27 @@ SampleControl <- function(...) new("SampleControl", ...)
 ## sample setup
 
 validSampleSetupObject <- function(object) {
-    if(length(object@group) <= 1) TRUE
-    else "'group' must not specify more than one variable"
+    ok <- c(length(object@grouping) <= 1, length(object@collect) == 1)
+    msg <- c("'grouping' must not specify more than one variable", 
+        "'collect' must be a single logical")
+    if(all(ok)) TRUE
+    else msg[!ok]
 }
 
 setClass("SampleSetup",
     representation(indices = "list", prob = "numeric", design = "character", 
-        group = "character", method = "function", call = "OptCall"),
-    prototype(call = NULL))
+        grouping = "character", collect = "logical", fun = "function", 
+        seed = "list", call = "OptCall"),
+    prototype(collect = FALSE, call = NULL))
 
 SampleSetup <- function(...) new("SampleSetup", ...)
+
+# summary
+
+setClass("SummarySampleSetup",
+    representation(size = "numeric"))
+
+SummarySampleSetup <- function(...) new("SummarySampleSetup", ...)
 
 # ---------------------------------------
 
@@ -113,15 +126,15 @@ setClassUnion("OptContControl", c("NULL", "VirtualContControl"))
 
 # internal control class (not expected to be extended by the user)
 validContControlObject <- function(object) {
-    ok <- c(length(object@group) <= 1, length(object@aux) <= 1)
-    msg <- c("'group' must not specify more than one variable", 
+    ok <- c(length(object@grouping) <= 1, length(object@aux) <= 1)
+    msg <- c("'grouping' must not specify more than one variable", 
         "'aux' must not specify more than one variable")
     if(all(ok)) TRUE
     else msg[!ok]
 }
 
 setClass("ContControl",
-    representation(group = "character", aux = "character"),
+    representation(grouping = "character", aux = "character"),
     contains = c("VIRTUAL", "VirtualContControl"),
     validity = validContControlObject)
 
@@ -177,9 +190,9 @@ setClassUnion("OptNAControl", c("NULL", "VirtualNAControl"))
 
 # select values randomly for each target variable
 validNAControlObject <- function(object) {
-    ok <- c(length(object@group) <= 1, length(object@aux) <= 1, 
+    ok <- c(length(object@grouping) <= 1, length(object@aux) <= 1, 
         length(object@intoContamination) == 1)
-    msg <- c("'group' must not specify more than one variable", 
+    msg <- c("'grouping' must not specify more than one variable", 
         "'aux' must not specify more than one variable", 
         "'intoContamination' must be a single logical")
     if(all(ok)) TRUE
@@ -187,7 +200,7 @@ validNAControlObject <- function(object) {
 }
 
 setClass("NAControl",
-    representation(group = "character", aux = "character", 
+    representation(grouping = "character", aux = "character", 
         intoContamination = "logical"),
     prototype(intoContamination=FALSE),
     contains = "VirtualNAControl", 
@@ -221,12 +234,12 @@ SimControl <- function(...) new("SimControl", ...)
 
 # ---------------------------------------
 
-## one simulation result
-
-setClass("SimResult",
-    representation(values = "numeric", add = "ANY"))
-
-SimResult <- function(...) new("SimResult", ...)
+### one simulation result
+#
+#setClass("SimResult",
+#    representation(values = "numeric", add = "ANY"))
+#
+#SimResult <- function(...) new("SimResult", ...)
 
 # ---------------------------------------
 

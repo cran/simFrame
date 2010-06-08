@@ -29,9 +29,10 @@ unequal probability sampling, respectively. Both functions make use of
 \value{
   An integer vector giving the indices of the sampled observations.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{SampleControl}}, \code{\link{setup}}, \code{\link{sample}}
+  \code{"\linkS4class{SampleControl}"}, \code{\link{setup}}, 
+  \code{\link{sample}}
 }
 \examples{
 ## simple random sampling without replacement

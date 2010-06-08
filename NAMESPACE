@@ -7,6 +7,7 @@ import(methods)
 # import specific functions from packages
 importFrom(stats, aggregate)
 importFrom(stats4, plot, summary)
+importFrom(utils, head, tail)
 
 # S3 functions
 export(
@@ -15,14 +16,15 @@ export(
     DARContControl,
     DCARContControl,
     DataControl,
-    getProb,
+    inclusionProb,
     NAControl,
     runSim,
     SampleControl, 
     SampleSetup,
     SimControl,
-    SimResult, 
-    SimResults, 
+#    SimResult, 
+    SimResults,
+    SummarySampleSetup, 
     simSample,
     Strata,
     srs,
@@ -46,13 +48,62 @@ exportClasses(
     SampleControl,
     SampleSetup,
     SimControl,
-    SimResult,
+#    SimResult,
     SimResults,
     Strata,
+    SummarySampleSetup,
     VirtualContControl,
     VirtualDataControl,
     VirtualNAControl,
     VirtualSampleControl
+)
+
+# accessor methods for slots
+exportMethods(
+    getAdd,
+    getAux,
+    setAux,
+    getCall,
+    getCollect,
+    setCollect,
+    getColnames,
+    setColnames,
+    getContControl,
+    setContControl,
+    getDesign,
+    setDesign,
+    getDistribution,
+    setDistribution,
+    getDots,
+    setDots,
+    getEpsilon,
+    setEpsilon,
+    getGrouping,
+    setGrouping,
+    getFun,
+    setFun,
+    getIndices,
+    getIntoContamination,
+    setIntoContamination,
+    getK,
+    setK,
+    getLegend,
+    getNAControl,
+    setNAControl,
+    getNArate,
+    setNArate,
+    getNr,
+    getProb,
+    setProb,
+    getSAE,
+    setSAE,
+    getSeed,
+    getSize,
+    setSize,
+    getSplit,
+    getTarget,
+    setTarget,
+    getValues
 )
 
 # S4 generics
@@ -68,15 +119,18 @@ exportMethods(
     getStrataTable,
     getStratumSizes,
     getStratumValues,
+    head,
     plot,
     runSimulation,
     setNA,
     setup,
+    show,
     simApply,
     simBwplot,
     simDensityplot,
     simSapply,
     simXyplot,
     stratify,
-    summary
+    summary,
+    tail
 )

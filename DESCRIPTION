@@ -1,15 +1,15 @@
 Package: simFrame
-Version: 0.1.2
-Date: 2009-11-30
-Title: Simulation Framework
+Version: 0.2
+Date: 2010-06-08
+Title: Simulation framework
 Author: Andreas Alfons
 Maintainer: Andreas Alfons <alfons@statistik.tuwien.ac.at>
 Depends: R (>= 2.8.0), lattice, snow
-Imports: lattice, methods, stats4
-Suggests: MASS
+Imports: lattice, methods, stats, stats4, utils
+Suggests: laeken, mvtnorm, robCompositions
 Description: A general framework for statistical simulation.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2009-11-30 22:14:38 UTC; alfons
+Packaged: 2010-06-08 14:30:14 UTC; alfons
 Repository: CRAN
-Date/Publication: 2009-12-01 15:39:48
+Date/Publication: 2010-06-08 15:45:36

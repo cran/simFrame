@@ -16,7 +16,7 @@ setMethod("simApply",
 setMethod("simApply", 
     signature(x = "data.frame", design = "Strata", fun = "function"), 
     function(x, design, fun, ...) {
-        xSpl <- lapply(design@split, function(s, x) x[s,], x)
+        xSpl <- lapply(getSplit(design), function(s, x) x[s,], x)
         tmp <- lapply(xSpl, 
             function(x, ...) {
                 res <- fun(x, ...)
@@ -25,7 +25,7 @@ setMethod("simApply",
             }, ...)
         ind <- sapply(tmp, function(x) as.logical(length(x)))
         values <- do.call("rbind", tmp)
-        data.frame(design@legend[ind, , drop=FALSE], values)
+        data.frame(getLegend(design)[ind, , drop=FALSE], values)
     })
 
 # the function to be applied may return a vector, matrix or data.frame
@@ -33,7 +33,7 @@ setMethod("simApply",
 #setMethod("simApply", 
 #    signature(x = "data.frame", design = "Strata", fun = "function"), 
 #    function(x, design, fun, ...) {
-#        xSpl <- lapply(design@split, function(s, x) x[s,], x)
+#        xSpl <- lapply(getSplit(design), function(s, x) x[s,], x)
 #        tmp <- lapply(xSpl, 
 #            function(x, ...) {
 #                res <- fun(x, ...)
@@ -48,9 +48,9 @@ setMethod("simApply",
 #                    if(length(x)) 1 else 0
 #                } else nrow(x)
 #            })
-#        ind <- rep(design@nr, each=nrep)
+#        ind <- rep(getNr(design), each=nrep)
 #        values <- do.call("rbind", tmp)
-#        res <- data.frame(design@legend[ind, , drop=FALSE], values)
+#        res <- data.frame(getLegend(design)[ind, , drop=FALSE], values)
 #        row.names(res) <- NULL
 #        res
 #    })

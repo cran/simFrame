@@ -32,46 +32,12 @@ checkNumericMatrix <- function(x) {
 
 # ---------------------------------------
 
-## utilities for class "SampleControl"
-
-# length method
-setMethod("length", "VirtualSampleControl", function(x) x@k)
-
-# ---------------------------------------
-
-## utilities for class "SampleSetup"
-
-# length method
-setMethod("length", "SampleSetup", function(x) length(x@indices))
-
-# ---------------------------------------
-
-## utilities for class "ContControl"
-
-# length method
-setMethod("length", "VirtualContControl", function(x) length(x@epsilon))
-
-# ---------------------------------------
-
-## utilities for class "NAControl"
-
-# length method
-setMethod("length", "VirtualNAControl", function(x) getLength(x@NArate))
-
-getLength <- function(x) {
-    if(is(x, "numeric")) length(x) 
-    else if(is(x, "matrix")) nrow(x)
-    else NA  # other classes
-}
-
-# ---------------------------------------
-
 ## utilities for simulation results
 
 # get NA rate for simulation results
-getNArate <- function(x) {
+convertNArate <- function(x) {
     if(is(x, "numeric")) x
-    else if(is(x, "matrix")) 1:getLength(x)
+    else if(is(x, "matrix")) 1:nrow(x)
     else numeric()  # other classes
 }
 

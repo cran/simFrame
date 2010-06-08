@@ -5,16 +5,18 @@
 
 setMethod("aggregate", "SimResults", 
     function(x, select = NULL, FUN = mean, ...) {
-        by <- c(if(length(x@epsilon)) "Epsilon", 
-            if(length(x@NArate)) "NArate", x@design)
-        if(is.null(select)) select <- x@colnames
+        by <- c(if(length(getEpsilon(x))) "Epsilon", 
+            if(length(getNArate(x))) "NArate", getDesign(x))
+        if(is.null(select)) select <- getColnames(x)
         else {
             if(!is.character(select)) {
                 stop("'select' must be a character vector")
             }
-            if(!all(select %in% x@colnames)) stop("undefined columns selected")
+            if(!all(select %in% getColnames(x))) {
+                stop("undefined columns selected")
+            }
         }
-        x <- x@values
+        x <- getValues(x)
         if(length(by)) {
             aggregate(x[, select, drop=FALSE], 
                 by=x[, by, drop=FALSE], FUN=FUN, ...)

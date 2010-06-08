@@ -1,7 +1,12 @@
+\encoding{utf8}
 \name{contaminate}
 \Rdversion{1.1}
+\docType{methods}
 \alias{contaminate}
+\alias{contaminate-methods}
+\alias{contaminate,data.frame,character-method}
 \alias{contaminate,data.frame,ContControl-method}
+\alias{contaminate,data.frame,missing-method}
 
 \title{Contaminate data}
 \description{Generic function for contaminating data.}
@@ -18,38 +23,85 @@ contaminate(x, control, \dots)
   \item{i}{an integer giving the element of the slot \code{epsilon} of 
     \code{control} to be used as contamination level.}
   \item{\dots}{if \code{control} is a character string or missing, the slots of 
-    the control object may be supplied as additional arguments.}
+    the control object may be supplied as additional arguments.  See 
+    \code{"\linkS4class{DCARContControl}"} and 
+    \code{"\linkS4class{DARContControl}"} for details on the slots.}
 }
 \details{
+  With the control classes implemented in \pkg{simFrame}, contamination is 
+  modeled as a two-step process.  The first step is to select observations to 
+  be contaminated, the second is to model the distribution of the outliers.
+  
   In order to extend the framework by a user-defined control class 
-  \code{"MyContControl"} (which must extend \code{"VirtualContControl"}), a 
-  method \code{contaminate(x, control, i)} with signature 
-  \code{'data.frame, MyContControl'} needs to be implemented.
+  \code{"MyContControl"} (which must extend 
+  \code{"\linkS4class{VirtualContControl}"}), a method 
+  \code{contaminate(x, control, i)} with signature 
+  \code{'data.frame, MyContControl'} needs to be implemented.  In case the 
+  contaminated observations need to be identified at a later stage of the 
+  simulation, e.g., if conflicts with inserting missing values should be 
+  avoided, a logical indicator variable \code{".contaminated"} should be added 
+  to the returned data set.
 }
 \value{
   A \code{data.frame} containing the contaminated data.  In addition, the 
   column \code{".contaminated"}, which consists of logicals indicating the 
   contaminated observations, is added to the \code{data.frame}.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+  \item{\code{x = "data.frame", control = "character"}}{contaminate data using 
+    a control class specified by the character string \code{control}.  The 
+    slots of the control object may be supplied as additional arguments.}
+  \item{\code{x = "data.frame", control = "ContControl"}}{contaminate data as 
+    defined by the control object \code{control}.}
+  \item{\code{x = "data.frame", control = "missing"}}{contaminate data using a 
+    control object of class \code{"ContControl"}.  Its slots may be supplied as 
+    additional arguments.}
+  }
+}
+\author{Andreas Alfons}
+\references{
+\enc{Béguin}{Beguin}, C. and Hulliger, B. (2008) The BACON-EEM algorithm for 
+multivariate outlier detection in incomplete survey data. \emph{Survey 
+Methodology}, \bold{34}(1), 91--103.
+
+Hulliger, B. and Schoch, T. (2009) Robust multivariate imputation with survey 
+data. \emph{57th Session of the International Statistical Institute}, Durban.
+}
 \seealso{
-  \code{\linkS4class{DCARContControl}}, \code{\linkS4class{DARContControl}},
-  \code{\linkS4class{ContControl}}, \code{\linkS4class{VirtualContControl}}
+  \code{"\linkS4class{DCARContControl}"}, \code{"\linkS4class{DARContControl}"},
+  \code{"\linkS4class{ContControl}"}, \code{"\linkS4class{VirtualContControl}"}
 }
 \examples{
 ## distributed completely at random
-data(eusilc)
-sam <- draw(eusilc[, c("id", "eqIncome")], size = 20)
+data(eusilcP)
+sam <- draw(eusilcP[, c("id", "eqIncome")], size = 20)
+
+# using a control object
+dcarc <- ContControl(target = "eqIncome", epsilon = 0.05, 
+    dots = list(mean = 5e+05, sd = 10000), type = "DCAR")
+contaminate(sam, dcarc)
+
+# supply slots of control object as arguments
 contaminate(sam, target = "eqIncome", epsilon = 0.05, 
     dots = list(mean = 5e+05, sd = 10000))
 
+
 ## distributed at random
-require(MASS)
-mu <- rep(0, 2)
-Sigma <- matrix(c(1, 0.5, 0.5, 1), 2, 2)
-foo <- generate(size = 10, distribution = mvrnorm, 
-    dots = list(mu = mu, Sigma = Sigma))
+require(mvtnorm)
+mean <- rep(0, 2)
+sigma <- matrix(c(1, 0.5, 0.5, 1), 2, 2)
+foo <- generate(size = 10, distribution = rmvnorm, 
+    dots = list(mean = mean, sigma = sigma))
+
+# using a control object
+darc <- DARContControl(target = "V2", 
+    epsilon = 0.2, fun = function(x) x * 100)
+contaminate(foo, darc)
+
+# supply slots of control object as arguments
 contaminate(foo, "DARContControl", target = "V2",
     epsilon = 0.2, fun = function(x) x * 100)
 }
 \keyword{manip}
+\keyword{methods}

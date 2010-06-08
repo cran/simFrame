@@ -9,7 +9,7 @@ setMethod("initialize", "DataControl",
     function(.Object, ...) {
         args <- list(...)
         # use 'rnorm' as default
-        if(is.null(args$distribution)) .Object@distribution <- rnorm
+        if(is.null(args$distribution)) setDistribution(.Object, rnorm)
         callNextMethod()  # call method for superclass (or default)
     })
 
@@ -18,7 +18,7 @@ setMethod("initialize", "SampleControl",
     function(.Object, ...) {
         args <- list(...)
         # use simple random sampling as default
-        if(is.null(args$method)) .Object@method <- srs
+        if(is.null(args$fun)) setFun(.Object, srs)
         callNextMethod()  # call method for superclass (or default)
     })
 
@@ -27,15 +27,17 @@ setMethod("initialize", "DCARContControl",
     function(.Object, ...) {
         args <- list(...)
         # use standard normal distribution as default for contamination data
-        if(is.null(args$distribution)) .Object@distribution <- rnorm
+        if(is.null(args$distribution)) setDistribution(.Object, rnorm)
         callNextMethod()  # call method for superclass (or default)
     })
 
-# insertion of missing values
-setMethod("initialize", "NAControl", 
-    function(.Object, ...) {
-        args <- list(...)
-        # use standard normal distribution as default for contamination data
-        .Object@intoContamination <- isTRUE(.Object@intoContamination)
-        callNextMethod()  # call method for superclass (or default)
-    })
+## insertion of missing values
+#setMethod("initialize", "NAControl", 
+#    function(.Object, ...) {
+#        args <- list(...)
+#        # make sure logical indicator whether NAs should be insereted 
+#        # into contaminated observations is either TRUE or FALSE
+#        intoContamination <- isTRUE(getIntoContamination(.Object))
+#        setIntoContamination(.Object, intoContamination)
+#        callNextMethod()  # call method for superclass (or default)
+#    })

@@ -2,7 +2,17 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{VirtualSampleControl-class}
-\alias{length,VirtualSampleControl-method}
+\alias{getK,VirtualSampleControl-method}
+\alias{setK,VirtualSampleControl-method}
+\alias{show,VirtualSampleControl-method}
+%% aliases to avoid confusion due to capitalization
+\alias{virtualSampleControl-class}
+\alias{virtualsampleControl-class}
+\alias{virtualsamplecontrol-class}
+\alias{virtualSamplecontrol-class}
+\alias{VirtualsampleControl-class}
+\alias{VirtualSamplecontrol-class}
+\alias{Virtualsamplecontrol-class}
 
 \title{Class "VirtualSampleControl"}
 \description{
@@ -17,24 +27,46 @@
       integer giving the number of samples to be set up.}
   }
 }
-\section{Methods}{
+\section{Accessor and mutator methods}{
   \describe{
-    \item{clusterRunSimulation}{\code{signature(cl = "ANY", x = "data.frame", 
-      setup = "VirtualSampleControl", nrep = "missing", 
-      control = "SimControl")}: run a simulation experiment on a \code{snow} 
-      cluster.}
-    \item{draw}{\code{signature(x = "data.frame", 
-      setup = "VirtualSampleControl")}: draw a sample.}
-    \item{length}{\code{signature(x = "VirtualSampleControl")}: get the number 
-      of samples to be set up.}
-    \item{runSimulation}{\code{signature(x = "data.frame", 
-      setup = "VirtualSampleControl", nrep = "missing", 
-      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{getK}}{\code{signature(x = "VirtualSampleControl")}: get slot 
+      \code{k}.}
+    \item{\code{setK}}{\code{signature(x = "VirtualSampleControl")}: set slot 
+      \code{k}.}
   }
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+    \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
+      x = "data.frame", setup = "VirtualSampleControl", nrep = "missing", 
+      control = "SimControl")}: run a simulation experiment on a \code{snow} 
+      cluster.}
+    \item{\code{draw}}{\code{signature(x = "data.frame", 
+      setup = "VirtualSampleControl")}: draw a sample.}
+    \item{\code{head}}{\code{signature(x = "VirtualSampleControl")}: currently 
+      returns the object itself.}
+    \item{\code{length}}{\code{signature(x = "VirtualSampleControl")}: get the 
+      number of samples to be set up.}
+    \item{\code{runSimulation}}{\code{signature(x = "data.frame", 
+      setup = "VirtualSampleControl", nrep = "missing", 
+      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{show}}{\code{signature(object = "VirtualSampleControl")}: print 
+      the object on the \R console.}
+    \item{\code{summary}}{\code{signature(object = "VirtualSampleControl")}: 
+      currently returns the object itself.}
+    \item{\code{tail}}{\code{signature(x = "VirtualSampleControl")}: currently 
+      returns the object itself.}
+  }
+}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{SampleControl}}, \code{\linkS4class{SampleSetup}}, 
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{SampleSetup}"}, 
   \code{\link{setup}}, \code{\link{draw}}
 }
 \examples{

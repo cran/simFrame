@@ -15,7 +15,7 @@ setMethod("simSapply",
 setMethod("simSapply", 
     signature(x = "data.frame", design = "Strata", fun = "function"), 
     function(x, design, fun, ..., simplify = TRUE) {
-        xSpl <- lapply(design@split, function(s, x) x[s,], x)
+        xSpl <- lapply(getSplit(design), function(s, x) x[s,], x)
         ca <- as.call(list(sapply, ...))
         ca$X <- xSpl
         ca$FUN <- fun

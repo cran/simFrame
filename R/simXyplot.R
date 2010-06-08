@@ -5,92 +5,147 @@
 
 setMethod("simXyplot", 
     signature(x = "SimResults"),
-    function(x, true = NULL, epsilon, NArate, select, ...) {
+    function(x, true = NULL, epsilon, NArate, select, 
+            cond = c("Epsilon", "NArate"), 
+            average = c("mean", "median"), ...) {
         
         # initializations
-        values <- x@values
+        values <- getValues(x)
         if(nrow(values) == 0) stop("slot 'values' does not contain any rows")
         if(ncol(values) == 0) stop("slot 'values' does not contain any columns")
-        neps <- length(x@epsilon)
+        eps <- getEpsilon(x)
+        neps <- length(eps)
         haveEpsilon <- neps > 0
         supEpsilon <- !missing(epsilon)  # contamination level supplied
-        nNA <- getLength(x@NArate)
-        haveNArate <- isTRUE(nNA > 0)
+#        NAr <- getNArate(x)
+#        nNAr <- getLength(NAr)
+        NAr <- convertNArate(getNArate(x))
+        nNAr <- length(NAr)
+        haveNArate <- isTRUE(nNAr > 0)
         supNArate <- !missing(NArate)  # missing value rate supplied
+        design <- getDesign(x)  # variables used to split simulations
         
         # check contamination levels and missing value rates
-        if(neps <= 1 && isTRUE(nNA <= 1)) {
+#        if(neps <= 1 && isTRUE(nNAr <= 1)) {
+#            stop("this plot is only meaningful with either varying ", 
+#                "contamination levels or varying missing value rates")
+#        } else if(haveEpsilon && haveNArate) {
+#            if(neps > 1 && isTRUE(nNAr == 1)) {
+#                if(supEpsilon) warning("'epsilon' is ignored")
+#                if(supNArate) warning("'NArate' is ignored")
+#                xnam <- "Epsilon"
+#            } else if(neps == 1 && isTRUE(nNAr > 1)) {
+#                if(supEpsilon) warning("'epsilon' is ignored")
+#                if(supNArate) warning("'NArate' is ignored")
+#                xnam <- "NArate"
+#            } else {
+#                if(supEpsilon && supNArate) {
+#                    stop("only one of 'epsilon' or 'NArate' may be supplied")
+#                } else if(supEpsilon) {
+#                    if(!isTRUE(length(epsilon) == 1)) {
+#                        stop("'epsilon' must specify ", 
+#                        "exactly one contamination level")
+#                    }
+#                    values <- values[values$Epsilon == epsilon, , drop=FALSE]
+#                    if(nrow(values) == 0) {
+#                        stop("the contamination level specified by ",
+#                            "'epsilon' has not been used in the simulation")
+#                    }
+#                    xnam <- "NArate"
+#                } else if(supNArate) {
+#                    if(!isTRUE(length(NArate) == 1)) {
+#                        stop("'NArate' must specify ", 
+#                            "exactly one missing value rate")
+#                    }
+#                    values <- values[values$NArate == NArate, , drop=FALSE]
+#                    if(nrow(values) == 0) {
+#                        stop("the missing value rate specified by ",
+#                            "'NArate' has not been used in the simulation")
+#                    }
+#                    xnam <- "Epsilon"
+#                } else {
+#                    stop("contamination levels and missing ", 
+#                        "value rates are both varying")
+#                }
+#            }
+#        } else if(haveEpsilon) {
+#            if(supEpsilon) warning("'epsilon' is ignored")
+#            xnam <- "Epsilon"
+#        } else if(haveNArate) {
+#            if(supNArate) warning("'NArate' is ignored")
+#            xnam <- "NArate"
+#        } else stop("unexpected problem with 'x'")  # just to be safe
+        if(haveEpsilon && supEpsilon) {
+            if(neps == 1) warning("'epsilon' is ignored")
+            else {
+                eps <- intersect(eps, epsilon)
+                neps <- length(eps)
+                if(neps == 0) {
+                    stop("the contamination levels specified by ",
+                        "'epsilon' have not been used in the simulation")
+                } else values <- values[values$Epsilon %in% eps, , drop=FALSE]
+            }
+        }
+        if(haveNArate && supNArate) {
+            if(nNAr == 1) warning("'NArate' is ignored")
+            else {
+                NAr <- intersect(NAr, NArate)
+                nNAr <- length(NAr)
+                if(nNAr == 0) {
+                    stop("the missing value rates specified by ",
+                        "'NArate' have not been used in the simulation")
+                } else values <- values[values$NArate %in% NAr, , drop=FALSE]
+            }
+        } 
+        if(neps <= 1 && isTRUE(nNAr <= 1)) {
             stop("this plot is only meaningful with either varying ", 
                 "contamination levels or varying missing value rates")
         } else if(haveEpsilon && haveNArate) {
-            if(neps > 1 && isTRUE(nNA == 1)) {
-                if(supEpsilon) warning("'epsilon' is ignored")
-                if(supNArate) warning("'NArate' is ignored")
-                xnam <- "Epsilon"
-            } else if(neps == 1 && isTRUE(nNA > 1)) {
-                if(supEpsilon) warning("'epsilon' is ignored")
-                if(supNArate) warning("'NArate' is ignored")
-                xnam <- "NArate"
-            } else {
-                if(supEpsilon && supNArate) {
-                    stop("only one of 'epsilon' or 'NArate' may be supplied")
-                } else if(supEpsilon) {
-                    if(!isTRUE(length(epsilon) == 1)) {
-                        stop("'epsilon' must specify ", 
-                        "exactly one contamination level")
-                    }
-                    values <- values[values$Epsilon == epsilon, , drop=FALSE]
-                    if(nrow(values) == 0) {
-                        stop("the contamination level specified by ",
-                            "'epsilon' has not been used in the simulation")
-                    }
-                    xnam <- "NArate"
-                } else if(supNArate) {
-                    if(!isTRUE(length(NArate) == 1)) {
-                        stop("'NArate' must specify ", 
-                            "exactly one missing value rate")
-                    }
-                    values <- values[values$NArate == NArate, , drop=FALSE]
-                    if(nrow(values) == 0) {
-                        stop("the missing value rate specified by ",
-                            "'NArate' has not been used in the simulation")
-                    }
-                    xnam <- "Epsilon"
-                } else {
-                    stop("contamination levels and missing ", 
-                        "value rates are both varying")
-                }
+            if(neps > 1 && nNAr == 1) xnam <- "Epsilon"
+            else if(neps == 1 && nNAr > 1) xnam <- "NArate"
+            else {
+                if(missing(cond)) {
+                    if(neps < nNAr) cond <- "Epsilon"
+                    else cond <- "NArate"
+                } else cond <- match.arg(cond)
+                xnam <- setdiff(c("Epsilon", "NArate"), cond)
+                design <- c(design, cond)
+                f <- as.factor(paste(cond, "=", values[, cond]))
+#                levels(f) <- rev(levels(f))
+                values[, cond] <- f
+                if(!is.null(true)) true <- rep(true, length(levels(f)))
             }
-        } else if(haveEpsilon) {
-            if(supEpsilon) warning("'epsilon' is ignored")
-            xnam <- "Epsilon"
-        } else if(haveNArate) {
-            if(supNArate) warning("'NArate' is ignored")
-            xnam <- "NArate"
-        } else stop("unexpected problem with 'x'")  # just to be safe
+        } else if(haveEpsilon) xnam <- "Epsilon"
+        else if(haveNArate) xnam <- "NArate"
+        else stop("unexpected problem with 'x'")  # just to be safe
         
         # check specified columns
-        if(missing(select)) select <- x@colnames
+        if(missing(select)) select <- getColnames(x)
         else {
             if(!is.character(select)) {
                 stop("'select' must be a character vector")
             }
-            if(!all(select %in% x@colnames)) stop("undefined columns selected")
+            if(!all(select %in% getColnames(x))) stop("undefined columns selected")
         }
+        
+        # check method for computing average
+        average <- match.arg(average)
         
         # if missing value rates are plotted on x-axis and NArate is a matrix, 
         # the display on the x-axis should be more of a categorical nature 
         # (corresponding to the rows of NArate)
-        at <- if(haveNArate && is(x@NArate, "matrix")) 1:nNA else NULL
-        
+#        at <- if(haveNArate && is(getNArate(x), "matrix")) 1:nNAr else NULL
+        at <- if(xnam == "NArate" && is(getNArate(x), "matrix")) NAr else NULL
+
         # call internal function
-        internalSimXyplot(values, xnam, x@design, select, at=at, true=true, ...)
+        internalSimXyplot(values, xnam, design, select, 
+            at=at, true=true, average=average, ...)
     })
 
 
 ## internal function
-internalSimXyplot <- function(values, xnam = c("Epsilon","NArate"), 
-        design, names, at = NULL, true = NULL, auto.key=TRUE, 
+internalSimXyplot <- function(values, xnam = c("Epsilon", "NArate"), 
+        design, names, at = NULL, true = NULL, average, auto.key=TRUE, 
         scales=list(), type = "l", ylab = NULL, ..., 
         # the following arguments are defined so that they aren't supplied twice
         x, data, panel, prepanel, groups) {
@@ -109,8 +164,9 @@ internalSimXyplot <- function(values, xnam = c("Epsilon","NArate"),
         }
     }
     cond <- c(xnam, design)
-    tmp <- aggregate(values[, names, drop=FALSE], 
-        values[, cond, drop=FALSE], function(x) mean(x, na.rm=TRUE))
+    if(average == "median") f <- function(x) median(x, na.rm=TRUE)
+    else f <- function(x) mean(x, na.rm=TRUE)
+    tmp <- aggregate(values[, names, drop=FALSE], values[, cond, drop=FALSE], f)
     values <- getLatticeData(tmp, cond, names)
     form <- getFormula(".Value", xnam, design)
     # call lattice function

@@ -2,6 +2,21 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{NAControl-class}
+\alias{NAControl}
+\alias{getGrouping,NAControl-method}
+\alias{setGrouping,NAControl-method}
+\alias{getAux,NAControl-method}
+\alias{setAux,NAControl-method}
+\alias{getIntoContamination,NAControl-method}
+\alias{setIntoContamination,NAControl-method}
+\alias{show,NAControl-method}
+%% aliases to avoid confusion due to capitalization
+\alias{NAcontrol-class}
+\alias{naControl-class}
+\alias{nacontrol-class}
+\alias{NAcontrol}
+\alias{naControl}
+\alias{nacontrol}
 
 \title{Class "NAControl"}
 \description{
@@ -24,15 +39,16 @@ Objects can be created by calls of the form \code{new("NAControl", \dots)} or
       all target variables. In case of a matrix, on the other hand, the missing 
       value rates to be used for each target variable are given by the 
       respective column.}
-    \item{\code{group}:}{Object of class \code{"character"} specifying a 
-        variable (column) to be used for setting whole groups to \code{NA} 
-        rather than individual values.}
+    \item{\code{grouping}:}{Object of class \code{"character"} specifying a 
+      grouping variable (column) to be used for setting whole groups to 
+      \code{NA} rather than individual values.}
     \item{\code{aux}:}{Object of class \code{"character"} specifying an 
       auxiliary variable (column) whose values are used as probability weights 
       for selecting the values to be set to \code{NA}.}
     \item{\code{intoContamination}:}{Object of class \code{"logical"} 
       indicating whether missing values should also be inserted into 
-      contaminated observations.}
+      contaminated observations.  The default is to insert missing values only 
+      into non-contaminated observations.}
   }
 }
 \section{Extends}{
@@ -40,17 +56,67 @@ Class \code{"\linkS4class{VirtualNAControl}"}, directly.
 Class \code{"\linkS4class{OptNAControl}"}, by class "VirtualNAControl", 
 distance 2.
 }
-\section{Methods}{
+\section{Accessor and mutator methods}{
+  In addition to the accessor and mutator methods for the slots inherited from 
+  \code{"\linkS4class{VirtualNAControl}"}, the following are available:
+  
   \describe{
-    \item{setNA}{\code{signature(x = "data.frame", control = "NAControl")}: 
-      set missing values.}
+    \item{\code{getGrouping}}{\code{signature(x = "NAControl")}: get slot 
+      \code{grouping}.}
+    \item{\code{setGrouping}}{\code{signature(x = "NAControl")}: set slot 
+      \code{grouping}.}
+    \item{\code{getAux}}{\code{signature(x = "NAControl")}: get slot 
+      \code{aux}.}
+    \item{\code{setAux}}{\code{signature(x = "NAControl")}: set slot 
+      \code{aux}.}
+    \item{\code{getIntoContamination}}{\code{signature(x = "NAControl")}: get 
+      slot \code{intoContamination}.}
+    \item{\code{setIntoContamination}}{\code{signature(x = "NAControl")}: set 
+      slot \code{intoContamination}.}
   }
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  In addition to the methods inherited from 
+  \code{"\linkS4class{VirtualNAControl}"}, the following are available:
+  
+  \describe{
+    \item{\code{setNA}}{\code{signature(x = "data.frame", 
+      control = "NAControl")}: set missing values.}
+    \item{\code{show}}{\code{signature(object = "NAControl")}: print the object 
+      on the \R console.}
+  }
+}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
+}
+\note{
+  The slot \code{grouping} was named \code{group} prior to version 0.2.  
+  Renaming the slot was necessary since accessor and mutator functions were 
+  introduced in this version and a function named \code{getGroup} already 
+  exists.
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{VirtualNAControl}}, \code{\link{setNA}}
+  \code{"\linkS4class{VirtualNAControl}"}, \code{\link{setNA}}
 }
 \examples{
-showClass("NAControl")
+data(eusilcP)
+sam <- draw(eusilcP[, c("id", "age", "eqIncome")], size = 20)
+
+## missing completely at random
+mcarc <- NAControl(target = "eqIncome", NArate = 0.2)
+setNA(sam, mcarc)
+
+## missing at random
+marc <- NAControl(target = "eqIncome", NArate = 0.2, aux = "age")
+setNA(sam, marc)
+
+## missing not at random
+mnarc <- NAControl(target = "eqIncome", 
+    NArate = 0.2, aux = "eqIncome")
+setNA(sam, mnarc)
 }
 \keyword{classes}

@@ -1,7 +1,18 @@
 \name{setNA}
 \Rdversion{1.1}
+\docType{methods}
 \alias{setNA}
+\alias{setNA-methods}
+\alias{setNA,data.frame,character-method}
+\alias{setNA,data.frame,missing-method}
 \alias{setNA,data.frame,NAControl-method}
+%% aliases to avoid confusion due to capitalization
+\alias{setna}
+\alias{SetNA}
+\alias{Setna}
+\alias{setna-methods}
+\alias{SetNA-methods}
+\alias{Setna-methods}
 
 \title{Set missing values}
 \description{Generic function for inserting missing values into data.}
@@ -18,37 +29,64 @@ setNA(x, control, \dots)
   \item{i}{an integer giving the element or row of the slot \code{NArate} of 
     \code{control} to be used as missing value rate(s).}
   \item{\dots}{if \code{control} is a character string or missing, the slots of 
-    the control object may be supplied as additional arguments.}
+    the control object may be supplied as additional arguments.  See 
+    \code{"\linkS4class{NAControl}"} for details on the slots.}
 }
 \details{
   In order to extend the framework by a user-defined control class 
-  \code{"MyNAControl"} (which must extend \code{"VirtualNAControl"}), a method 
+  \code{"MyNAControl"} (which must extend 
+  \code{"\linkS4class{VirtualNAControl}"}), a method 
   \code{setNA(x, control, i)} with signature \code{'data.frame, MyNAControl'} 
   needs to be implemented.
 }
 \value{
-  A \code{data.frame} containing the data with missing values.  For every 
-  target variable, a logical variable indicating the observations set to 
-  \code{NA} is added to the \code{data.frame}. The names of these columns start 
-  with a dot, followed by the name of the corresponding target variable (e.g., 
-  if missing values are generated in column \code{"foo"}, a column 
-  \code{".foo"} is added).
+  A \code{data.frame} containing the data with missing values.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+  \item{\code{x = "data.frame", control = "character"}}{set missing values 
+    using a control class specified by the character string \code{control}.  
+    The slots of the control object may be supplied as additional arguments.}
+  \item{\code{x = "data.frame", control = "missing"}}{set missing values using 
+    a control object of class \code{"NAControl"}.  Its slots may be supplied as 
+    additional arguments.}
+  \item{\code{x = "data.frame", control = "NAControl"}}{set missing values as 
+    defined by the control object \code{control}.}
+  }
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{NAControl}}, \code{\linkS4class{VirtualNAControl}}
+  \code{"\linkS4class{NAControl}"}, \code{"\linkS4class{VirtualNAControl}"}
 }
 \examples{
-data(eusilc)
-sam <- draw(eusilc[, c("id", "age", "eqIncome")], size = 25)
+data(eusilcP)
+sam <- draw(eusilcP[, c("id", "age", "eqIncome")], size = 20)
 
-## missing completely at random
+
+## using control objects
+# missing completely at random
+mcarc <- NAControl(target = "eqIncome", NArate = 0.2)
+setNA(sam, mcarc)
+
+# missing at random
+marc <- NAControl(target = "eqIncome", NArate = 0.2, aux = "age")
+setNA(sam, marc)
+
+# missing not at random
+mnarc <- NAControl(target = "eqIncome", 
+    NArate = 0.2, aux = "eqIncome")
+setNA(sam, mnarc)
+
+
+## supply slots of control object as arguments
+# missing completely at random
 setNA(sam, target = "eqIncome", NArate = 0.2)
 
-## missing at random
+# missing at random
 setNA(sam, target = "eqIncome", NArate = 0.2, aux = "age")
 
-## missing not at random
+# missing not at random
 setNA(sam, target = "eqIncome", NArate = 0.2, aux = "eqIncome")
 }
 \keyword{manip}
+\keyword{methods}

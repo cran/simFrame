@@ -4,7 +4,8 @@
 \alias{aggregate,SimResults-method}
 \title{Method for aggregating simulation results}
 \description{
-  Aggregate simulation results.
+  Aggregate simulation results, i.e, split the data into subsets if applicable 
+  and compute summary statistics.
 }
 \usage{
 \S4method{aggregate}{SimResults}(x, select = NULL, FUN = mean, \dots)
@@ -28,41 +29,65 @@
   Otherwise, \code{\link{apply}} is called to compute the summary statistics 
   for each column specified by \code{select}.
 }
-\section{Methods}{
-\describe{
-
-\item{x = "SimResults"}{aggregate simulation results.}
-}}
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
-\seealso{
-  \code{\link[stats]{aggregate}}, \code{\link{apply}}
-}
-\section{Value}{
+\value{
   If contamination or missing values have been inserted or the simulations have 
   been split into different domains, a \code{data.frame} is returned, otherwise 
   a vector. 
 }
+\section{Methods}{
+  \describe{
+  \item{\code{x = "SimResults"}}{aggregate simulation results.}
+  }
+}
+\author{Andreas Alfons}
+\seealso{
+  \code{\link[stats]{aggregate}}, \code{\link{apply}}, 
+  \code{"\linkS4class{SimResults}"}
+}
 \examples{
-## for reproducibility
-set.seed(1234)
+#### design-based simulation
+set.seed(12345)  # for reproducibility
+data(eusilcP)    # load data
+
+## control objects for sampling and contamination
+sc <- SampleControl(size = 500, k = 50)
+cc <- DARContControl(target = "eqIncome", epsilon = 0.02, 
+    fun = function(x) x * 25)
+
+## function for simulation runs
+sim <- function(x) {
+    c(mean = mean(x$eqIncome), trimmed = mean(x$eqIncome, 0.02))
+}
+
+## run simulation
+results <- runSimulation(eusilcP, 
+    sc, contControl = cc, fun = sim)
+
+## aggregate
+aggregate(results)  # means of results
+aggregate(results, FUN = sd)  # standard deviations of results
+
+
+#### model-based simulation
+set.seed(12345)  # for reproducibility
 
 ## function for generating data
-grnorm <- function(n, means) {
+rgnorm <- function(n, means) {
     group <- sample(1:2, n, replace=TRUE)
     data.frame(group=group, value=rnorm(n) + means[group])
 }
 
 ## control objects for data generation and contamination
-means <- c(0, 0.5)
-dc <- DataControl(size = 500, distribution = grnorm, 
+means <- c(0, 0.25)
+dc <- DataControl(size = 500, distribution = rgnorm, 
     dots = list(means = means))
 cc <- DCARContControl(target = "value", 
-    epsilon = 0.1, dots = list(mean = 10))
+    epsilon = 0.02, dots = list(mean = 15))
 
 ## function for simulation runs
 sim <- function(x) {
     c(mean = mean(x$value), 
-        trimmed = mean(x$value, trim = 0.1), 
+        trimmed = mean(x$value, trim = 0.02), 
         median = median(x$value))
 }
 
@@ -71,7 +96,8 @@ results <- runSimulation(dc, nrep = 50,
     contControl = cc, design = "group", fun = sim)
 
 ## aggregate
-aggregate(results)
+aggregate(results)  # means of results
+aggregate(results, FUN = sd)  # standard deviations of results
 }
 \keyword{methods}
 \keyword{category}

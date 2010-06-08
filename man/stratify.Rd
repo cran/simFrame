@@ -1,6 +1,9 @@
 \name{stratify}
 \Rdversion{1.1}
+\docType{methods}
 \alias{stratify}
+\alias{stratify-methods}
+\alias{stratify,data.frame,BasicVector-method}
 
 \title{Stratify data}
 \description{Generic function for stratifying data.}
@@ -15,12 +18,20 @@ stratify(x, design)
 \value{
   An object of class \code{"Strata"}.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+  \item{\code{x = "data.frame", design = "BasicVector"}}{stratify data 
+    according to the variables (columns) given by \code{design}.}
+  }
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{Strata}}
+  \code{"\linkS4class{Strata}"}
 }
 \examples{
-data(eusilc)
-stratify(eusilc, c("region", "gender"))
+data(eusilcP)
+strata <- stratify(eusilcP, c("region", "gender"))
+summary(strata)
 }
 \keyword{manip}
+\keyword{methods}

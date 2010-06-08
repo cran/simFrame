@@ -40,17 +40,18 @@ setMethod("runSimulation",
             SAE = FALSE) {
         # initializations
         nsam <- length(setup)
-        if(nsam == 0) return(SimResults(design=control@design))  # nothing to do
-        contControl <- control@contControl
-        epsilon <- if(is.null(contControl)) numeric() else contControl@epsilon
-        NAControl <- control@NAControl
-        NArate <- if(is.null(NAControl)) numeric() else NAControl@NArate
+        design <- getDesign(control)
+        if(nsam == 0) return(SimResults(design=design))  # nothing to do
+        contControl <- getContControl(control)
+        epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
+        NAControl <- getNAControl(control)
+        NArate <- if(is.null(NAControl)) numeric() else getNArate(NAControl)
         # run the simulations
         s <- 1:nsam
         tmp <- lapply(s, designSimulation, x, setup, control)
         # construct results
         getSimResults(tmp, s, epsilon=epsilon, 
-            NArate=NArate, design=control@design)
+            NArate=NArate, design=design)
     })
 
 
@@ -64,17 +65,18 @@ setMethod("runSimulation",
         # initializations
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
-        if(nrep == 0) return(SimResults(design=control@design))  # nothing to do
-        contControl <- control@contControl
-        epsilon <- if(is.null(contControl)) numeric() else contControl@epsilon
-        NAControl <- control@NAControl
-        NArate <- if(is.null(NAControl)) numeric() else NAControl@NArate
+        design <- getDesign(control)
+        if(nrep == 0) return(SimResults(design=design))  # nothing to do
+        contControl <- getContControl(control)
+        epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
+        NAControl <- getNAControl(control)
+        NArate <- if(is.null(NAControl)) numeric() else getNArate(NAControl)
         # run the simulations
         r <- 1:nrep
         tmp <- lapply(r, modelSimulation, x, control)
         # construct results
         getSimResults(tmp, reps=r, 
-            epsilon=epsilon, NArate=NArate, design=control@design)
+            epsilon=epsilon, NArate=NArate, design=design)
     })
 
 
@@ -91,13 +93,13 @@ setMethod("runSimulation",
         # initializations
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
-        design <- control@design
+        design <- getDesign(control)
         if(nrep == 0) return(SimResults(design=design))  # nothing to do
-        contControl <- control@contControl
-        epsilon <- if(is.null(contControl)) numeric() else contControl@epsilon
-        NAControl <- control@NAControl
-        NArate <- if(is.null(NAControl)) numeric() else NAControl@NArate
-        SAE <- isTRUE(control@SAE)
+        contControl <- getContControl(control)
+        epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
+        NAControl <- getNAControl(control)
+        NArate <- if(is.null(NAControl)) numeric() else getNArate(NAControl)
+        SAE <- isTRUE(getSAE(control))
         # get results (adjustments are needed for parallel computing)
         if(length(design)) {
             spl <- getStrataSplit(x, design, USE.NAMES=FALSE)
@@ -146,8 +148,8 @@ setMethod("runSimulation",
 designSimulation <- function(i, x, setup, control) {
     sam <- drawS3(x, setup, i)
     if(nrow(sam) == 0) return(getEmptyResults(control))
-    design <- control@design
-    SAE <- isTRUE(control@SAE)
+    design <- getDesign(control)
+    SAE <- isTRUE(getSAE(control))
     if(length(design)) {
         spl <- getStrataSplit(sam, design, USE.NAMES=FALSE)
         leg <- getStrataLegend(sam, design)
@@ -164,9 +166,13 @@ designSimulation <- function(i, x, setup, control) {
 ### add contamination and nonresponse to population
 #designSimulationMP <- function(i, x, setup, control) {
 #    # initializations
-#    neps <- length(control@contControl)
-#    nNA <- length(control@NAControl)
-#    useOrig <- "orig" %in% argNames(control@fun)
+#    contControl <- getContControl(control)
+#    neps <- length(contControl)
+#    NAControl <- getNAControl(control)
+#    nNA <- length(NAControl)
+#    fun <- getFun(control)
+#    useOrig <- "orig" %in% argNames(fun)
+#    dots <- getDots(control)
 #    # get results
 #    if(neps) {
 #        if(nNA) {
@@ -175,13 +181,13 @@ designSimulation <- function(i, x, setup, control) {
 #            # contamination, no missings
 #            lapply(1:neps, 
 #                function(e) {
-#                    cx <- try(contaminate(x, control@contControl, e))
+#                    cx <- try(contaminate(x, contControl, e))
 #                    if(class(cx) == "try-error") {
 #                        # TODO
 #                    }
 #                    csam <- drawS3(cx, setup, i)
 #                    if(nrow(csam) == 0) return(list(values=numeric()))
-#                    ca <- as.call(c(control@fun, control@dots))
+#                    ca <- as.call(c(fun, dots)
 #                    ca$x <- csam
 #                    if(useOrig) ca$orig <- draw(x, setup, i)
 #                    res <- eval(ca)
@@ -205,8 +211,8 @@ designSimulation <- function(i, x, setup, control) {
 modelSimulation <- function(i, x, control) {
     md <- try(generate(x))
     if(class(md) == "try-error") return(getEmptyResults(control))
-    design <- control@design
-    SAE <- isTRUE(control@SAE)
+    design <- getDesign(control)
+    SAE <- isTRUE(getSAE(control))
     if(length(design)) {
         spl <- getStrataSplit(md, design, USE.NAMES=FALSE)
         leg <- getStrataLegend(md, design)
@@ -220,21 +226,25 @@ modelSimulation <- function(i, x, control) {
 
 manageSimulation <- function(x, control) {
     # initializations
-    neps <- length(control@contControl)
-    nNA <- length(control@NAControl)
-    useOrig <- "orig" %in% argNames(control@fun)
+    contControl <- getContControl(control)
+    neps <- length(contControl)
+    NAControl <- getNAControl(control)
+    nNA <- length(NAControl)
+    fun <- getFun(control)
+    useOrig <- "orig" %in% argNames(fun)
+    dots <- getDots(control)
     # get results
     if(neps) {
         if(nNA) {
             # contamination, missings
             tmp <- lapply(1:neps, 
                 function(e) {
-                    cx <- try(contaminate(x, control@contControl, e))
+                    cx <- try(contaminate(x, contControl, e))
                     if(class(cx) == "try-error") return(vector("list", nNA))
                     lapply(1:nNA, 
                         function(n) try({
-                                    nx <- setNA(cx, control@NAControl, n)
-                                    ca <- as.call(c(control@fun, control@dots))
+                                    nx <- setNA(cx, NAControl, n)
+                                    ca <- as.call(c(fun, dots))
                                     ca$x <- nx
                                     if(useOrig) ca$orig <- x
                                     getSimResult(eval(ca))
@@ -245,8 +255,8 @@ manageSimulation <- function(x, control) {
             # contamination, no missings
             lapply(1:neps, 
                 function(e) try({
-                            cx <- contaminate(x, control@contControl, e)
-                            ca <- as.call(c(control@fun, control@dots))
+                            cx <- contaminate(x, contControl, e)
+                            ca <- as.call(c(fun, dots))
                             ca$x <- cx
                             if(useOrig) ca$orig <- x
                             getSimResult(eval(ca))
@@ -257,8 +267,8 @@ manageSimulation <- function(x, control) {
             # no contamination, missings
             lapply(1:nNA, 
                 function(n) try({
-                            nx <- setNA(x, control@NAControl, n)
-                            ca <- as.call(c(control@fun, control@dots))
+                            nx <- setNA(x, NAControl, n)
+                            ca <- as.call(c(fun, dots))
                             ca$x <- nx
                             if(useOrig) ca$orig <- x
                             getSimResult(eval(ca))
@@ -266,7 +276,7 @@ manageSimulation <- function(x, control) {
         } else {
             # no contamination, no missings
             try({
-                    ca <- as.call(c(control@fun, control@dots))
+                    ca <- as.call(c(fun, dots))
                     ca$x <- x
                     if(useOrig) ca$orig <- x
                     getSimResult(eval(ca))
@@ -277,27 +287,30 @@ manageSimulation <- function(x, control) {
 
 manageSimulationStrata <- function(xs, indices, control, legend) {
     # initializations
-    neps <- length(control@contControl)
-    nNA <- length(control@NAControl)
-    nam <- argNames(control@fun)
+    contControl <- getContControl(control)
+    neps <- length(contControl)
+    NAControl <- getNAControl(control)
+    nNA <- length(NAControl)
+    fun <- getFun(control)
+    nam <- argNames(fun)
     useOrig <- "orig" %in% nam
     useDomain <- "domain" %in% nam
+    dots <- getDots(control)
     # get results
     if(neps) {
         if(nNA) {
             # contamination, missings
             tmp <- lapply(1:neps, 
                 function(e) {
-                    cxs <- try(lapply(xs, contaminate, control@contControl, e))
+                    cxs <- try(lapply(xs, contaminate, contControl, e))
                     if(class(cxs) == "try-error") return(vector("list", nNA))
                     lapply(1:nNA, 
                         function(n) {
                             try({
                                     tmp <- mapply(
                                         function(cx, x, i) {
-                                            nx <- setNA(cx, control@NAControl, n)
-                                            ca <- as.call(c(control@fun, 
-                                                    control@dots))
+                                            nx <- setNA(cx, NAControl, n)
+                                            ca <- as.call(c(fun, dots))
                                             ca$x <- nx
                                             if(useOrig) ca$orig <- x
                                             if(useDomain) ca$domain <- i
@@ -316,8 +329,8 @@ manageSimulationStrata <- function(xs, indices, control, legend) {
                     try({
                             tmp <- mapply(
                                 function(x, i) {
-                                    cx <- contaminate(x, control@contControl, e)
-                                    ca <- as.call(c(control@fun, control@dots))
+                                    cx <- contaminate(x, contControl, e)
+                                    ca <- as.call(c(fun, dots))
                                     ca$x <- cx
                                     if(useOrig) ca$orig <- x
                                     if(useDomain) ca$domain <- i
@@ -336,8 +349,8 @@ manageSimulationStrata <- function(xs, indices, control, legend) {
                     try({
                             tmp <- mapply(
                                 function(x, i) {
-                                    nx <- setNA(x, control@NAControl, n)
-                                    ca <- as.call(c(control@fun, control@dots))
+                                    nx <- setNA(x, NAControl, n)
+                                    ca <- as.call(c(fun, dots))
                                     ca$x <- nx
                                     if(useOrig) ca$orig <- x
                                     if(useDomain) ca$domain <- i
@@ -352,7 +365,7 @@ manageSimulationStrata <- function(xs, indices, control, legend) {
             try({
                     tmp <- mapply(
                         function(x, i) {
-                            ca <- as.call(c(control@fun, control@dots))
+                            ca <- as.call(c(fun, dots))
                             ca$x <- x
                             if(useOrig) ca$orig <- x
                             if(useDomain) ca$domain <- i
@@ -366,22 +379,26 @@ manageSimulationStrata <- function(xs, indices, control, legend) {
 
 manageSimulationSAE <- function(x, indices, control, legend) {
     # initializations
-    neps <- length(control@contControl)
-    nNA <- length(control@NAControl)
-    useOrig <- "orig" %in% argNames(control@fun)
+    contControl <- getContControl(control)
+    neps <- length(contControl)
+    NAControl <- getNAControl(control)
+    nNA <- length(NAControl)
+    fun <- getFun(control)
+    useOrig <- "orig" %in% argNames(fun)
+    dots <- getDots(control)
     # get results
     if(neps) {
         if(nNA) {
             # contamination, missings
             tmp <- lapply(1:neps, 
                 function(e) {
-                    cx <- try(contaminate(x, control@contControl, e))
+                    cx <- try(contaminate(x, contControl, e))
                     if(class(cx) == "try-error") return(vector("list", nNA))
                     lapply(1:nNA, 
                         function(n) {
                             try({
-                                    nx <- setNA(cx, control@NAControl, n)
-                                    ca <- as.call(c(control@fun, control@dots))
+                                    nx <- setNA(cx, NAControl, n)
+                                    ca <- as.call(c(fun, dots))
                                     ca$x <- nx
                                     if(useOrig) ca$orig <- x
                                     tmp <- lapply(indices, 
@@ -399,8 +416,8 @@ manageSimulationSAE <- function(x, indices, control, legend) {
             lapply(1:neps, 
                 function(e) {
                     try({
-                            cx <- contaminate(x, control@contControl, e)
-                            ca <- as.call(c(control@fun, control@dots))
+                            cx <- contaminate(x, contControl, e)
+                            ca <- as.call(c(fun, dots))
                             ca$x <- cx
                             if(useOrig) ca$orig <- x
                             tmp <- lapply(indices, 
@@ -418,8 +435,8 @@ manageSimulationSAE <- function(x, indices, control, legend) {
             lapply(1:nNA, 
                 function(n) {
                     try({
-                            nx <- setNA(x, control@NAControl, n)
-                            ca <- as.call(c(control@fun, control@dots))
+                            nx <- setNA(x, NAControl, n)
+                            ca <- as.call(c(fun, dots))
                             ca$x <- nx
                             if(useOrig) ca$orig <- x
                             tmp <- lapply(indices, 
@@ -433,7 +450,7 @@ manageSimulationSAE <- function(x, indices, control, legend) {
         } else {
             # no contamination, no missings
             try({
-                    ca <- as.call(c(control@fun, control@dots))
+                    ca <- as.call(c(fun, dots))
                     ca$x <- x
                     if(useOrig) ca$orig <- x
                     tmp <- lapply(indices, 
@@ -451,7 +468,8 @@ manageSimulationSAE <- function(x, indices, control, legend) {
 ## convenience wrapper
 runSim <- function(...) {
     res <- runSimulation(...)
-    res@call <- match.call()
+    call <- match.call()
+    setCall(res, call)
     res
 }
 
@@ -468,9 +486,9 @@ checkOK <- function(x) {
 
 ## get empty results
 getEmptyResults <- function(control) {
-    neps <- length(control@contControl)
+    neps <- length(getContControl(control))
     if(neps == 0) neps <- 1
-    nNA <- length(control@NAControl)
+    nNA <- length(getNAControl(control))
     if(nNA == 0) nNA <- 1
     replicate(neps*nNA, list(values=numeric()))
 }
@@ -483,11 +501,13 @@ getSimResult <- function(x) {
             stop("the components of the list returned by ", 
                 "'fun' must have names 'values' and 'add'")
         }
-    } else if(is(x, "SimResult")) {
-        x <- list(values=x@values, add=x@add)
+#    } else if(is(x, "SimResult")) {
+#        x <- list(values=getValues(x), add=getAdd(x))
     } else {
-        stop("'fun' must return a numeric vector ", 
-            "or an object of class \"SimResult\"")
+#        stop("'fun' must return a numeric vector ", 
+#            "or an object of class \"SimResult\"")
+        stop("'fun' must return a numeric vector or a ", 
+            "list with components 'values' and 'add'")
     }
     x
 }
@@ -508,7 +528,7 @@ getSimResults <- function(x, samples = numeric(), reps = numeric(),
     nrep <- length(reps)
     neps <- length(epsilon)
     origNArate <- NArate
-    NArate <- getNArate(NArate)
+    NArate <- convertNArate(NArate)
     nNA <- length(NArate)
     if(is.na(nNA)) nNA <- 0
     # combine results from all runs into one list

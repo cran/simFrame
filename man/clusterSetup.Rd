@@ -1,7 +1,15 @@
 \name{clusterSetup}
 \Rdversion{1.1}
+\docType{methods}
 \alias{clusterSetup}
+\alias{clusterSetup-methods}
+\alias{clusterSetup,ANY,data.frame,character-method}
+\alias{clusterSetup,ANY,data.frame,missing-method}
 \alias{clusterSetup,ANY,data.frame,SampleControl-method}
+%% aliases to avoid confusion due to capitalization
+\alias{clustersetup}
+\alias{ClusterSetup}
+\alias{Clustersetup}
 
 \title{Set up multiple samples on a snow cluster}
 \description{
@@ -19,9 +27,39 @@ clusterSetup(cl, x, control, \dots)
     \code{"VirtualSampleControl"} or a character string specifying such a 
     control class (the default being \code{"SampleControl"}).}
   \item{\dots}{if \code{control} is a character string or missing, the slots of 
-    the control object may be supplied as additional arguments.}
+    the control object may be supplied as additional arguments.  See 
+    \code{"\linkS4class{SampleControl}"} for details on the slots.}
 }
 \details{
+  A fundamental design principle of the framework in the case of design-based 
+  simulation studies is that the sampling procedure is separated from the 
+  simulation procedure.  Two main advantages arise from setting up all samples 
+  in advance. 
+  
+  First, the repeated sampling reduces overall computation time dramatically in 
+  certain situations, since computer-intensive tasks like stratification need 
+  to be performed only once.  This is particularly relevant for large 
+  population data.  In close-to-reality simulation studies carried out in 
+  research projects in survey statistics, often up to 10000 samples are drawn 
+  from a population of millions of individuals with stratified sampling 
+  designs.  For such large data sets, stratification takes a considerable 
+  amount of time and is a very memory-intensive task.  If the samples are taken 
+  on-the-fly, i.e., in every simulation run one sample is drawn, the function 
+  to take the stratified sample would typically split the population into the 
+  different strata in each of the 10000 simulation runs.  If all samples are 
+  drawn in advance, on the other hand, the population data need to be split 
+  only once and all 10000 samples can be taken from the respective strata 
+  together.
+  
+  Second, the samples can be stored permanently, which simplifies the 
+  reproduction of simulation results and may help to maximize comparability of 
+  results obtained by different partners in a research project.  In particular, 
+  this is useful for large population data, when complex sampling techniques 
+  may be very time-consuming.  In research projects involving different 
+  partners, usually different groups investigate different kinds of estimators. 
+  If the two groups use not only the same population data, but also the same 
+  previously set up samples, their results are highly comparable.
+  
   The computational performance of setting up multiple samples can be increased 
   by parallel computing.  In \code{simFrame}, parallel computing is implemented 
   using the package \code{snow}.  Note that all objects and packages required 
@@ -44,16 +82,32 @@ clusterSetup(cl, x, control, \dots)
   
   Nevertheless, for very complex sampling procedures, it is possible to define 
   a control class \code{"MySampleControl"} extending 
-  \code{"VirtualSampleControl"}, and the corresponding method 
+  \code{"\linkS4class{VirtualSampleControl}"}, and the corresponding method 
   \code{clusterSetup(cl, x, control)} with signature \code{'ANY, data.frame, 
   MySampleControl'}.  In order to optimize computational performance, it is 
   necessary to efficiently set up multiple samples.  Thereby the slot \code{k} 
   of \code{"VirtualSampleControl"} needs to be used to control the number of 
-  samples, and the resulting object must be of class \code{"SampleSetup"}.
+  samples, and the resulting object must be of class 
+  \code{"\linkS4class{SampleSetup}"}.
 }
 \value{
   An object of class \code{"SampleSetup"}.
 }
+\section{Methods}{
+  \describe{
+  \item{\code{cl = "ANY", x = "data.frame", control = "character"}}{set up 
+    multiple samples on a \code{snow} cluster using a control class specified 
+    by the character string \code{control}.  The slots of the control object 
+    may be supplied as additional arguments.}
+  \item{\code{cl = "ANY", x = "data.frame", control = "missing"}}{set up 
+    multiple samples on a \code{snow} cluster using a control object of class 
+    \code{"SampleControl"}.  Its slots may be supplied as additional arguments.}
+  \item{\code{cl = "ANY", x = "data.frame", control = "SampleControl"}}{set up 
+    multiple samples on a \code{snow} cluster as defined by the control object 
+    \code{control}.}
+  }
+}
+\author{Andreas Alfons}
 \references{
 L'Ecuyer, P., Simard, R., Chen E and Kelton, W. (2002) An object-oriented 
 random-number package with many long streams and substreams. \emph{Operations 
@@ -71,19 +125,19 @@ Tierney, L., Rossini, A. and Li, N. (2009) \code{snow}: A parallel computing
 framework for the \R system. \emph{International Journal of Parallel 
 Programming}, \bold{37}(1), 78--90.
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
 \seealso{
   \code{\link[snow:snow-startstop]{makeCluster}}, 
   \code{\link[snow:snow-rand]{clusterSetupRNG}}, 
-  \code{\link{setup}}, \code{\link{draw}}, \code{\linkS4class{SampleControl}}, 
-  \code{\linkS4class{VirtualSampleControl}}, \code{\linkS4class{SampleSetup}}
+  \code{\link{setup}}, \code{\link{draw}}, \code{"\linkS4class{SampleControl}"}, 
+  \code{"\linkS4class{VirtualSampleControl}"}, 
+  \code{"\linkS4class{SampleSetup}"}
 }
 \examples{
 \dontrun{
 # these examples require at least dual core processor
 
 # load data
-data(eusilc)
+data(eusilcP)
 
 # start snow cluster
 cl <- makeCluster(2, type = "SOCK")
@@ -91,24 +145,34 @@ cl <- makeCluster(2, type = "SOCK")
 # load package and data on workers
 clusterEvalQ(cl, {
         library(simFrame)
-        data(eusilc)
+        data(eusilcP)
     })
 
 # simple random sampling
-srss <- clusterSetup(cl, eusilc, size = 20, k = 4)
-draw(eusilc[, c("id", "eqIncome")], srss, i = 1)
+srss <- clusterSetup(cl, eusilcP, size = 20, k = 4)
+summary(srss)
+draw(eusilcP[, c("id", "eqIncome")], srss, i = 1)
 
 # group sampling
-gss <- clusterSetup(cl, eusilc, group = "hid", size = 10, k = 4)
-draw(eusilc[, c("hid", "id", "eqIncome")], gss, i = 2)
+gss <- clusterSetup(cl, eusilcP, grouping = "hid", size = 10, k = 4)
+summary(gss)
+draw(eusilcP[, c("hid", "id", "eqIncome")], gss, i = 2)
 
-# stratified sampling
-stss <- clusterSetup(cl, eusilc, design = "region", 
+# stratified simple random sampling
+ssrss <- clusterSetup(cl, eusilcP, design = "region", 
     size = c(2, 5, 5, 3, 4, 5, 3, 5, 2), k = 4)
-draw(eusilc[, c("id", "region", "eqIncome")], stss, i = 3)
+summary(ssrss)
+draw(eusilcP[, c("id", "region", "eqIncome")], ssrss, i = 3)
 
-# stop cluster
+# stratified group sampling
+sgss <- clusterSetup(cl, eusilcP, design = "region", 
+    grouping = "hid", size = c(2, 5, 5, 3, 4, 5, 3, 5, 2), k = 4)
+summary(sgss)
+draw(eusilcP[, c("hid", "id", "region", "eqIncome")], sgss, i = 4)
+
+# stop snow cluster
 stopCluster(cl)
 }
 }
 \keyword{distribution}
+\keyword{methods}

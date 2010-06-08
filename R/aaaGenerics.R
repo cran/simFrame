@@ -4,12 +4,12 @@
 # ---------------------------------------
 
 setGeneric("clusterRunSimulation",
-#    function(cl, x, setup, nrep, control, ...) {
     function(cl, x, setup, nrep, control, contControl = NULL, 
             NAControl = NULL, design = character(), fun, ..., 
             SAE = FALSE) {
         res <- standardGeneric("clusterRunSimulation")
-        res@call <- match.call()
+        call <- match.call()
+        setCall(res, call)
         res
     },
     valueClass = "SimResults")
@@ -17,7 +17,8 @@ setGeneric("clusterRunSimulation",
 setGeneric("clusterSetup",
     function(cl, x, control, ...) {
         res <- standardGeneric("clusterSetup")
-        res@call <- match.call()
+        call <- match.call()
+        setCall(res, call)
         res
     },
     valueClass = "SampleSetup")
@@ -66,11 +67,15 @@ setGeneric("runSimulation",
     function(x, setup, nrep, control, contControl = NULL, 
             NAControl = NULL, design = character(), fun, ..., 
             SAE = FALSE) {
+        # make sure that .Random.seed exists
+        if(!exists(".Random.seed", envir=.GlobalEnv, inherits = FALSE)) runif(1)
+        # call method and store seed before and after
         firstSeed <- .Random.seed
         res <- standardGeneric("runSimulation")
         lastSeed <- .Random.seed
-        res@seed <- list(firstSeed, lastSeed)
-        res@call <- match.call()
+        setSeed(res, list(firstSeed, lastSeed))
+        call <- match.call()
+        setCall(res, call)
         res
     },
     valueClass = "SimResults")
@@ -81,8 +86,15 @@ setGeneric("setNA",
 
 setGeneric("setup",
     function(x, control, ...) {
+        # make sure that .Random.seed exists
+        if(!exists(".Random.seed", envir=.GlobalEnv, inherits = FALSE)) runif(1)
+        # call method and store seed before and after
+        firstSeed <- .Random.seed
         res <- standardGeneric("setup")
-        res@call <- match.call()
+        lastSeed <- .Random.seed
+        setSeed(res, list(firstSeed, lastSeed))
+        call <- match.call()
+        setCall(res, call)
         res
     },
     valueClass = "SampleSetup")
@@ -105,14 +117,103 @@ setGeneric("simXyplot",
 setGeneric("stratify", 
     function(x, design) {
         res <- standardGeneric("stratify")
-        res@call <- match.call()
+        call <- match.call()
+        setCall(res, call)
         res
     }, 
     valueClass = "Strata")
 
 
-## S4 generics for existing S3 generics (just to be safe)
+## public accessor and mutator functions (to be exported)
+setGeneric("getAdd", function(x) standardGeneric("getAdd"))
+
+setGeneric("getAux", function(x) standardGeneric("getAux"))
+setGeneric("setAux", function(x, aux) standardGeneric("setAux"))
+
+setGeneric("getCall", function(x) standardGeneric("getCall"))
+
+setGeneric("getCollect", function(x) standardGeneric("getCollect"))
+setGeneric("setCollect", function(x, collect) standardGeneric("setCollect"))
+
+setGeneric("getColnames", function(x) standardGeneric("getColnames"))
+setGeneric("setColnames", 
+    function(x, colnames) standardGeneric("setColnames"))
+
+setGeneric("getContControl", function(x) standardGeneric("getContControl"))
+setGeneric("setContControl", 
+    function(x, contControl) standardGeneric("setContControl"))
+
+setGeneric("getDesign", function(x) standardGeneric("getDesign"))
+setGeneric("setDesign", function(x, design) standardGeneric("setDesign"))
+
+setGeneric("getDistribution", function(x) standardGeneric("getDistribution"))
+setGeneric("setDistribution", 
+    function(x, distribution) standardGeneric("setDistribution"))
+
+setGeneric("getDots", function(x) standardGeneric("getDots"))
+setGeneric("setDots", function(x, dots) standardGeneric("setDots"))
+
+setGeneric("getEpsilon", function(x) standardGeneric("getEpsilon"))
+setGeneric("setEpsilon", function(x, epsilon) standardGeneric("setEpsilon"))
+
+setGeneric("getGrouping", function(x) standardGeneric("getGrouping"))
+setGeneric("setGrouping", function(x, grouping) standardGeneric("setGrouping"))
+
+setGeneric("getFun", function(x) standardGeneric("getFun"))
+setGeneric("setFun", function(x, fun) standardGeneric("setFun"))
+
+setGeneric("getIndices", function(x) standardGeneric("getIndices"))
+
+setGeneric("getIntoContamination", 
+    function(x) standardGeneric("getIntoContamination"))
+setGeneric("setIntoContamination", 
+    function(x, intoContamination) standardGeneric("setIntoContamination"))
+
+setGeneric("getK", function(x) standardGeneric("getK"))
+setGeneric("setK", function(x, k) standardGeneric("setK"))
+
+setGeneric("getLegend", function(x) standardGeneric("getLegend"))
+
+setGeneric("getNAControl", function(x) standardGeneric("getNAControl"))
+setGeneric("setNAControl", 
+    function(x, NAControl) standardGeneric("setNAControl"))
+
+setGeneric("getNArate", function(x) standardGeneric("getNArate"))
+setGeneric("setNArate", function(x, NArate) standardGeneric("setNArate"))
+
+setGeneric("getNr", function(x) standardGeneric("getNr"))
+
+setGeneric("getProb", function(x) standardGeneric("getProb"))
+setGeneric("setProb", function(x, prob) standardGeneric("setProb"))
+
+setGeneric("getSAE", function(x) standardGeneric("getSAE"))
+setGeneric("setSAE", function(x, SAE) standardGeneric("setSAE"))
+
+setGeneric("getSeed", function(x) standardGeneric("getSeed"))
+
+setGeneric("getSize", function(x) standardGeneric("getSize"))
+setGeneric("setSize", function(x, size) standardGeneric("setSize"))
+
+setGeneric("getSplit", function(x) standardGeneric("getSplit"))
+
+setGeneric("getTarget", function(x) standardGeneric("getTarget"))
+setGeneric("setTarget", function(x, target) standardGeneric("setTarget"))
+
+setGeneric("getValues", function(x) standardGeneric("getValues"))
+
+
+## private accessor and mutator functions (not exported)
+setGeneric("setCall", function(x, call) standardGeneric("setCall"))
+setGeneric("setIndices", function(x, indices) standardGeneric("setIndices"))
+setGeneric("setSeed", function(x, seed) standardGeneric("setSeed"))
+setGeneric("setValues", function(x, values) standardGeneric("setValues"))
+
+
+## existing S3 or S4 generics (just to be safe)
 setGeneric("aggregate")
+setGeneric("head")
 setGeneric("length")
 setGeneric("plot")
+setGeneric("show")
 setGeneric("summary")
+setGeneric("tail")

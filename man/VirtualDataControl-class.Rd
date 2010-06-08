@@ -2,6 +2,14 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{VirtualDataControl-class}
+%% aliases to avoid confusion due to capitalization
+\alias{virtualDataControl-class}
+\alias{virtualdataControl-class}
+\alias{virtualdatacontrol-class}
+\alias{virtualDatacontrol-class}
+\alias{VirtualdataControl-class}
+\alias{VirtualDatacontrol-class}
+\alias{Virtualdatacontrol-class}
 
 \title{Class "VirtualDataControl"}
 \description{
@@ -12,21 +20,33 @@
 }
 \section{Methods}{
   \describe{
-    \item{clusterRunSimulation}{\code{signature(cl = "ANY", 
+    \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
       control = "SimControl")}: run a simulation experiment on a \code{snow} 
       cluster.}
-    \item{runSimulation}{\code{signature(x = "VirtualDataControl", 
+    \item{\code{head}}{\code{signature(x = "VirtualContControl")}: currently 
+      returns the object itself.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
       setup = "missing", nrep = "numeric", control = "SimControl")}: run a 
       simulation experiment.}
-    \item{runSimulation}{\code{signature(x = "VirtualDataControl", 
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
       setup = "missing", nrep = "missing", control = "SimControl")}: run a 
       simulation experiment.}
+    \item{\code{summary}}{\code{signature(object = "VirtualContControl")}: 
+      currently returns the object itself.}
+    \item{\code{tail}}{\code{signature(x = "VirtualContControl")}: currently 
+      returns the object itself.}
   }
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
+}
+\author{Andreas Alfons}
 \seealso{
-  \code{\linkS4class{DataControl}}, \code{\link{generate}}
+  \code{"\linkS4class{DataControl}"}, \code{\link{generate}}
 }
 \examples{
 showClass("VirtualDataControl")

@@ -10,7 +10,7 @@ setMethod("draw",
 setMethod("draw", 
     signature(x = "data.frame", setup = "VirtualSampleControl"), 
     function(x, setup) {
-        setup@k <- 1
+        setK(setup, 1)
         draw(x, setup(x, setup), i=1)
     })
 
@@ -39,8 +39,9 @@ setMethod("draw",
 # this is used in 'runSimulation' and 'clusterRunSimulation': there the 
 # objects are already checked for validity and this speeds things up slightly
 drawS3 <- function(x, setup, i) {
-    ind <- setup@indices[[i]]  # indices for i-th sample
+    ind <- getIndices(setup)[[i]]  # indices for i-th sample
     res <- x[ind, , drop=FALSE]
-    if(length(setup@prob) > 0) res$.weight <- 1/(setup@prob[ind])
+    prob <- getProb(setup)
+    if(length(prob) > 0) res$.weight <- 1/(prob[ind])
     res
 }

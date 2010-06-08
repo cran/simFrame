@@ -2,12 +2,28 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{Strata-class}
+\alias{Strata}
+\alias{getValues,Strata-method}
+\alias{getSplit,Strata-method}
+\alias{getDesign,Strata-method}
+\alias{getNr,Strata-method}
+\alias{getLegend,Strata-method}
+\alias{getSize,Strata-method}
+\alias{getCall,Strata-method}
+\alias{show,Strata-method}
+%% aliases to avoid confusion due to capitalization
+\alias{strata-class}
+\alias{strata}
 
 \title{Class "Strata"}
 \description{Class containing strata information for a data set.}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("Strata", \dots)} or 
 \code{Strata(\dots)}.
+
+However, objects are expected to be created by the function 
+\code{\link{stratify}}, these constructor functions are not supposed to be 
+called by the user. 
 }
 \section{Slots}{
 	 \describe{
@@ -28,15 +44,48 @@ Objects can be created by calls of the form \code{new("Strata", \dots)} or
         used to stratify the data, or \code{NULL}.}
   }
 }
-\section{Methods}{
+\section{Accessor methods}{
   \describe{
-    \item{simApply}{\code{signature(x = "data.frame", design = "Strata", 
-      fun = "function")}: apply a function to subsets.}
-    \item{simSapply}{\code{signature(x = "data.frame", design = "Strata", 
-      fun = "function")}: apply a function to subsets.}
+    \item{\code{getValues}}{\code{signature(x = "Strata")}: get slot 
+      \code{values}.}
+    \item{\code{getSplit}}{\code{signature(x = "Strata")}:  get slot 
+      \code{split}.}
+    \item{\code{getDesign}}{\code{signature(x = "Strata")}: get slot 
+      \code{design}.}
+    \item{\code{getNr}}{\code{signature(x = "Strata")}: get slot \code{nr}.}
+    \item{\code{getLegend}}{\code{signature(x = "Strata")}: get slot 
+      \code{legend}.}
+    \item{\code{getSize}}{\code{signature(x = "Strata")}: get slot \code{size}.}
+    \item{\code{getCall}}{\code{signature(x = "Strata")}: get slot \code{call}.}
   }
 }
-\author{Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}}
+\section{Methods}{
+  \describe{
+    \item{\code{head}}{\code{signature(x = "Strata")}: returns the first parts 
+      of strata information.}
+    \item{\code{show}}{\code{signature(object = "Strata")}: print strata 
+      information on the \R console.}
+    \item{\code{simApply}}{\code{signature(x = "data.frame", design = "Strata", 
+      fun = "function")}: apply a function to subsets.}
+    \item{\code{simSapply}}{\code{signature(x = "data.frame", design = "Strata", 
+      fun = "function")}: apply a function to subsets.}
+    \item{\code{summary}}{\code{signature(object = "Strata")}: produce a 
+      summary of strata information.}
+    \item{\code{tail}}{\code{signature(x = "Strata")}: returns the last parts 
+      of strata information.}
+  }
+}
+\section{UML class diagram}{
+  A slightly simplified UML class diagram of the framework can be found in 
+  Figure 1 of the package vignette \emph{An Object-Oriented Framework for 
+  Statistical Simulation: The \R Package \code{simFrame}}.  Use 
+  \code{vignette("simFrame-intro")} to view this vignette.
+}
+\note{
+  There are no mutator methods available since the slots are not supposed to 
+  be changed by the user.
+}
+\author{Andreas Alfons}
 \seealso{
   \code{\link{stratify}}
 }

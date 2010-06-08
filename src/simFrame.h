@@ -6,4 +6,4 @@
 #include <R.h>
 #include <Rinternals.h>
 
-SEXP getProb(SEXP prob, SEXP size);
+SEXP inclusionProb(SEXP prob, SEXP size);
