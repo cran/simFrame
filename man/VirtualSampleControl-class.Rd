@@ -27,6 +27,9 @@
       integer giving the number of samples to be set up.}
   }
 }
+\section{Extends}{
+Class \code{"\linkS4class{OptSampleControl}"}, directly.
+}
 \section{Accessor and mutator methods}{
   \describe{
     \item{\code{getK}}{\code{signature(x = "VirtualSampleControl")}: get slot 

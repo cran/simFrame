@@ -5,10 +5,11 @@
 \alias{SampleSetup}
 \alias{getIndices,SampleSetup-method}
 \alias{getProb,SampleSetup-method}
-\alias{getDesign,SampleSetup-method}
-\alias{getGrouping,SampleSetup-method}
-\alias{getCollect,SampleSetup-method}
-\alias{getFun,SampleSetup-method}
+%\alias{getDesign,SampleSetup-method}
+%\alias{getGrouping,SampleSetup-method}
+%\alias{getCollect,SampleSetup-method}
+%\alias{getFun,SampleSetup-method}
+\alias{getControl,SampleSetup-method}
 \alias{getSeed,SampleSetup-method}
 \alias{getCall,SampleSetup-method}
 \alias{show,SampleSetup-method}
@@ -36,14 +37,16 @@ be called by the user.
       contains the indices of the sampled observations.}
     \item{\code{prob}:}{Object of class \code{"numeric"} giving the 
       inclusion probabilities.}
-    \item{\code{design}:}{Object of class \code{"character"} giving the 
-      variables (columns) defining the strata of the sample design.}
-    \item{\code{grouping}:}{Object of class \code{"character"} giving the 
-      variable (column) used for sampling whole groups rather than 
-      individual observations.}
-    \item{\code{collect}:}{Object of class \code{"logical"} indicating whether 
-      groups were collected after sampling individuals or sampled directly.}
-    \item{\code{fun}:}{Object of class \code{"function"} used for sampling.}
+%    \item{\code{design}:}{Object of class \code{"character"} giving the 
+%      variables (columns) defining the strata of the sample design.}
+%    \item{\code{grouping}:}{Object of class \code{"character"} giving the 
+%      variable (column) used for sampling whole groups rather than 
+%      individual observations.}
+%    \item{\code{collect}:}{Object of class \code{"logical"} indicating whether 
+%      groups were collected after sampling individuals or sampled directly.}
+%    \item{\code{fun}:}{Object of class \code{"function"} used for sampling.}
+    \item{\code{control}:}{Object of class \code{"VirtualSampleControl"}; the 
+      control object used to set up the samples.}
     \item{\code{seed}:}{Object of class \code{"list"} containing the seeds of 
       the random number generator before and after setting up the samples, 
       respectively (for replication purposes).}
@@ -57,14 +60,16 @@ be called by the user.
       \code{indices}.}
     \item{\code{getProb}}{\code{signature(x = "SampleSetup")}: get slot 
       \code{prob}.}
-    \item{\code{getDesign}}{\code{signature(x = "SampleSetup")}: get slot 
-      \code{design}.}
-    \item{\code{getGrouping}}{\code{signature(x = "SampleSetup")}: get slot 
-      \code{grouping}.}
-    \item{\code{getCollect}}{\code{signature(x = "SampleSetup")}: get slot 
-      \code{collect}.}
-    \item{\code{getFun}}{\code{signature(x = "SampleSetup")}: get slot 
-      \code{fun}.}
+%    \item{\code{getDesign}}{\code{signature(x = "SampleSetup")}: get slot 
+%      \code{design}.}
+%    \item{\code{getGrouping}}{\code{signature(x = "SampleSetup")}: get slot 
+%      \code{grouping}.}
+%    \item{\code{getCollect}}{\code{signature(x = "SampleSetup")}: get slot 
+%      \code{collect}.}
+%    \item{\code{getFun}}{\code{signature(x = "SampleSetup")}: get slot 
+%      \code{fun}.}
+    \item{\code{getControl}}{\code{signature(x = "SampleSetup")}: get slot 
+      \code{control}.}
     \item{\code{getSeed}}{\code{signature(x = "SampleSetup")}: get slot 
       \code{seed}.}
     \item{\code{getCall}}{\code{signature(x = "SampleSetup")}: get slot 
@@ -104,11 +109,18 @@ be called by the user.
   There are no mutator methods available since the slots are not supposed to 
   be changed by the user.
 
-  Furthermore, the slots \code{grouping} and \code{fun} were named \code{group} 
-  and \code{method}, respectively, prior to version 0.2.  Renaming the slots 
-  was necessary since accessor and mutator functions were introduced in this 
-  version and functions named \code{getGroup}, \code{getMethod} and 
-  \code{setMethod} already exist.
+%  Furthermore, the slots \code{grouping} and \code{fun} were named \code{group} 
+%  and \code{method}, respectively, prior to version 0.2.  Renaming the slots 
+%  was necessary since accessor and mutator functions were introduced in this 
+%  version and functions named \code{getGroup}, \code{getMethod} and 
+%  \code{setMethod} already exist.
+  
+  Furthermore, the slot \code{seed} was added in version 0.2, and the slot 
+  \code{control} was added in version 0.3.  Since the control object used to 
+  set up the samples is now stored, the redundant slots \code{design}, 
+  \code{grouping}, \code{collect} and \code{fun} were removed.  This has been 
+  done as preparation for additional control classes for sampling, which will 
+  be introduced in future versions.
 }
 \author{Andreas Alfons}
 \seealso{

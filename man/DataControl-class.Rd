@@ -44,6 +44,7 @@ Objects can be created by calls of the form \code{new("DataControl", \dots)} or
 }
 \section{Extends}{
 Class \code{"\linkS4class{VirtualDataControl}"}, directly.
+Class \code{"\linkS4class{OptDataControl}"}, by class "VirtualDataControl", distance 2.
 }
 \section{Accessor and mutator methods}{
   \describe{

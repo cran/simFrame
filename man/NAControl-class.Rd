@@ -42,9 +42,11 @@ Objects can be created by calls of the form \code{new("NAControl", \dots)} or
     \item{\code{grouping}:}{Object of class \code{"character"} specifying a 
       grouping variable (column) to be used for setting whole groups to 
       \code{NA} rather than individual values.}
-    \item{\code{aux}:}{Object of class \code{"character"} specifying an 
-      auxiliary variable (column) whose values are used as probability weights 
-      for selecting the values to be set to \code{NA}.}
+    \item{\code{aux}:}{Object of class \code{"character"} specifying auxiliary 
+      variables (columns) whose values are used as probability weights for 
+      selecting the values to be set to \code{NA} in the respective target 
+      variables.  If only one variable (column) is specified, it is used for 
+      all target variables.}
     \item{\code{intoContamination}:}{Object of class \code{"logical"} 
       indicating whether missing values should also be inserted into 
       contaminated observations.  The default is to insert missing values only 
@@ -93,6 +95,9 @@ distance 2.
   \code{vignette("simFrame-intro")} to view this vignette.
 }
 \note{
+  Since version 0.3, this control class now allows to specify an auxiliary 
+  variable with probability weights for each target variable.
+  
   The slot \code{grouping} was named \code{group} prior to version 0.2.  
   Renaming the slot was necessary since accessor and mutator functions were 
   introduced in this version and a function named \code{getGroup} already 
@@ -104,6 +109,7 @@ distance 2.
 }
 \examples{
 data(eusilcP)
+eusilcP$age[eusilcP$age < 0] <- 0  # this actually occurs
 sam <- draw(eusilcP[, c("id", "age", "eqIncome")], size = 20)
 
 ## missing completely at random

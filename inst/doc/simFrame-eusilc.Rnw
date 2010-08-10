@@ -78,7 +78,7 @@ options(width=72)
 
 \section{Introduction}
 This is a supplementary paper to ``An Object-Oriented Framework for Statistical 
-Simulation: The \proglang{R} package \pkg{simFrame}'' \citep{alfons10d} and 
+Simulation: The \proglang{R} Package \pkg{simFrame}'' \citep{alfons10d} and 
 demonstrates the use of \pkg{simFrame} \citep{alfons10c} for various 
 simulation designs in a practical application. It extends the example for 
 design-based simulation in \citet{alfons10d} (Example~6.1). Different 
@@ -641,8 +641,8 @@ a researcher's toolbox.
 
 %\section*{Computational details}
 %All computations in this paper were performed using \pkg{Sweave} 
-%\citep{leisch02a, leisch02b} with \proglang{R} version~2.11.1 and 
-%\pkg{simFrame} version~0.2. 
+%\citep{leisch02a, leisch02b} with \proglang{R} version~\Sexpr{getRversion()} 
+%and \pkg{simFrame} version~0.3. 
 %%Nevertheless, the package is continuously being developed, it is recommended 
 %%to use the most recent version.
 %The most recent version of the package is always available from CRAN (the 

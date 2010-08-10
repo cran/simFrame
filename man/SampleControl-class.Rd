@@ -77,6 +77,7 @@ or \code{SampleControl(\dots)}.
 }
 \section{Extends}{
 Class \code{"\linkS4class{VirtualSampleControl}"}, directly.
+Class \code{"\linkS4class{OptSampleControl}"}, by class "VirtualSampleControl", distance 2.
 }
 \section{Accessor and mutator methods}{
   In addition to the accessor and mutator methods for the slots inherited from 

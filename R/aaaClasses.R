@@ -28,8 +28,10 @@ setClass("DataControl",
 
 DataControl <- function(...) new("DataControl", ...)
 
-# class union (for extending the frameowrk)
+# class union (for extending the framework)
 setClassUnion("VirtualDataControl", "DataControl")
+
+setClassUnion("OptDataControl", c("NULL", "VirtualDataControl"))
 
 # ---------------------------------------
 
@@ -46,6 +48,8 @@ setClass("VirtualSampleControl",
     prototype(k = 1),
     contains = "VIRTUAL",
     validity = validVirtualSampleControlObject)
+
+setClassUnion("OptSampleControl", c("NULL", "VirtualSampleControl"))
 
 # sampling according to function 'simSample'
 validSampleControlObject <- function(object) {
@@ -73,23 +77,70 @@ setClass("SampleControl",
 
 SampleControl <- function(...) new("SampleControl", ...)
 
+#validTwoStageControlObject <- function(object) {
+#    l <- getSelectionLength(object@grouping)
+#    fun <- object@fun
+#    size <- object@size
+#    prob <- object@prob
+#    dots <- object@dots
+#    ok <- c(is.na(l) || l %in% 1:2, 
+#        length(fun) == 2 && all(sapply(fun, is, "function")), 
+#        length(size) == 2 && all(sapply(size, is, "OptNumeric")) && 
+#            all(sapply(size, function(s) is.null(s) || length(s) > 0)), 
+#        length(prob) == 2 && all(sapply(prob, is, "OptNumeric")) && 
+#            all(sapply(prob, function(p) is.null(p) || length(p) > 0)), 
+#        length(dots) == 2 && all(sapply(dots, is, "list")))
+#    msg <- c("'grouping' must specify either one or two variables",
+#        "'fun' must have length 2: each component should be a function", 
+#        "'size' must have length 2: each component should be NULL or a numeric vector of positive length",
+#        "'prob' must have length 2: each component should be NULL or a numeric vector of positive length",
+#        "'dots' must have length 2: each component should again be a list")
+#    if(all(ok)) TRUE
+#    else msg[!ok]
+#}
+#
+#setClass("TwoStageControl",
+#    representation(design = "BasicVector", grouping = "BasicVector", 
+#        fun = "list", size = "list", 
+#        prob = "list", dots = "list"),
+#    prototype(design = character(), grouping = character(), 
+#        size = list(NULL, NULL), prob = list(NULL, NULL)),
+#    contains = "VirtualSampleControl",
+#    validity = validTwoStageControlObject)
+#
+#TwoStageControl <- function(design = character(), grouping, 
+#        fun = list(fun1, fun2), fun1 = srs, fun2 = srs, 
+#        size = list(size1, size2), size1 = NULL, size2 = NULL, 
+#        prob = list(prob1, prob2), prob1 = NULL, prob2 = NULL, 
+#        dots = list(dots1, dots2), dots1 = list(), dots2 = list(), 
+#        k = 1) {
+#    new("TwoStageControl", design=design, grouping=grouping, fun=fun, 
+#        size=size, prob=prob, dots=dots, k=k)
+#}
+
 # ---------------------------------------
 
 ## sample setup
 
-validSampleSetupObject <- function(object) {
-    ok <- c(length(object@grouping) <= 1, length(object@collect) == 1)
-    msg <- c("'grouping' must not specify more than one variable", 
-        "'collect' must be a single logical")
-    if(all(ok)) TRUE
-    else msg[!ok]
-}
+#validSampleSetupObject <- function(object) {
+#    ok <- c(length(object@grouping) <= 1, length(object@collect) == 1)
+#    msg <- c("'grouping' must not specify more than one variable", 
+#        "'collect' must be a single logical")
+#    if(all(ok)) TRUE
+#    else msg[!ok]
+#}
+#
+#setClass("SampleSetup",
+#    representation(indices = "list", prob = "numeric", design = "character", 
+#        grouping = "character", collect = "logical", fun = "function", 
+#        seed = "list", call = "OptCall"),
+#    prototype(collect = FALSE, call = NULL),
+#    validity = validSampleSetupObject)
 
 setClass("SampleSetup",
-    representation(indices = "list", prob = "numeric", design = "character", 
-        grouping = "character", collect = "logical", fun = "function", 
-        seed = "list", call = "OptCall"),
-    prototype(collect = FALSE, call = NULL))
+    representation(indices = "list", prob = "numeric", 
+        control = "VirtualSampleControl", seed = "list", call = "OptCall"),
+    prototype(call = NULL))
 
 SampleSetup <- function(...) new("SampleSetup", ...)
 
@@ -190,10 +241,12 @@ setClassUnion("OptNAControl", c("NULL", "VirtualNAControl"))
 
 # select values randomly for each target variable
 validNAControlObject <- function(object) {
-    ok <- c(length(object@grouping) <= 1, length(object@aux) <= 1, 
+    lengthAux <- length(object@aux)
+    ok <- c(length(object@grouping) <= 1, 
+#        length(object@aux) <= 1,
         length(object@intoContamination) == 1)
     msg <- c("'grouping' must not specify more than one variable", 
-        "'aux' must not specify more than one variable", 
+#        "'aux' must not specify more than one variable", 
         "'intoContamination' must be a single logical")
     if(all(ok)) TRUE
     else msg[!ok]
@@ -245,10 +298,19 @@ SimControl <- function(...) new("SimControl", ...)
 
 ## simulation results
 
+#setClass("SimResults",
+#    representation(values = "data.frame", add = "list", design = "character", 
+#        colnames = "character", epsilon = "numeric", NArate = "NumericMatrix", 
+#        seed = "list", call = "OptCall"),
+#    prototype(NArate = numeric(), call = NULL))
+
 setClass("SimResults",
     representation(values = "data.frame", add = "list", design = "character", 
         colnames = "character", epsilon = "numeric", NArate = "NumericMatrix", 
-        seed = "list", call = "OptCall"),
-    prototype(NArate = numeric(), call = NULL))
+        dataControl = "OptDataControl", sampleControl = "OptSampleControl", 
+        nrep = "numeric", control = "SimControl", seed = "list", 
+        call = "OptCall"),
+    prototype(NArate = numeric(), call = NULL, dataControl = NULL, 
+        sampleControl = NULL))
 
 SimResults <- function(...) new("SimResults", ...)

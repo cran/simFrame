@@ -375,7 +375,7 @@ are introduced:
 These rules are based on code conventions for the programming language 
 \proglang{Java} \citep[e.g.,][]{arnold05}, see 
 \url{http://java.sun.com/docs/codeconv/}.  Some \proglang{R} packages, e.g., 
-\pkg{rrcov} \citep{todorov09a, todorov09b}, use similar rules.
+\pkg{rrcov} \citep{todorov09, todorov10}, use similar rules.
 
 
 \subsection{Accessor and mutator methods} \label{sec:accessors}
@@ -914,21 +914,26 @@ whole groups to be set as missing rather than individual values.
 %e.g.,][]{little02}:
 %\emph{missing completely at random} (MCAR), \emph{missing at random} (MAR) and 
 %\emph{missing not at random} (MNAR). 
+%To account for MAR or MNAR situations instead of MCAR, an auxiliary variable of 
+%probability weights may be specified. 
 To account for MAR or MNAR situations instead of MCAR, an auxiliary variable of 
-probability weights may be specified. Furthermore, when studying robust methods 
-for the analysis or imputation of incomplete data, it is sometimes desired to 
-insert missing values only into non-contaminated observations. In other 
-situations, a more realistic scenario in which missing values are also inserted 
-into contaminated observations may be preferred. Both scenarios are implemented 
-in the framework. These are the additional slots of 
+probability weights may be specified for each target variable. Furthermore, 
+when studying robust methods for the analysis or imputation of incomplete data, 
+it is sometimes desired to insert missing values only into non-contaminated 
+observations. In other situations, a more realistic scenario in which missing 
+values are also inserted into contaminated observations may be preferred. Both 
+scenarios are implemented in the framework. These are the additional slots of 
 \code{NAControl}:
 
 \begin{description}
   \item[\code{grouping}:] a character string specifying a variable to be used 
   for grouping.
-  \item[\code{aux}:] a character string specifying an auxiliary variable whose 
+%  \item[\code{aux}:] a character string specifying an auxiliary variable whose 
+%  values are used as probability weights for selecting the values to be set as 
+%  missing.
+  \item[\code{aux}:] a character vector specifying auxiliary variables whose 
   values are used as probability weights for selecting the values to be set as 
-  missing.
+  missing in the respective target variables.
   \item[\code{intoContamination}:] a logical indicating whether missing values 
   should also be inserted into contaminated observations. The default is to 
   insert missings only into non-contaminated observations.
@@ -996,7 +1001,7 @@ Figure~\ref{fig:UML}):
 
 \begin{description}
   \item[\code{contControl}:] a control object for contamination.
-  \item[\code{NAcontrol}:] a control object for inserting missing values.
+  \item[\code{NAControl}:] a control object for inserting missing values.
   \item[\code{design}:] a character vector specifying variables to be used for 
   splitting the data into domains and performing the simulations on every 
   domain.
@@ -1057,7 +1062,7 @@ whole data. In any case, small area estimation is not a main focus of the
 current version of \pkg{simFrame} and will therefore not be discussed further 
 in this paper. Improving the support for small area estimation is future work.
 
-For user convenience, the slots of the \code{SimControl} objects may also be 
+For user convenience, the slots of the \code{SimControl} object may also be 
 supplied as arguments. After running the simulations, the results of the 
 individual simulation runs are combined and packed into an object of class 
 \code{SimResults}. The most important slots are (see Figure~\ref{fig:UML} for a 
@@ -1746,7 +1751,7 @@ arguments, and that the latter is much faster for stratified sampling or group
 sampling. Furthermore, a function with \code{prob} as its only argument is 
 perfectly valid (for probability proportional to size sampling). 
 Figure~\ref{fig:sc}~(\emph{top}) shows an example for Poisson sampling using 
-the implementation in package \pkg{sampling} \citep{tille10}.
+the implementation in package \pkg{sampling} \citep{tille09}.
 
 %\begin{figure}
 %  \centering
@@ -1880,8 +1885,8 @@ investigated.
 
 %\section*{Computational details}
 %All computations in this paper were performed using \pkg{Sweave} 
-%\citep{leisch02a, leisch02b} with \proglang{R} version~2.11.1 and \pkg{simFrame} 
-%version~0.2. 
+%\citep{leisch02a, leisch02b} with \proglang{R} version~\Sexpr{getRversion()} 
+%and \pkg{simFrame} version~0.3. 
 %%Nevertheless, the package is continuously being developed, it is recommended 
 %%to use the most recent version.
 %The most recent version of the package is always available from CRAN (the 

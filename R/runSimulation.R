@@ -41,7 +41,10 @@ setMethod("runSimulation",
         # initializations
         nsam <- length(setup)
         design <- getDesign(control)
-        if(nsam == 0) return(SimResults(design=design))  # nothing to do
+        if(nsam == 0) {  # nothing to do
+            return(SimResults(design=design, sampleControl=getControl(setup), 
+                    control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -50,8 +53,8 @@ setMethod("runSimulation",
         s <- 1:nsam
         tmp <- lapply(s, designSimulation, x, setup, control)
         # construct results
-        getSimResults(tmp, s, epsilon=epsilon, 
-            NArate=NArate, design=design)
+        getSimResults(tmp, s, epsilon=epsilon, NArate=NArate, design=design, 
+            sampleControl=getControl(setup), control=control)
     })
 
 
@@ -66,7 +69,10 @@ setMethod("runSimulation",
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
         design <- getDesign(control)
-        if(nrep == 0) return(SimResults(design=design))  # nothing to do
+        if(nrep == 0) {  # nothing to do
+            return(SimResults(design=design, dataControl=x, 
+                    nrep=nrep, control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -75,8 +81,8 @@ setMethod("runSimulation",
         r <- 1:nrep
         tmp <- lapply(r, modelSimulation, x, control)
         # construct results
-        getSimResults(tmp, reps=r, 
-            epsilon=epsilon, NArate=NArate, design=design)
+        getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
+            design=design, dataControl=x, nrep=nrep, control=control)
     })
 
 
@@ -94,7 +100,9 @@ setMethod("runSimulation",
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
         design <- getDesign(control)
-        if(nrep == 0) return(SimResults(design=design))  # nothing to do
+        if(nrep == 0) {  # nothing to do
+            return(SimResults(design=design, nrep=nrep, control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -119,8 +127,8 @@ setMethod("runSimulation",
                 simplify=FALSE)
         }
         # construct results
-        getSimResults(tmp, reps=1:nrep, 
-            epsilon=epsilon, NArate=NArate, design=design)
+        getSimResults(tmp, reps=1:nrep, epsilon=epsilon, NArate=NArate, 
+            design=design, nrep=nrep, control=control)
     })
 
 
@@ -523,7 +531,8 @@ getSimResultStrata <- function(x, legend) {
 
 # contruct object to be returned
 getSimResults <- function(x, samples = numeric(), reps = numeric(), 
-    epsilon = numeric(), NArate = numeric(), design = character()) {
+        epsilon = numeric(), NArate = numeric(), design = character(), 
+        dataControl = NULL, sampleControl = NULL, nrep = numeric(), control) {
     nsam <- length(samples)
     nrep <- length(reps)
     neps <- length(epsilon)
@@ -563,6 +572,7 @@ getSimResults <- function(x, samples = numeric(), reps = numeric(),
     rownames(values) <- NULL
     add <- lapply(x, function(x) x$add)
     # return results
-    SimResults(values=values, add=add, design=design, 
-        colnames=nam, epsilon=epsilon, NArate=origNArate)
+    SimResults(values=values, add=add, design=design, colnames=nam, 
+        epsilon=epsilon, NArate=origNArate, dataControl=dataControl, 
+        sampleControl=sampleControl, nrep=nrep, control=control)
 }

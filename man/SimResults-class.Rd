@@ -9,6 +9,10 @@
 \alias{getColnames,SimResults-method}
 \alias{getEpsilon,SimResults-method}
 \alias{getNArate,SimResults-method}
+\alias{getDataControl,SimResults-method}
+\alias{getSampleControl,SimResults-method}
+\alias{getNrep,SimResults-method}
+\alias{getControl,SimResults-method}
 \alias{getSeed,SimResults-method}
 \alias{getCall,SimResults-method}
 \alias{show,SimResults-method}
@@ -46,6 +50,17 @@ constructor functions are not supposed to be called by the user.
       contamination levels used in the simulation experiment.}
     \item{\code{NArate}:}{Object of class \code{"NumericMatrix"} containing the 
       missing value rates used in the simulation experiment.}
+    \item{\code{dataControl}:}{Object of class \code{"OptDataControl"}; the 
+      control object used for data generation in model-based simulation, or 
+      \code{NULL}.}
+    \item{\code{sampleControl}:}{Object of class \code{"OptSampleControl"}; the 
+      control object used for sampling in design-based simulation, or 
+      \code{NULL}.}
+    \item{\code{nrep}:}{Object of class \code{"numeric"} giving the number of 
+      repetitions of the simulation experiment (for model-based simulation or 
+      simulation based on real data).}
+    \item{\code{control}:}{Object of class \code{"SimControl"}; the control 
+      object used for running the simulations.}
     \item{\code{seed}:}{Object of class \code{"list"} containing the seeds of 
       the random number generator before and after the simulation experiment, 
       respectively (for replication of the results).}
@@ -67,6 +82,14 @@ constructor functions are not supposed to be called by the user.
       \code{epsilon}.}
     \item{\code{getNArate}}{\code{signature(x = "SimResults")}: get slot 
       \code{NArate}.}
+    \item{\code{getDataControl}}{\code{signature(x = "SimResults")}: get slot 
+      \code{dataControl}.}
+    \item{\code{getSampleControl}}{\code{signature(x = "SimResults")}: get slot 
+      \code{sampleControl}.}
+    \item{\code{getNrep}}{\code{signature(x = "SimResults")}: get slot 
+      \code{nrep}.}
+    \item{\code{getControl}}{\code{signature(x = "SimResults")}: get slot 
+      \code{control}.}
     \item{\code{getSeed}}{\code{signature(x = "SimResults")}: get slot 
       \code{seed}.}
     \item{\code{getCall}}{\code{signature(x = "SimResults")}: get slot 
@@ -105,6 +128,9 @@ constructor functions are not supposed to be called by the user.
 \note{
   There are no mutator methods available since the slots are not supposed to 
   be changed by the user.
+  
+  Furthermore, the slots \code{dataControl}, \code{sampleControl}, \code{nrep} 
+  and \code{control} were added in version 0.3.
 }
 \author{Andreas Alfons}
 \seealso{

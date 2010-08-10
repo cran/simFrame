@@ -52,4 +52,5 @@ aggregate(results)
 
 ## plot results
 plot(results, ylab = "Relative Aitchison distance")
-simDensityplot(results, NArate = 0.07, alpha = 0.5, xlab = "Relative Aitchison distance")
+simDensityplot(results, NArate=0.07, 
+    alpha = 0.6, xlab = "Relative Aitchison distance")

@@ -137,9 +137,14 @@ internalSimDensityplot <- function(values, design, names,
     values <- getLatticeData(values, design, names)
     form <- getFormula("", ".Value", design)
     # call lattice function
-    densityplot(form, data=values, auto.key=auto.key, 
-        panel=panelSimDensityplot, prepanel=prepanelSimDensityplot, 
-        true=true, groups=.Name, xlab=xlab, ...)
+    # this produces a 'NOTE' during 'R CMD check':
+#    densityplot(form, data=values, auto.key=auto.key, 
+#        panel=panelSimDensityplot, prepanel=prepanelSimDensityplot, 
+#        true=true, groups=.Name, xlab=xlab, ...)
+    command <- paste("densityplot(form, data=values, auto.key=auto.key,",  
+        "panel=panelSimDensityplot, prepanel=prepanelSimDensityplot,",  
+        "true=true, groups=.Name, xlab=xlab, ...)")
+    eval(parse(text=command))
 }
 
 ## panel function

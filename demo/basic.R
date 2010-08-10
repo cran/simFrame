@@ -27,6 +27,7 @@ aggregate(results)
 
 ## compute true values
 tv <- mean(eusilcP$eqIncome)
+tv
 
 ## plot results
 plot(results, true = tv)

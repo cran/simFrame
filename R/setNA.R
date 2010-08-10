@@ -9,10 +9,10 @@ setMethod("setNA",
         # initializations
         target <- getTarget(control)
         if(is.null(target)) target <- getNames(x)
-        tl <- length(target)
+        lengthTarget <- length(target)
         NArate <- getNArate(control)
         if(is(NArate, "numeric")) NArate <- NArate[i]
-        else NArate <- rep(NArate[i,], length.out=tl)
+        else NArate <- rep(NArate[i,], length.out=lengthTarget)
         if(all(NArate == 0) || any(dim(x) == 0)) return(x)  # nothing to do
         grouping <- getGrouping(control)
         if(length(grouping) > 1) {
@@ -20,10 +20,13 @@ setMethod("setNA",
         }
         useGroup <- as.logical(length(grouping))  # 'grouping' supplied
         aux <- getAux(control)
-        if(length(aux) > 1) {
-            stop("'aux' must not specify more than one variable")
-        }
-        useAux <- as.logical(length(aux))  # 'aux' supplied
+#        if(length(aux) > 1) {
+#            stop("'aux' must not specify more than one variable")
+#        }
+#        useAux <- as.logical(length(aux))  # 'aux' supplied
+        if(length(aux) > 1) aux <- rep(aux, length.out=lengthTarget)
+        lengthAux <- length(aux)
+        useAux <- as.logical(lengthAux)  # 'aux' supplied
         intoContamination <- getIntoContamination(control)
         if(intoContamination) contaminated <- NULL
         else contaminated <- x$.contaminated
@@ -47,29 +50,47 @@ setMethod("setNA",
         n <- ceiling(NArate * N)
         # prepare auxiliary variable, if supplied
         if(useAux) {
+            auxNames <- aux
             aux <- x[, aux]
-            if(!is.numeric(aux)) {
-                stop("slot 'aux' in 'control' must specify a numeric variable.")
-            }
-            if(!all(is.finite(aux))) {
-                stop("variable definted by slot 'aux' in 'control'", 
-                    "must not contain missing or infinite values.")
-            }
-            if(any(aux < 0)) aux <- aux - min(aux)  # add small value?
+#            if(!is.numeric(aux)) {
+#                stop("slot 'aux' in 'control' must specify a numeric variable.")
+#            }
+#            if(!all(is.finite(aux))) {
+#                stop("variable definted by slot 'aux' in 'control'", 
+#                    "must not contain missing or infinite values.")
+#            }
+#            if(any(aux < 0)) aux <- aux - min(aux)  # add small value?
             if(useGroup) {
                 # use the group means (much faster than medians)
-                #aux <- sapply(split, function(i) median(aux[i]))
-                aux <- sapply(split, function(i) mean(aux[i]))
+                if(lengthAux == 1) {
+                    #aux <- sapply(split, function(i) median(aux[i]))
+                    aux <- sapply(split, function(i) mean(aux[i]))
+                } else {
+                    aux <- aggregate(aux, list(getFactor(groups)), mean)[, -1]
+                    names(aux) <- auxNames
+                }
             }
         } else aux <- NULL
         # get indices
         if(length(n) == 1) {
-            ind <- replicate(tl, getIndicesSetNA(N, n, aux, contaminated))
+            if(lengthAux > 1) {
+                ind <- sapply(aux, 
+                    function(a) getIndicesSetNA(N, n, a, contaminated))
+            } else {
+                ind <- replicate(lengthTarget, 
+                    getIndicesSetNA(N, n, aux, contaminated))
+            }
         } else {
-            ind <- mapply(getIndicesSetNA, N, n, 
-                MoreArgs=list(aux=aux, contaminated=contaminated))
+            if(lengthAux > 1) {
+                ind <- mapply(getIndicesSetNA, N, n, aux,
+                    MoreArgs=list(contaminated=contaminated))
+            } else {
+                ind <- mapply(getIndicesSetNA, N, n, 
+                    MoreArgs=list(aux=aux, contaminated=contaminated))
+            }
         }
         if(useGroup) {
+            # get indices for individuals
             if(useAux || isContaminated) {
                 ind <- apply(ind, 2, 
                     function(i) {

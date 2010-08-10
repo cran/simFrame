@@ -50,10 +50,10 @@
   \item{\code{signature(x = "SimControl")}}{currently returns the 
     object itself.}
   \item{\code{signature(x = "SimResults")}}{returns the last parts of 
-    simulation results.  The method of \code{\link[utils]{tail}} for the 
+    simulation results.  The method of \code{\link[utils:head]{tail}} for the 
     \code{data.frame} in slot \code{values} is thereby called.}
   \item{\code{signature(x = "Strata")}}{returns the last parts of strata 
-    information.  The method of \code{\link[utils]{tail}} for the vector in 
+    information.  The method of \code{\link[utils:head]{tail}} for the vector in 
     slot \code{values} is thereby called and the slots \code{split} and 
     \code{size} are adapted accordingly.}
   \item{\code{signature(x = "VirtualContControl")}}{currently returns the 
@@ -68,7 +68,7 @@
 }
 \author{Andreas Alfons}
 \seealso{
-  \code{\link[utils]{tail}}, \code{"\linkS4class{SampleSetup}"}, 
+  \code{\link[utils:head]{tail}}, \code{"\linkS4class{SampleSetup}"}, 
   \code{"\linkS4class{SimResults}"}, \code{"\linkS4class{Strata}"}
 }
 \examples{

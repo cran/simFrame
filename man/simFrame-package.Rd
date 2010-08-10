@@ -20,11 +20,11 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.2\cr
-Date: \tab 2010-06-08\cr
+Version: \tab 0.3\cr
+Date: \tab 2010-08-10\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
-Suggests: \tab laeken, mvtnorm, robCompositions\cr
+Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
 License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr
 }
@@ -46,8 +46,11 @@ NumericMatrix-class     Class "NumericMatrix"
 OptCall-class           Class "OptCall"
 OptCharacter-class      Class "OptCharacter"
 OptContControl-class    Class "OptContControl"
+OptDataControl-class    Class "OptDataControl"
 OptNAControl-class      Class "OptNAControl"
 OptNumeric-class        Class "OptNumeric"
+OptSampleControl-class
+                        Class "OptSampleControl"
 SampleControl           Create objects of class "SampleControl"
 SampleControl-class     Class "SampleControl"
 SampleSetup             Create objects of class "SampleSetup"
@@ -89,7 +92,7 @@ setup                   Set up multiple samples
 simApply                Apply a function to subsets
 simBwplot               Box-and-whisker plots
 simDensityplot          Kernel density plots
-simFrame-package        Simulation Framework
+simFrame-package        Simulation framework
 simSample               Set up multiple samples
 simXyplot               X-Y plots
 srs                     Random sampling
@@ -97,6 +100,12 @@ stratify                Stratify data
 summary-methods         Methods for producing a summary of an object
 tail-methods            Methods for returning the last parts of an
                         object
+}
+
+Further information is available in the following vignettes:
+\tabular{ll}{
+\code{simFrame-eusilc} \tab Applications of Statistical Simulation in the Case of EU-SILC: Using the R Package simFrame (source, pdf)\cr
+\code{simFrame-intro} \tab An Object-Oriented Framework for Statistical Simulation: The R Package simFrame (source, pdf)\cr
 }
 }
 \section{UML class diagram}{

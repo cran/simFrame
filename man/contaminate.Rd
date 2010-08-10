@@ -59,6 +59,12 @@ contaminate(x, control, \dots)
     additional arguments.}
   }
 }
+\note{
+Since version 0.3, \code{contaminate} no longer checks if the auxiliary 
+variable with probability weights are numeric and contain only finite positive 
+values (\code{\link{sample}} still throws an error in these cases).  This has 
+been removed to improve computational performance in simulation studies.
+}
 \author{Andreas Alfons}
 \references{
 \enc{Béguin}{Beguin}, C. and Hulliger, B. (2008) The BACON-EEM algorithm for 

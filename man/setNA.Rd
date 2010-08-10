@@ -54,12 +54,19 @@ setNA(x, control, \dots)
     defined by the control object \code{control}.}
   }
 }
+\note{
+Since version 0.3, \code{setNA} no longer checks if auxiliary variable(s) 
+with probability weights are numeric and contain only finite positive values 
+(\code{\link{sample}} still throws an error in these cases).  This has been 
+removed to improve computational performance in simulation studies.
+}
 \author{Andreas Alfons}
 \seealso{
   \code{"\linkS4class{NAControl}"}, \code{"\linkS4class{VirtualNAControl}"}
 }
 \examples{
 data(eusilcP)
+eusilcP$age[eusilcP$age < 0] <- 0  # this actually occurs
 sam <- draw(eusilcP[, c("id", "age", "eqIncome")], size = 20)
 
 

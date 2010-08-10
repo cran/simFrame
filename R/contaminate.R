@@ -41,14 +41,14 @@ setMethod("contaminate",
         n <- ceiling(epsilon * N)
         if(useAux) {  # prepare auxiliary variable
             aux <- x[, aux]
-            if(!is.numeric(aux)) {
-                stop("slot 'aux' in 'control' must specify a numeric variable.")
-            }
-            if(!all(is.finite(aux))) {
-                stop("variable definted by slot 'aux' in 'control'", 
-                    "must not contain missing or infinite values.")
-            }
-            if(any(aux < 0)) aux <- aux - min(aux)  # add small value?
+#            if(!is.numeric(aux)) {
+#                stop("slot 'aux' in 'control' must specify a numeric variable.")
+#            }
+#            if(!all(is.finite(aux))) {
+#                stop("variable definted by slot 'aux' in 'control'", 
+#                    "must not contain missing or infinite values.")
+#            }
+#            if(any(aux < 0)) aux <- aux - min(aux)  # add small value?
             if(useGroup) {
                 # use the group means (much faster than medians)
                 #aux <- sapply(split, function(i) median(aux[i]))

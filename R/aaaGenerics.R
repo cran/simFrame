@@ -143,6 +143,10 @@ setGeneric("getContControl", function(x) standardGeneric("getContControl"))
 setGeneric("setContControl", 
     function(x, contControl) standardGeneric("setContControl"))
 
+setGeneric("getControl", function(x) standardGeneric("getControl"))
+
+setGeneric("getDataControl", function(x) standardGeneric("getDataControl"))
+
 setGeneric("getDesign", function(x) standardGeneric("getDesign"))
 setGeneric("setDesign", function(x, design) standardGeneric("setDesign"))
 
@@ -152,6 +156,8 @@ setGeneric("setDistribution",
 
 setGeneric("getDots", function(x) standardGeneric("getDots"))
 setGeneric("setDots", function(x, dots) standardGeneric("setDots"))
+#setGeneric("getDots", function(x, ...) standardGeneric("getDots"))
+#setGeneric("setDots", function(x, dots, ...) standardGeneric("setDots"))
 
 setGeneric("getEpsilon", function(x) standardGeneric("getEpsilon"))
 setGeneric("setEpsilon", function(x, epsilon) standardGeneric("setEpsilon"))
@@ -161,6 +167,8 @@ setGeneric("setGrouping", function(x, grouping) standardGeneric("setGrouping"))
 
 setGeneric("getFun", function(x) standardGeneric("getFun"))
 setGeneric("setFun", function(x, fun) standardGeneric("setFun"))
+#setGeneric("getFun", function(x, ...) standardGeneric("getFun"))
+#setGeneric("setFun", function(x, fun, ...) standardGeneric("setFun"))
 
 setGeneric("getIndices", function(x) standardGeneric("getIndices"))
 
@@ -183,16 +191,24 @@ setGeneric("setNArate", function(x, NArate) standardGeneric("setNArate"))
 
 setGeneric("getNr", function(x) standardGeneric("getNr"))
 
+setGeneric("getNrep", function(x) standardGeneric("getNrep"))
+
 setGeneric("getProb", function(x) standardGeneric("getProb"))
 setGeneric("setProb", function(x, prob) standardGeneric("setProb"))
+#setGeneric("getProb", function(x, ...) standardGeneric("getProb"))
+#setGeneric("setProb", function(x, prob, ...) standardGeneric("setProb"))
 
 setGeneric("getSAE", function(x) standardGeneric("getSAE"))
 setGeneric("setSAE", function(x, SAE) standardGeneric("setSAE"))
+
+setGeneric("getSampleControl", function(x) standardGeneric("getSampleControl"))
 
 setGeneric("getSeed", function(x) standardGeneric("getSeed"))
 
 setGeneric("getSize", function(x) standardGeneric("getSize"))
 setGeneric("setSize", function(x, size) standardGeneric("setSize"))
+#setGeneric("getSize", function(x, ...) standardGeneric("getSize"))
+#setGeneric("setSize", function(x, size, ...) standardGeneric("setSize"))
 
 setGeneric("getSplit", function(x) standardGeneric("getSplit"))
 

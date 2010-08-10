@@ -21,6 +21,10 @@
 \alias{getContControl-methods}
 \alias{setContControl}
 \alias{setContControl-methods}
+\alias{getControl}
+\alias{getControl-methods}
+\alias{getDataControl}
+\alias{getDataControl-methods}
 \alias{getDesign}
 \alias{getDesign-methods}
 \alias{setDesign}
@@ -67,6 +71,8 @@
 \alias{setNArate-methods}
 \alias{getNr}
 \alias{getNr-methods}
+\alias{getNrep}
+\alias{getNrep-methods}
 \alias{getProb}
 \alias{getProb-methods}
 \alias{setProb}
@@ -75,6 +81,8 @@
 \alias{getSAE-methods}
 \alias{setSAE}
 \alias{setSAE-methods}
+\alias{getSampleControl}
+\alias{getSampleControl-methods}
 \alias{getSeed}
 \alias{getSeed-methods}
 \alias{getSize}
@@ -113,6 +121,10 @@ setColnames(x, colnames)
 getContControl(x)
 setContControl(x, contControl)
 
+getControl(x)
+
+getDataControl(x)
+
 getDesign(x)
 setDesign(x, design)
 
@@ -149,11 +161,15 @@ setNArate(x, NArate)
 
 getNr(x)
 
+getNrep(x)
+
 getProb(x)
 setProb(x, prob)
 
 getSAE(x)
 setSAE(x, SAE)
+
+getSampleControl(x)
 
 getSeed(x)
 
@@ -238,13 +254,18 @@ getValues(x)
   \item{\code{signature(x = "Strata")}}{}
   }
 }
-\section{Methods for function getCollect}{
-  \describe{
-  \item{\code{signature(x = "SampleControl")}}{}
-  \item{\code{signature(x = "SampleSetup")}}{}
-  }
-}
-\section{Methods for function setCollect}{
+%\section{Methods for function getCollect}{
+%  \describe{
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SampleSetup")}}{}
+%  }
+%}
+%\section{Methods for function setCollect}{
+%  \describe{
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  }
+%}
+\section{Methods for functions getCollect and setCollect}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
   }
@@ -265,14 +286,31 @@ getValues(x)
   \item{\code{signature(x = "SimControl")}}{}
   }
 }
-\section{Methods for function getDesign}{
+\section{Methods for function getControl}{
   \describe{
-  \item{\code{signature(x = "SampleControl")}}{}
   \item{\code{signature(x = "SampleSetup")}}{}
-  \item{\code{signature(x = "SimControl")}}{}
+  \item{\code{signature(x = "SimResults")}}{}
   }
 }
-\section{Methods for function setDesign}{
+\section{Methods for function getDataControl}{
+  \describe{
+  \item{\code{signature(x = "SimResults")}}{}
+  }
+}
+%\section{Methods for function getDesign}{
+%  \describe{
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SampleSetup")}}{}
+%  \item{\code{signature(x = "SimControl")}}{}
+%  }
+%}
+%\section{Methods for function setDesign}{
+%  \describe{
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SimControl")}}{}
+%  }
+%}
+\section{Methods for functions getDesign and setDesign}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
@@ -304,30 +342,44 @@ getValues(x)
   \item{\code{signature(x = "VirtualContControl")}}{}
   }
 }
-\section{Methods for function getFun}{
+%\section{Methods for function getFun}{
+%  \describe{
+%  \item{\code{signature(x = "DARContControl")}}{}
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SampleSetup")}}{}
+%  \item{\code{signature(x = "SimControl")}}{}
+%  }
+%}
+%\section{Methods for function setFun}{
+%  \describe{
+%  \item{\code{signature(x = "DARContControl")}}{}
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SimControl")}}{}
+%  }
+%}
+\section{Methods for functions getFun and setFun}{
   \describe{
   \item{\code{signature(x = "DARContControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
-  \item{\code{signature(x = "SampleSetup")}}{}
   \item{\code{signature(x = "SimControl")}}{}
   }
 }
-\section{Methods for function setFun}{
-  \describe{
-  \item{\code{signature(x = "DARContControl")}}{}
-  \item{\code{signature(x = "SampleControl")}}{}
-  \item{\code{signature(x = "SimControl")}}{}
-  }
-}
-\section{Methods for function getGrouping}{
-  \describe{
-  \item{\code{signature(x = "ContControl")}}{}
-  \item{\code{signature(x = "NAControl")}}{}
-  \item{\code{signature(x = "SampleControl")}}{}
-  \item{\code{signature(x = "SampleSetup")}}{}
-  }
-}
-\section{Methods for function setGrouping}{
+%\section{Methods for function getGrouping}{
+%  \describe{
+%  \item{\code{signature(x = "ContControl")}}{}
+%  \item{\code{signature(x = "NAControl")}}{}
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  \item{\code{signature(x = "SampleSetup")}}{}
+%  }
+%}
+%\section{Methods for function setGrouping}{
+%  \describe{
+%  \item{\code{signature(x = "ContControl")}}{}
+%  \item{\code{signature(x = "NAControl")}}{}
+%  \item{\code{signature(x = "SampleControl")}}{}
+%  }
+%}
+\section{Methods for functions getGrouping and setGrouping}{
   \describe{
   \item{\code{signature(x = "ContControl")}}{}
   \item{\code{signature(x = "NAControl")}}{}
@@ -375,6 +427,11 @@ getValues(x)
   \item{\code{signature(x = "Strata")}}{}
   }
 }
+\section{Methods for function getNrep}{
+  \describe{
+  \item{\code{signature(x = "SimResults")}}{}
+  }
+}
 \section{Methods for function getProb}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
@@ -389,6 +446,11 @@ getValues(x)
 \section{Methods for functions getSAE and setSAE}{
   \describe{
   \item{\code{signature(x = "SimControl")}}{}
+  }
+}
+\section{Methods for function getSampleControl}{
+  \describe{
+  \item{\code{signature(x = "SimResults")}}{}
   }
 }
 \section{Methods for function getSeed}{

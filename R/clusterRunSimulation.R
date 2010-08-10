@@ -44,7 +44,10 @@ setMethod("clusterRunSimulation",
             # initializations
         nsam <- length(setup)
         design <- getDesign(control)
-        if(nsam == 0) return(SimResults(design=design))  # nothing to do
+        if(nsam == 0) {  # nothing to do
+            return(SimResults(design=design, sampleControl=getControl(setup), 
+                    control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -53,8 +56,8 @@ setMethod("clusterRunSimulation",
         s <- 1:nsam
         tmp <- parLapply(cl, s, designSimulation, x, setup, control)
         # construct results
-        getSimResults(tmp, s, epsilon=epsilon, 
-            NArate=NArate, design=design)
+        getSimResults(tmp, s, epsilon=epsilon, NArate=NArate, design=design, 
+            sampleControl=getControl(setup), control=control)
     })
 
 
@@ -69,7 +72,10 @@ setMethod("clusterRunSimulation",
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
         design <- getDesign(control)
-        if(nrep == 0) return(SimResults(design=design))  # nothing to do
+        if(nrep == 0) {  # nothing to do
+            return(SimResults(design=design, dataControl=x, 
+                    nrep=nrep, control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -78,8 +84,8 @@ setMethod("clusterRunSimulation",
         r <- 1:nrep
         tmp <- parLapply(cl, r, modelSimulation, x, control)
         # construct results
-        getSimResults(tmp, reps=r, epsilon=epsilon, 
-            NArate=NArate, design=design)
+        getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
+            design=design, dataControl=x, nrep=nrep, control=control)
     })
 
 
@@ -97,7 +103,9 @@ setMethod("clusterRunSimulation",
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
         design <- getDesign(control)
-        if(nrep == 0) return(SimResults(design=design))  # nothing to do
+        if(nrep == 0) {  # nothing to do
+            return(SimResults(design=design, nrep=nrep, control=control))
+        }
         contControl <- getContControl(control)
         epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
         NAControl <- getNAControl(control)
@@ -137,6 +145,6 @@ setMethod("clusterRunSimulation",
                 function(i) manageSimulation(x, control))
         }
         # construct results
-        getSimResults(tmp, reps=r, epsilon=epsilon, 
-            NArate=NArate, design=design)
+        getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
+            design=design, nrep=nrep, control=control)
     })

@@ -41,7 +41,8 @@ setMethod("show", "SampleControl",
         }
         group <- getGrouping(object)
         if(length(group) > 0) {
-            cat("\nGrouping variable for cluster sampling:\n")
+#            cat("\nGrouping variable for cluster sampling:\n")
+            cat("\nGrouping variable giving sampling units:\n")
             print(group)
         }
         size <- getSize(object)
@@ -55,6 +56,8 @@ setMethod("show", "SampleControl",
             print(size)
         }
     })
+
+# TODO: two-stage sample control
 
 ## sample setup
 setMethod("show", "SampleSetup", 
@@ -141,7 +144,11 @@ setMethod("show", "NAControl",
         }
         aux <- getAux(object)
         if(length(aux) > 0) {
-            cat("\nVariable giving probability weights for selection:\n")
+            if(length(aux) == 1) {
+                cat("\nVariable giving probability weights for selection:\n")
+            } else {
+                cat("\nVariables giving probability weights for selection:\n")
+            }
             print(aux)
         }
     })

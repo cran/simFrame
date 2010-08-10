@@ -8,7 +8,6 @@
 ## wrapper
 
 # name of control class can be supplied as character string
-
 setMethod("clusterSetup",
     signature(cl = "ANY", x = "data.frame", control = "character"),
     function(cl, x, control, ...) {
@@ -20,9 +19,13 @@ setMethod("clusterSetup",
             stop(gettextf("\"%s\" does not extend class \"VirtualSampleControl\"", 
                     control))
         }
+#        # temporary solution: constructor for class "TwoStageControl" has 
+#        # arguments that are no slots
+#        if(isTRUE(control == "TwoStageControl")) control <- TwoStageControl(...)
+#        else control <- new(control, ...)
         control <- new(control, ...)
         clusterAssign(cl, "control", control)
-        clusterSetup(cl, x, control=control)
+        clusterSetup(cl, x, control)
     })
 
 # default control class
@@ -34,8 +37,7 @@ setMethod("clusterSetup",
 
 # ---------------------------------------
 
-## get sample setup
-
+## get sample setup using control class "SampleControl"
 setMethod("clusterSetup",
     signature(cl = "ANY", x = "data.frame", control = "SampleControl"),
     function(cl, x, control) {
@@ -58,8 +60,9 @@ setMethod("clusterSetup",
         indices <- do.call("c", indices)
         prob <- getSampleProb(x, control)
         # return 'SampleSetup' object
-        SampleSetup(indices=indices, prob=prob, design=design, 
-            grouping=grouping, collect=collectGroups, fun=getFun(control))
+#        SampleSetup(indices=indices, prob=prob, design=design, 
+#            grouping=grouping, collect=collectGroups, fun=getFun(control))
+        SampleSetup(indices=indices, prob=prob, control=control)
     })
 
 
@@ -218,11 +221,12 @@ setMethod("getSampleIndices",
             }
         }
         
-        # check for try errors and return 'SampleSetup' object
+        # check for try errors and return indices
         # replace errors with empty index vectors: let 'runSimulation' handle 
         # the problems, this is important to debug model-based sampling
-        ok <- checkError(indices)
-        indices[!ok] <- integer()
+        notOK <- checkError(indices)
+        if(all(notOK)) indices <- replicate(k, integer(), simplify=FALSE)
+        else indices[notOK] <- integer()
         indices
     })
 
@@ -341,3 +345,27 @@ setMethod("getSampleProb",
         # return final inclustion probabilities
         prob
     })
+    
+# ---------------------------------------
+
+### TODO: get two-stage sample setup using control class "TwoStageControl"
+#setMethod("clusterSetup",
+#    signature(cl = "ANY", x = "data.frame", control = "TwoStageControl"),
+#    function(cl, x, control) {
+#    })
+#
+### utilities
+## this is currently an ugly solution, it would 
+## be nice to share code with 'setup' instead
+#
+## get indices of the sampled observations
+#setMethod("getSampleIndices",
+#    signature(x = "data.frame", control = "TwoStageControl"),
+#    function(x, control) {
+#    })
+#
+## get inclustion probabilities
+#setMethod("getSampleProb",
+#    signature(x = "data.frame", control = "TwoStageControl"),
+#    function(x, control) {
+#    })
