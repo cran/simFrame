@@ -43,12 +43,12 @@ setMethod("clusterSetup",
     function(cl, x, control) {
         # initializations
         nam <- names(x)
-        design <- getCharacter(getDesign(control), nam)
+#        design <- getCharacter(getDesign(control), nam)
         grouping <- getCharacter(getGrouping(control), nam)
         if(length(grouping) > 1) {
             stop("'grouping' must not specify more than one variable")
         }
-        collectGroups <- (length(grouping) > 0) && isTRUE(getCollect(control))
+#        collectGroups <- (length(grouping) > 0) && isTRUE(getCollect(control))
         # parallel computing
         seqList <- clusterSplit(cl, 1:getK(control))
         kList <- lapply(seqList, length)
@@ -79,16 +79,20 @@ setMethod("getSampleIndices",
         cnam <- names(x)
         design <- getCharacter(getDesign(control), cnam)
         grouping <- getCharacter(getGrouping(control), cnam)
-        if(length(grouping) > 1) {
-            stop("'grouping' must not specify more than one variable")
-        }
+#        if(length(grouping) > 1) {
+#            stop("'grouping' must not specify more than one variable")
+#        }
         collect <- isTRUE(getCollect(control))
         groupSampling <- (length(grouping) > 0) && !collect
         collectGroups <- (length(grouping) > 0) && collect
         fun <- getFun(control)
         nam <- argNames(fun)  # argument names of 'fun'
+        useX <- "x" %in% nam
+        useN <- "N" %in% nam
         size <- getSize(control)
+        useSize <- !is.null(size)
         prob <- getProb(control)
+        useProb <- !is.null(prob)
         dots <- getDots(control)
         k <- getK(control)
         
@@ -111,24 +115,25 @@ setMethod("getSampleIndices",
                 uniqueGroupSplit <- mapply(function(x, i) x[i], groupSplit, iGroupSplit, 
                     SIMPLIFY=FALSE, USE.NAMES=FALSE)  # unique groups in strata
                 N <- sapply(uniqueGroupSplit, length)  # number of groups in strata
-                if("x" %in% nam) {
+                if(useX) {
                     tmp <- mapply(function(x, i) x[i], split, iGroupSplit, 
                         SIMPLIFY=FALSE, USE.NAMES=FALSE)  # list of indices
                     xSplit <- lapply(tmp, function(s) x[s, , drop=FALSE])
                     call$x <- xSplit
-                } else if("N" %in% nam) call$N <- N
-                if(!is.null(size)) {
+                } else if(useN) call$N <- N
+                if(useSize) {
                     if(length(size) > 1) size <- rep(size, length.out=length(N))
                     call$size <- size
                 }
-                if(!is.null(prob) && "prob" %in% nam) {
-                    Ngroup <- sum(N)  # number of groups
-                    if(length(prob) != Ngroup) {
-                        stop(gettextf("'prob' must be a vector of length %i", Ngroup))
+                if(useProb) {
+                    Ngroups <- sum(N)  # number of groups
+                    if(length(prob) != Ngroups) {
+                        stop(gettextf("'prob' must be a vector of length %i", Ngroups))
                     }
                     strataValues <- unsplit(1:length(split), x[, design])
-                    iGroup <- unsplit(iGroupSplit, strataValues)
-                    probSplit <- split(prob, strataValues[iGroup])
+                    iGroups <- unsplit(iGroupSplit, strataValues)
+                    probSplit <- split(prob, strataValues[iGroups])
+                    names(probSplit) <- NULL
                     call$prob <- probSplit
                 }
                 indices <- replicate(k, 
@@ -140,15 +145,15 @@ setMethod("getSampleIndices",
                 # groups may be collected
                 # -----------------------
                 N <- getStratumSizes(split, USE.NAMES=FALSE)  # stratum sizes
-                if("x" %in% nam) {
+                if(useX) {
                     xSplit <- lapply(split, function(s) x[s, , drop=FALSE])
                     call$x <- xSplit
-                } else if("N" %in% nam) call$N <- N
-                if(!is.null(size)) {
+                } else if(useN) call$N <- N
+                if(useSize) {
                     if(length(size) > 1) size <- rep(size, length.out=length(N))
                     call$size <- size
                 }
-                if(!is.null(prob)) {
+                if(useProb) {
                     Ntotal <- nrow(x)  # size of population
                     if(length(prob) != Ntotal) {
                         stop(gettextf("'prob' must be a vector of length %i", Ntotal))
@@ -175,23 +180,25 @@ setMethod("getSampleIndices",
                 # group sampling
                 # --------------
                 groups <- x[, grouping]  # group of each observation
-                iGroup <- !duplicated(groups)  # logicals to extract unique groups
-                uniqueGroup <- groups[iGroup]  # unique groups
-                N <- length(uniqueGroup)  # number of groups
-                if("x" %in% nam) call$x <- x[iGroup, , drop=FALSE]
-                else if("N" %in% nam) call$N <- N
-                if(!is.null(size)) {
+                if(useX) {
+                    iGroups <- !duplicated(groups)  # logicals to extract unique groups
+                    uniqueGroups <- groups[iGroups]  # unique groups
+                } else uniqueGroups <- unique(groups)  # unique groups
+                N <- length(uniqueGroups)  # number of groups
+                if(useX) call$x <- x[iGroups, , drop=FALSE]
+                else if(useN) call$N <- N
+                if(useSize) {
                     if(length(size) > 1) size <- size[1]
                     call$size <- size
                 }
-                if(!is.null(prob)) {
+                if(useProb) {
                     if(length(prob) != N) {
                         stop(gettextf("'prob' must be a vector of length %i", N))
                     }
                     call$prob <- prob
                 }
                 indices <- replicate(k, 
-                    try(simEval(call, groups=groups, unique=uniqueGroup)), 
+                    try(simEval(call, groups=groups, unique=uniqueGroups)), 
                     simplify=FALSE)  # repeated call
             } else {
                 # -----------------------
@@ -199,13 +206,13 @@ setMethod("getSampleIndices",
                 # groups may be collected
                 # -----------------------
                 N <- nrow(x)  # size of population
-                if("x" %in% nam) call$x <- x
-                else if("N" %in% nam) call$N <- N
-                if(!is.null(size)) {  # sample size
+                if(useX) call$x <- x
+                else if(useN) call$N <- N
+                if(useSize) {  # sample size
                     if(length(size) > 1) size <- size[1]
                     call$size <- size
                 }
-                if(!is.null(prob)) {
+                if(useProb) {
                     if(length(prob) != N) {
                         stop(gettextf("'prob' must be a vector of length %i", N))
                     }
@@ -239,14 +246,17 @@ setMethod("getSampleProb",
         cnam <- names(x)
         design <- getCharacter(getDesign(control), cnam)
         grouping <- getCharacter(getGrouping(control), cnam)
-        if(length(grouping) > 1) {
-            stop("'grouping' must not specify more than one variable")
-        }
+#        if(length(grouping) > 1) {
+#            stop("'grouping' must not specify more than one variable")
+#        }
         collect <- isTRUE(getCollect(control))
         groupSampling <- (length(grouping) > 0) && !collect
         collectGroups <- (length(grouping) > 0) && collect
         size <- getSize(control)
+        useSize <- !is.null(size)
         prob <- getProb(control)
+        useProb <- !is.null(prob)
+        
         
         # it might be possible to increase the performance (C code?)
         
@@ -262,22 +272,24 @@ setMethod("getSampleProb",
                     SIMPLIFY=FALSE, USE.NAMES=FALSE)  # unique groups in strata
                 N <- sapply(uniqueGroupSplit, length)  # number of groups in strata
                 if(length(size) > 1) size <- rep(size, length.out=length(N))
-                if(!is.null(prob)) {
-                    Ngroup <- sum(N)  # number of groups
-                    if(length(prob) != Ngroup) {
-                        stop(gettextf("'prob' must be a vector of length %i", Ngroup))
+                if(useProb) {
+                    Ngroups <- sum(N)  # number of groups
+                    if(length(prob) != Ngroups) {
+                        stop(gettextf("'prob' must be a vector of length %i", Ngroups))
                     }
                     strataValues <- unsplit(1:length(split), x[, design])
-                    iGroup <- unsplit(iGroupSplit, strataValues)
-                    probSplit <- split(prob, strataValues[iGroup])
+                    iGroups <- unsplit(iGroupSplit, strataValues)
+                    probSplit <- split(prob, strataValues[iGroups])
                     names(probSplit) <- NULL
-                    if(!is.null(size)) {
+                    if(useSize) {
                         probSplit <- mapply(inclusionProb, probSplit, size, 
                             SIMPLIFY=FALSE, USE.NAMES=FALSE)
                     } 
                     # reconstruct inclustion probabilities for individuals
-                    prob <- mapply(unsplit, probSplit, groupSplit,  # from groups 
-                        SIMPLIFY=FALSE, USE.NAMES=FALSE)            # in each stratum
+#                    prob <- mapply(unsplit, probSplit, groupSplit,  # from groups 
+#                        SIMPLIFY=FALSE, USE.NAMES=FALSE)            # in each stratum
+                    prob <- mapply(expand, probSplit, groupSplit,           # from groups in 
+                        uniqueGroupSplit, SIMPLIFY=FALSE, USE.NAMES=FALSE)  # each stratum
                     prob <- unsplit(prob, strataValues)  # from strata
                 } else prob <- unsplit(size/N, x[, design])
             } else {
@@ -285,17 +297,17 @@ setMethod("getSampleProb",
                 # stratified sampling of individuals
                 # groups may have been collected
                 # ----------------------------------
-                if(!is.null(size)) {
+                if(useSize) {
                     split <- getStrataSplit(x, design)
                     N <- getStratumSizes(split, USE.NAMES=FALSE)  # stratum sizes
                     if(length(size) > 1) size <- rep(size, length.out=length(N))
                 }
-                if(!is.null(prob)) {
+                if(useProb) {
                     Ntotal <- nrow(x)  # size of population
                     if(length(prob) != Ntotal) {
                         stop(gettextf("'prob' must be a vector of length %i", Ntotal))
                     }
-                    if(!is.null(size)) {
+                    if(useSize) {
                         probSplit <- lapply(split, function(s) prob[s])
                         probSplit <- mapply(inclusionProb, probSplit, size, 
                             SIMPLIFY=FALSE, USE.NAMES=FALSE)
@@ -310,14 +322,18 @@ setMethod("getSampleProb",
                 # no stratification, group sampling
                 # ---------------------------------
                 groups <- x[, grouping]  # group of each observation
-                N <- length(unique(groups))  # number of groups
+                if(useProb) {
+                    uniqueGroups <- unique(groups)  # unique groups
+                    N <- length(uniqueGroups)  # number of groups
+                } else N <- length(unique(groups))  # number of groups
                 if(length(size) > 1) size <- size[1]
-                if(!is.null(prob)) {
+                if(useProb) {
                     if(length(prob) != N) {
                         stop(gettextf("'prob' must be a vector of length %i", N))
                     }
-                    if(!is.null(size)) prob <- inclusionProb(prob, size)
-                    prob <- unsplit(prob, groups)
+                    if(useSize) prob <- inclusionProb(prob, size)
+#                    prob <- unsplit(prob, groups)
+                    prob <- expand(prob, groups, uniqueGroups)
                 } else prob <- rep.int(size/N, length(groups))
             } else {
                 # ------------------------------------------
@@ -326,11 +342,11 @@ setMethod("getSampleProb",
                 # ------------------------------------------
                 N <- nrow(x)  # size of population
                 if(length(size) > 1) size <- size[1]
-                if(!is.null(prob)) {
+                if(useProb) {
                     if(length(prob) != N) {
                         stop(gettextf("'prob' must be a vector of length %i", N))
                     }
-                    if(!is.null(size)) prob <- inclusionProb(prob, size)
+                    if(useSize) prob <- inclusionProb(prob, size)
                 } else prob <- rep.int(size/N, N)
                 if(collectGroups) groups <- x[, grouping]  # group of each observation
             }
@@ -345,7 +361,7 @@ setMethod("getSampleProb",
         # return final inclustion probabilities
         prob
     })
-    
+
 # ---------------------------------------
 
 ### TODO: get two-stage sample setup using control class "TwoStageControl"

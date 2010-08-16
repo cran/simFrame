@@ -1,3 +1,9 @@
+Changes in simFrame version 0.3.1
+
+    + Bugfix in 'clusterSetup' solved problem with inclusion probabilities for 
+      group sampling if the data are not sorted according to the groups.
+
+
 Changes in simFrame version 0.3
 
     + Control class "NAControl" now allows to specify an auxiliary variable 
