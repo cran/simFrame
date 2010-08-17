@@ -201,8 +201,10 @@ getValues(x)
     \code{"\linkS4class{DataControl}"} and 
     \code{"\linkS4class{DCARContControl}"}).}
   \item{dots}{additional arguments to be passed to a function (see 
-    \code{"\linkS4class{DataControl}"}, \code{"\linkS4class{DARContControl}"} 
-    and \code{"\linkS4class{DCARContControl}"}).}
+    \code{"\linkS4class{DataControl}"}, \code{"\linkS4class{DARContControl}"}, 
+    \code{"\linkS4class{DCARContControl}"}, 
+    \code{"\linkS4class{SampleControl}"} and 
+    \code{"\linkS4class{SimControl}"}).}
   \item{epsilon}{a numeric vector giving contamination levels (see 
     \code{"\linkS4class{VirtualContControl}"}).}
   \item{fun}{a function (see 
@@ -297,20 +299,15 @@ getValues(x)
   \item{\code{signature(x = "SimResults")}}{}
   }
 }
-%\section{Methods for function getDesign}{
-%  \describe{
-%  \item{\code{signature(x = "SampleControl")}}{}
-%  \item{\code{signature(x = "SampleSetup")}}{}
-%  \item{\code{signature(x = "SimControl")}}{}
-%  }
-%}
-%\section{Methods for function setDesign}{
-%  \describe{
-%  \item{\code{signature(x = "SampleControl")}}{}
-%  \item{\code{signature(x = "SimControl")}}{}
-%  }
-%}
-\section{Methods for functions getDesign and setDesign}{
+\section{Methods for function getDesign}{
+  \describe{
+  \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "SimControl")}}{}
+  \item{\code{signature(x = "SimResults")}}{}
+  \item{\code{signature(x = "Strata")}}{}
+  }
+}
+\section{Methods for function setDesign}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
