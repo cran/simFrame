@@ -20,8 +20,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.3.2\cr
-Date: \tab 2010-08-17\cr
+Version: \tab 0.3.3\cr
+Date: \tab 2010-08-18\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
@@ -34,13 +34,9 @@ Index:
 BasicVector-class       Class "BasicVector"
 ContControl             Create contamination control objects
 ContControl-class       Class "ContControl"
-DARContControl          Create objects of class "DARContControl"
 DARContControl-class    Class "DARContControl"
-DCARContControl         Create objects of class "DCARContControl"
 DCARContControl-class   Class "DCARContControl"
-DataControl             Create objects of class "DataControl"
 DataControl-class       Class "DataControl"
-NAControl               Create objects of class "NAControl"
 NAControl-class         Class "NAControl"
 NumericMatrix-class     Class "NumericMatrix"
 OptCall-class           Class "OptCall"
@@ -51,17 +47,11 @@ OptNAControl-class      Class "OptNAControl"
 OptNumeric-class        Class "OptNumeric"
 OptSampleControl-class
                         Class "OptSampleControl"
-SampleControl           Create objects of class "SampleControl"
 SampleControl-class     Class "SampleControl"
-SampleSetup             Create objects of class "SampleSetup"
 SampleSetup-class       Class "SampleSetup"
-SimControl              Create objects of class "SimControl"
 SimControl-class        Class "SimControl"
-SimResults              Create objects of class "SimResults"
 SimResults-class        Class "SimResults"
-Strata                  Create objects of class "Strata"
 Strata-class            Class "Strata"
-SummarySampleSetup      Create objects of class "SummarySampleSetup"
 SummarySampleSetup-class
                         Class "SummarySampleSetup"
 VirtualContControl-class
