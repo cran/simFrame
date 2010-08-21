@@ -82,7 +82,7 @@ setMethod("runSimulation",
         tmp <- lapply(r, modelSimulation, x, control)
         # construct results
         getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
-            design=design, dataControl=x, nrep=nrep, control=control)
+            design=design, dataControl=x, control=control)
     })
 
 
@@ -127,8 +127,8 @@ setMethod("runSimulation",
                 simplify=FALSE)
         }
         # construct results
-        getSimResults(tmp, reps=1:nrep, epsilon=epsilon, NArate=NArate, 
-            design=design, nrep=nrep, control=control)
+        getSimResults(tmp, reps=1:nrep, epsilon=epsilon, 
+            NArate=NArate, design=design, control=control)
     })
 
 
@@ -532,8 +532,9 @@ getSimResultStrata <- function(x, legend) {
 # contruct object to be returned
 getSimResults <- function(x, samples = numeric(), reps = numeric(), 
         epsilon = numeric(), NArate = numeric(), design = character(), 
-        dataControl = NULL, sampleControl = NULL, nrep = numeric(), control) {
+        dataControl = NULL, sampleControl = NULL, control) {
     nsam <- length(samples)
+    .nrep <- if(missing(reps)) numeric() else length(reps)
     nrep <- length(reps)
     neps <- length(epsilon)
     origNArate <- NArate
@@ -574,5 +575,5 @@ getSimResults <- function(x, samples = numeric(), reps = numeric(),
     # return results
     SimResults(values=values, add=add, design=design, colnames=nam, 
         epsilon=epsilon, NArate=origNArate, dataControl=dataControl, 
-        sampleControl=sampleControl, nrep=nrep, control=control)
+        sampleControl=sampleControl, nrep=.nrep, control=control)
 }

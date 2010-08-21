@@ -85,7 +85,7 @@ setMethod("clusterRunSimulation",
         tmp <- parLapply(cl, r, modelSimulation, x, control)
         # construct results
         getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
-            design=design, dataControl=x, nrep=nrep, control=control)
+            design=design, dataControl=x, control=control)
     })
 
 
@@ -145,6 +145,6 @@ setMethod("clusterRunSimulation",
                 function(i) manageSimulation(x, control))
         }
         # construct results
-        getSimResults(tmp, reps=r, epsilon=epsilon, NArate=NArate, 
-            design=design, nrep=nrep, control=control)
+        getSimResults(tmp, reps=r, epsilon=epsilon, 
+            NArate=NArate, design=design, control=control)
     })

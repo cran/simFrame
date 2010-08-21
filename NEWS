@@ -1,3 +1,10 @@
+Changes in simFrame version 0.3.4
+
+    + If 'nrep' is not supplied in 'runSimulation' or 'clusterRunSimulation', 
+      the corresponding slot of the resulting "SimResults" objects now contains 
+      a zero-length numeric vector instead of 0.
+
+
 Changes in simFrame version 0.3.3
 
     + Changes in help file for package.

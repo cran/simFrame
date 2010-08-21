@@ -1,6 +1,6 @@
 Package: simFrame
-Version: 0.3.3
-Date: 2010-08-18
+Version: 0.3.4
+Date: 2010-08-21
 Title: Simulation framework
 Author: Andreas Alfons
 Maintainer: Andreas Alfons <alfons@statistik.tuwien.ac.at>
@@ -10,6 +10,6 @@ Suggests: laeken, mvtnorm, robCompositions, sampling
 Description: A general framework for statistical simulation.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2010-08-18 07:31:42 UTC; andi
+Packaged: 2010-08-21 09:04:48 UTC; andi
 Repository: CRAN
-Date/Publication: 2010-08-18 14:35:36
+Date/Publication: 2010-08-22 07:57:59
