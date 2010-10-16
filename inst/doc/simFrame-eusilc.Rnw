@@ -642,13 +642,13 @@ a researcher's toolbox.
 %\section*{Computational details}
 %All computations in this paper were performed using \pkg{Sweave} 
 %\citep{leisch02a, leisch02b} with \proglang{R} version~\Sexpr{getRversion()} 
-%and \pkg{simFrame} version~0.3. 
+%and \pkg{simFrame} version~\Sexpr{sessionInfo()$otherPkgs$simFrame$Version}. 
 %%Nevertheless, the package is continuously being developed, it is recommended 
 %%to use the most recent version.
 %The most recent version of the package is always available from CRAN (the 
 %Comprehensive \proglang{R} Archive Network, \url{http://cran.R-project.org}), 
-%and (an up-to-date version of) this paper is also included as a package 
-%vignette \citep{leisch03}.
+%and (a slightly modified and up-to-date version of) this paper is also included 
+%as a package vignette \citep{leisch03}.
 
 
 %% ----------

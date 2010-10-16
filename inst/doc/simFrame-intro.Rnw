@@ -400,7 +400,7 @@ setNArate(nc, c(0.01, 0.03, 0.05, 0.07, 0.09))
 getNArate(nc)
 @
 
-Note that if no method \code{setFoo} is available, the slot is not supposed to 
+Note that if no method \code{setFoo()} is available, the slot is not supposed to 
 be changed by the user. However, as already mentioned in Section~\ref{sec:S4}, 
 \proglang{R} allows every slot to be modified with the~\code{@} operator or the 
 \code{slot()} function.
@@ -1027,8 +1027,8 @@ defined. There are some requirements for the function:
   \code{values} (a numeric vector) and \code{add} (additional results of any 
   class, e.g., statistical models). Note that the latter is computationally 
   slightly more expensive.
-  \item A \code{data.frame} is passed to fun in every simulation run. The 
-  corresponding argument must be called \code{x}.
+  \item A \code{data.frame} is passed to \code{fun} in every simulation run. 
+  The corresponding argument must be called \code{x}.
   \item If comparisons with the original data need to be made, e.g., for 
   evaluating the quality of imputation methods, the function should have an 
   argument called \code{orig}.
@@ -1220,7 +1220,7 @@ In order to ensure reproducibility of the simulation results, random number
 streams should be used. The \proglang{R} packages \pkg{rlecuyer} 
 \citep{lecuyer02, sevcikova09} and \pkg{rsprng} \citep{mascagni00, li10} for 
 creating random number streams are supported by \pkg{snow} via the function 
-\code{clusterSetupRNG}. It should be noted that the package \pkg{rstream} 
+\code{clusterSetupRNG()}. It should be noted that the package \pkg{rstream} 
 \citep{lecuyer05,leydold10} provides a faster connection to the \proglang{C} 
 library by \cite{lecuyer02} than \pkg{rlecuyer}. Support in \pkg{simFrame} may 
 thus be beneficial and may be added as a future task.
@@ -1886,7 +1886,7 @@ investigated.
 %\section*{Computational details}
 %All computations in this paper were performed using \pkg{Sweave} 
 %\citep{leisch02a, leisch02b} with \proglang{R} version~\Sexpr{getRversion()} 
-%and \pkg{simFrame} version~0.3. 
+%and \pkg{simFrame} version~\Sexpr{sessionInfo()$otherPkgs$simFrame$Version}. 
 %%Nevertheless, the package is continuously being developed, it is recommended 
 %%to use the most recent version.
 %The most recent version of the package is always available from CRAN (the 

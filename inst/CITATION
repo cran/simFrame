@@ -1,17 +1,16 @@
-citHeader("To cite package 'simFrame' in publications use:")
+package <- "simFrame"
+citHeader(paste("To cite package '", package, "' in publications use:", sep=""))
 
-desc <- packageDescription("simFrame")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
+desc <- packageDescription(package)
+title <- paste(package, desc$Title, sep=": ")
 vers <- paste("R package version", desc$Version)
-title <- paste("simFrame:", desc$Title)
-url <- "http://CRAN.R-project.org/package=simFrame"
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
+author <- desc$Author
+authorList <- unlist(strsplit(author, "(, and |, | and )"))
+authorList <- do.call(personList, lapply(authorList, as.person))
+url <- paste("http://CRAN.R-project.org/package=", package, sep="")
+textVersion <- paste(author, " (", year, "). ", 
+    title, ". ", vers, ". URL ", url, ".", sep="")
 
-citEntry(entry="Manual",
-         title = title,
-         author = personList(as.person("Andreas Alfons")),
-         year = year,
-         note = vers,
-         url = url,
-         textVersion =
-         paste("Andreas Alfons (", year, "). ", title, 
-             ". ", vers, ". URL ", url, ".", sep=""))
+citEntry(entry="Manual", title = title, author = authorList, 
+    year = year, note = vers, url = url, textVersion = textVersion)
