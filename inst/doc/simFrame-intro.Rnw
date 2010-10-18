@@ -90,8 +90,8 @@ different simulation designs.
 
 %% load package 'simFrame'
 <<echo=FALSE, results=hide>>=
-options(width=75)
-library(simFrame)
+options(width=75, prompt="R> ")
+library("simFrame")
 set.seed(1234)
 @
 
@@ -140,8 +140,8 @@ Statistical simulation is frequently divided into two categories:
 \emph{design-based} and \emph{model-based} simulation. Design-based simulation 
 is popular in survey statistics, as samples are drawn repeatedly from a finite 
 population. The close-to-reality approach thereby uses the true sampling 
-designs for real-life surveys such as EU-SILC (\emph{European Union Statistics 
-on Income and Living Conditions}). In every iteration, certain estimators such 
+designs for real-life surveys such as EU-SILC (European Union Statistics 
+on Income and Living Conditions). In every iteration, certain estimators such 
 as indicators are computed or other statistical procedures such as imputation 
 are applied. The obtained values can then be compared to the true population 
 values where appropriate. Nevertheless, since real population data is only in 
@@ -281,8 +281,8 @@ distribute them among partners is much easier than ensuring that a large number
 of \proglang{R} scripts with big chunks of bespoke code are comparable.
 
 As a motivational example, consider a research project in which researchers~A 
-and~B investigate a specific survey such as EU-SILC (\emph{European Union 
-Statistics on Income and Living Conditions}). Researcher~A focuses on robust 
+and~B investigate a specific survey such as EU-SILC (European Union 
+Statistics on Income and Living Conditions). Researcher~A focuses on robust 
 estimation of certain indicators, while researcher~B tries to improve the data 
 quality with more suitable imputation and outlier detection methods. The aim of 
 the project is to evaluate the developed methods with extensive simulation 
@@ -314,8 +314,8 @@ supply a control object for inserting contamination and one for inserting
 missing values to investigate robust imputation methods or outlier detection 
 methods for incomplete data.
 
-One example for such research projects is the project AMELI (\emph{Advanced 
-Methodology of European Laeken Indicators},
+One example for such research projects is the project AMELI (Advanced 
+Methodology of European Laeken Indicators,
 \url{http://ameli.surveystatistics.net}), in the course of which the package 
 \pkg{simFrame} has been developed.
 
@@ -323,12 +323,12 @@ Methodology of European Laeken Indicators},
 
 
 \subsection{UML class diagram}
-The \emph{Unified Modeling Language} \citep[UML; e.g.,][]{fowler03} is a 
-standardized modeling language used in software engineering. It provides 
-a set of graphical tools to model object-oriented programs. A \emph{class 
-diagram} visualizes the structure of a software system by showing classes, 
-attributes, and relationships between the classes. Figure~\ref{fig:UML} shows 
-a slightly simplified \proglang{UML} class diagram of \pkg{simFrame}.
+The Unified Modeling Language (UML) \citep{fowler03} is a standardized modeling 
+language used in software engineering. It provides a set of graphical tools to 
+model object-oriented programs. A \emph{class diagram} visualizes the structure 
+of a software system by showing classes, attributes, and relationships between 
+the classes. Figure~\ref{fig:UML} shows a slightly simplified \proglang{UML} 
+class diagram of \pkg{simFrame}.
 
 \begin{figure}
 \begin{center}
@@ -487,20 +487,20 @@ simple control class already implemented in \pkg{simFrame} is
 Figure~\ref{fig:UML}):
 
 \begin{description}
-  \item[\code{size}:] the number of observations to be generated.
-  \item[\code{distribution}:] a function for generating the data, e.g., 
+  \item[\code{size}:] The number of observations to be generated.
+  \item[\code{distribution}:] A function for generating the data, e.g., 
   \code{rmvnorm} in package \pkg{mvtnorm} \citep{genz09, genz10} for data 
   following a multivariate normal distribution. It should take a positive 
   integer as its first argument (the slot \code{size} will be passed) and 
   return an object that can be coerced to a \code{data.frame}.
-  \item[\code{dots}:] additional arguments to be passed to \code{distribution}.
+  \item[\code{dots}:] Additional arguments to be passed to \code{distribution}.
 \end{description}
 
 The following example demonstrates how to define a control object for 
 generating data from a multivariate normal distribution.
 
 <<keep.source=TRUE>>=
-library(mvtnorm)
+library("mvtnorm")
 dc <- DataControl(size = 10, distribution = rmvnorm, dots = 
     list(mean = rep(0, 2), sigma = matrix(c(1, 0.5, 0.5, 1), 2, 2)))
 @
@@ -603,12 +603,12 @@ available to set up multiple samples. It returns an object of class
 slots are shown in Figure~\ref{fig:UML}):
  
 \begin{description}
-  \item[\code{indices}:] a list containing the indices of the sampled 
+  \item[\code{indices}:] A list containing the indices of the sampled 
   observations.
-  \item[\code{prob}:] a numeric vector giving the inclusion probabilities for 
+  \item[\code{prob}:] A numeric vector giving the inclusion probabilities for 
   every observation of the population. These are necessary to compute the 
   sample weights.
-  \item[\code{seed}:] a list containing the seeds of the random number 
+  \item[\code{seed}:] A list containing the seeds of the random number 
   generator before and after setting up the samples, respectively.
 \end{description}
 
@@ -653,20 +653,20 @@ In addition to the inherited slot \code{k}, the class \code{SampleControl}
 consists of the following slots (see also Figure~\ref{fig:UML}):
 
 \begin{description}
-  \item[\code{design}:] a vector specifying variables to be used for 
+  \item[\code{design}:] A vector specifying variables to be used for 
   stratification.
-  \item[\code{grouping}:] a character string, single integer or logical vector 
+  \item[\code{grouping}:] A character string, single integer or logical vector 
   specifying a variable to be used for grouping.
-  \item[\code{collect}:] a logical indicating whether groups should be 
+  \item[\code{collect}:] A logical indicating whether groups should be 
   collected after sampling individuals or sampled directly. The default is to 
   sample groups directly.
-  \item[\code{fun}:] a function to be used for sampling (the default is simple 
+  \item[\code{fun}:] A function to be used for sampling (the default is simple 
   random sampling). For stratified sampling, this function is applied to each 
   stratum.
-  \item[\code{size}:] the sample size. For stratified sampling, this should be 
+  \item[\code{size}:] The sample size. For stratified sampling, this should be 
   a numeric vector.
-  \item[\code{prob}:] a numeric vector giving probability weights.
-  \item[\code{dots}:] additional arguments to be passed to \code{fun}.
+  \item[\code{prob}:] A numeric vector giving probability weights.
+  \item[\code{dots}:] Additional arguments to be passed to \code{fun}.
 \end{description}
 
 Currently, the functions \code{srs} and \code{ups} are implemented in 
@@ -715,7 +715,7 @@ more detailed example). Afterwards, the first of the two set up samples is
 drawn from the population.
 
 <<>>=
-data(eusilcP)
+data("eusilcP")
 set <- setup(eusilcP, size = 10, k = 2)
 summary(set)
 set
@@ -763,10 +763,10 @@ of the available control classes for contamination. The basic virtual class
 contains the following slots:
 
 \begin{description}
-  \item[\code{target}:] a character vector defining the variables to be 
+  \item[\code{target}:] A character vector defining the variables to be 
   contaminated, or \code{NULL} to contaminate all variables (except the 
   additional ones generated internally).
-  \item[\code{epsilon}:] a numeric vector giving the contamination levels to be 
+  \item[\code{epsilon}:] A numeric vector giving the contamination levels to be 
   used in the simulation.
 \end{description}
 
@@ -778,9 +778,9 @@ properties, another virtual class called \code{ContControl} is implemented.
 These are the additional slots: 
 
 \begin{description}
-  \item[\code{grouping}:] a character string specifying a variable to be used for 
+  \item[\code{grouping}:] A character string specifying a variable to be used for 
   grouping.
-  \item[\code{aux}:] a character string specifying an auxiliary variable whose 
+  \item[\code{aux}:] A character string specifying an auxiliary variable whose 
   values are used as probability weights for selecting the items (observations 
   or groups) to be contaminated.
 \end{description}
@@ -789,29 +789,29 @@ The distribution of the contaminated data in simulation experiments may or may
 not depend on the original values. Similar to model-based data generation (see 
 Section~\ref{sec:imp-data}), the control class \code{DCARContControl} supports 
 specifying a distribution function for generating the contamination. DCAR 
-stands for \emph{distributed completely at random} and corresponds to 
-contamination independent of the original data. If a variable for grouping is 
-specified, the same values are used for all observations in the same group. 
+stands for distributed completely at random and corresponds to contamination 
+independent of the original data. If a variable for grouping is specified, the 
+same values are used for all observations in the same group. 
 \code{DCARContControl} extends \code{ContControl} by the following slots:
 
 \begin{description}
-  \item[\code{distribution}:] a function for generating the data for the 
+  \item[\code{distribution}:] A function for generating the data for the 
   contamination, e.g., \code{rmvnorm} in package \pkg{mvtnorm} for a 
   multivariate normal distribution.
-  \item[\code{dots}:] additional arguments to be passed to \code{distribution}.
+  \item[\code{dots}:] Additional arguments to be passed to \code{distribution}.
 \end{description}
 
 On the other hand, contamination based on the original values is realized by 
-the control class \code{DARContControl}. DAR thereby stands for 
-\emph{distributed at random}. An arbitrary function may be used to modify the 
-data. To do so, the original values of the observations to be contaminated are
-passed as its first argument. Thus the following slots are available in 
-addition to those from \code{ContControl}:
+the control class \code{DARContControl}. DAR thereby stands for distributed at 
+random. An arbitrary function may be used to modify the data. To do so, the 
+original values of the observations to be contaminated are passed as its first 
+argument. Thus the following slots are available in addition to those from 
+\code{ContControl}:
 
 \begin{description}
-  \item[\code{fun}:] a function generating the values of the contaminated data 
+  \item[\code{fun}:] A function generating the values of the contaminated data 
   based on the original values.
-  \item[\code{dots}:] additional arguments to be passed to \code{fun}.
+  \item[\code{dots}:] Additional arguments to be passed to \code{fun}.
 \end{description}
 
 In the following example, a control object of class \code{DARContControl} is 
@@ -861,11 +861,11 @@ estimates.
 Three mechanisms generating missing values are commonly distinguished in the 
 literature addressing missing data \citep[e.g.,][]{little02}:
 \begin{itemize}
-  \item \emph{Missing completely at random} (MCAR): the probability of 
+  \item Missing completely at random (MCAR): The probability of 
   missingness does not depend on any observed or missing information.
-  \item \emph{Missing at random} (MAR): the probability of missingness depends 
+  \item Missing at random (MAR): The probability of missingness depends 
   on the observed information.
-  \item \emph{Missing not at random} (MNAR): the probability of missingness 
+  \item Missing not at random (MNAR): The probability of missingness 
   depends on the missing information itself and may also depend on the observed 
   information.
 \end{itemize}
@@ -894,10 +894,10 @@ Figure~\ref{fig:UML}). This virtual class is the basis for extensions by the
 user (see Section~\ref{sec:ext-NA}). It consists of the following slots:
 
 \begin{description}
-  \item[\code{target}:] a character vector specifying the variables into which 
+  \item[\code{target}:] A character vector specifying the variables into which 
   missing values should be inserted, or \code{NULL} to insert missing values 
   into all variables (except the additional ones generated internally).
-  \item[\code{NArate}:] a numeric vector or matrix giving the missing value 
+  \item[\code{NArate}:] A numeric vector or matrix giving the missing value 
   rates to be used in the simulation.
 \end{description}
 
@@ -912,8 +912,8 @@ whole groups to be set as missing rather than individual values.
 %Moreover, three mechanisms generating missing values are commonly 
 %distinguished in the literature addressing missing data \citep[see, 
 %e.g.,][]{little02}:
-%\emph{missing completely at random} (MCAR), \emph{missing at random} (MAR) and 
-%\emph{missing not at random} (MNAR). 
+%missing completely at random (MCAR), missing at random (MAR) and missing not 
+%at random (MNAR). 
 %To account for MAR or MNAR situations instead of MCAR, an auxiliary variable of 
 %probability weights may be specified. 
 To account for MAR or MNAR situations instead of MCAR, an auxiliary variable of 
@@ -926,15 +926,15 @@ scenarios are implemented in the framework. These are the additional slots of
 \code{NAControl}:
 
 \begin{description}
-  \item[\code{grouping}:] a character string specifying a variable to be used 
+  \item[\code{grouping}:] A character string specifying a variable to be used 
   for grouping.
-%  \item[\code{aux}:] a character string specifying an auxiliary variable whose 
+%  \item[\code{aux}:] A character string specifying an auxiliary variable whose 
 %  values are used as probability weights for selecting the values to be set as 
 %  missing.
-  \item[\code{aux}:] a character vector specifying auxiliary variables whose 
+  \item[\code{aux}:] A character vector specifying auxiliary variables whose 
   values are used as probability weights for selecting the values to be set as 
   missing in the respective target variables.
-  \item[\code{intoContamination}:] a logical indicating whether missing values 
+  \item[\code{intoContamination}:] A logical indicating whether missing values 
   should also be inserted into contaminated observations. The default is to 
   insert missings only into non-contaminated observations.
 \end{description}
@@ -1000,16 +1000,16 @@ runs are performed. These are the slots of \code{SimControl} (see also
 Figure~\ref{fig:UML}):
 
 \begin{description}
-  \item[\code{contControl}:] a control object for contamination.
-  \item[\code{NAControl}:] a control object for inserting missing values.
-  \item[\code{design}:] a character vector specifying variables to be used for 
+  \item[\code{contControl}:] A control object for contamination.
+  \item[\code{NAControl}:] A control object for inserting missing values.
+  \item[\code{design}:] A character vector specifying variables to be used for 
   splitting the data into domains and performing the simulations on every 
   domain.
-  \item[\code{fun}:] the function to be applied in the simulation runs.
-  \item[\code{dots}:] additional arguments to be passed to \code{fun}.
-  \item[\code{SAE}:] a logical indicating whether small area estimation 
+  \item[\code{fun}:] The function to be applied in the simulation runs.
+  \item[\code{dots}:] Additional arguments to be passed to \code{fun}.
+  \item[\code{SAE}:] A logical indicating whether small area estimation 
   \citep[see, e.g.,][]{rao03} will be used in the simulation.
-%\item[\code{saveSeed}:] a logical indicating whether the seed of the random 
+%\item[\code{saveSeed}:] A logical indicating whether the seed of the random 
 %  number generator should be saved before and after each simulation run.
 \end{description}
 
@@ -1069,15 +1069,15 @@ individual simulation runs are combined and packed into an object of class
 complete list):
 
 \begin{description}
-\item[\code{values}:] a \code{data.frame} containing the simulation results.
-\item[\code{add}:] a list containing additional simulation results, e.g., 
+\item[\code{values}:] A \code{data.frame} containing the simulation results.
+\item[\code{add}:] A list containing additional simulation results, e.g., 
   statistical models.
-\item[\code{epsilon}:] the contamination levels used in the simulation.
-\item[\code{NArate}:] the missing value rates used in the simulation.
-%\item[\code{seed}:] if requested, a list containing the seeds of the random 
+\item[\code{epsilon}:] The contamination levels used in the simulation.
+\item[\code{NArate}:] The missing value rates used in the simulation.
+%\item[\code{seed}:] If requested, a list containing the seeds of the random 
 %  number generator. The $i-th$ and $(i+1)-th$ component give the states before 
 %  and after the $i-th$ successful simulation run, respectively.
-\item[\code{seed}:] a list containing the seeds of the random number generator 
+\item[\code{seed}:] A list containing the seeds of the random number generator 
   before and after the simulation, respectively.
 \end{description}
 
@@ -1097,7 +1097,7 @@ reproducibility of the results.
 
 %<<>>=
 %## load data
-%data(eusilcP)
+%data("eusilcP")
 %## control object for sampling
 %sc <- SampleControl(size = 500, k = 50)
 %## control object for contamination
@@ -1113,7 +1113,7 @@ reproducibility of the results.
 %results <- runSimulation(eusilcP, sc, contControl = cc, fun = sim)
 %@
 <<keep.source=TRUE>>=
-data(eusilcP)
+data("eusilcP")
 sc <- SampleControl(size = 500, k = 50)
 cc <- DARContControl(target = "eqIncome", epsilon = 0.02, 
     fun = function(x) x * 25)
@@ -1180,7 +1180,7 @@ simulation results from the simple illustrative example in the previous
 section. Further examples for the visualization of simulation results are given 
 in Section~\ref{sec:use}.
 
-\begin{figure}
+\begin{figure}[t!]
 \begin{center}
 \setkeys{Gin}{width=0.45\textwidth}
 <<fig=TRUE, echo=FALSE, width=3.5, height=3.5>>=
@@ -1250,10 +1250,10 @@ paper.
 
 
 \subsection{Design-based simulation} \label{sec:use-design}
-The \emph{Laeken} indicators are a set of indicators used to measure social 
-cohesion in member states of the European Union and other European countries 
+The Laeken indicators are a set of indicators used to measure social cohesion 
+in member states of the European Union and other European countries 
 \citep[cf.][]{atkinson02}. Most of the Laeken indicators are computed from 
-EU-SILC (\emph{European Union Statistics on Income and Living Conditions}) 
+EU-SILC (European Union Statistics on Income and Living Conditions) 
 survey data. Synthetic EU-SILC data based on the Austrian sample from 2006 is 
 included in \pkg{simFrame}. 
 %This data set consists of $25\,000$ households, with data available on the 
@@ -1270,11 +1270,11 @@ frequently used measure of inequality and is widely studied in the literature.
 In the case of EU-SILC, the Gini coefficient is calculated based on an 
 equivalized household income. In this example, the standard estimation method 
 \citep{EU-SILC04} is compared to two semiparametric approaches, which fit a 
-\emph{Pareto} distribution \citep[e.g.,][]{kleiber03} to the upper tail of the 
-data. \citet{hill75} introduced the maximum-likelihood estimator, which is 
-thus referred to as \emph{Hill} estimator. The \emph{partial density component} 
-estimator \citep[PDC;][]{vandewalle07}, on the other hand, follows a robust 
-approach. These methods are available in the \proglang{R} package \pkg{laeken} 
+Pareto distribution \citep[e.g.,][]{kleiber03} to the upper tail of the data. 
+\citet{hill75} introduced the maximum-likelihood estimator, which is thus 
+referred to as Hill estimator. The partial density component (PDC) estimator 
+\citep{vandewalle07}, on the other hand, follows a robust approach. These 
+methods are available in the \proglang{R} package \pkg{laeken} 
 \citep{alfons10b}. A more detailed discussion on Pareto tail modeling with 
 application to selected Laeken indicators can be found in \citet{alfons10f}.
 
@@ -1286,18 +1286,18 @@ the seed of the random number generator is set for reproducibility of the
 results. 
 
 <<results=hide>>=
-library(laeken)
-data(eusilcP)
+library("laeken")
+data("eusilcP")
 set.seed(12345)
 @
 
-Next, $50$ samples of 1500 households are set up. Stratified sampling by 
+Next, $100$ samples of 1500 households are set up. Stratified sampling by 
 regions combined with sampling of whole households rather than individuals can 
 be achieved with one command.
 
 <<>>=
 set <- setup(eusilcP, design = "region", grouping = "hid", 
-    size = c(75, 250, 250, 125, 200, 225, 125, 150, 100), k = 50)
+    size = c(75, 250, 250, 125, 200, 225, 125, 150, 100), k = 100)
 #    size = c(75, 250, 250, 125, 200, 225, 125, 150, 100), k=3)
 @
 
@@ -1359,7 +1359,7 @@ plot of the simulation results (see Figure~\ref{fig:Gini}).
 tv <- simSapply(eusilcP, "gender", function(x) gini(x$eqIncome)$value)
 @
 
-\begin{figure}
+\begin{figure}[t!]
 \begin{center}
 \setkeys{Gin}{width=0.9\textwidth}
 <<fig=TRUE, echo=FALSE, width=7, height=4>>=
@@ -1429,8 +1429,8 @@ Before any computations are performed, the required packages are loaded and the
 seed of the random number generator is set for reproducibility.
 
 <<results=hide>>=
-library(robCompositions)
-library(mvtnorm)
+library("robCompositions")
+library("mvtnorm")
 set.seed(12345)
 @
 
@@ -1505,7 +1505,7 @@ aggregate(results)
 @
 
 
-\begin{figure}
+\begin{figure}[t!]
 \begin{center}
 \setkeys{Gin}{width=0.45\textwidth}
 <<fig=TRUE, echo=FALSE, width=3.5, height=3.5>>=
@@ -1561,9 +1561,9 @@ All the functions and packages required for the computations (including
 
 <<results=hide>>=
 clusterEvalQ(cl, {
-        library(simFrame)
-        library(robCompositions)
-        library(mvtnorm)
+        library("simFrame")
+        library("robCompositions")
+        library("mvtnorm")
     })
 @
 
@@ -1625,7 +1625,7 @@ head(results)
 aggregate(results)
 @
 
-\begin{figure}
+\begin{figure}[t!]
 \begin{center}
 \setkeys{Gin}{width=0.45\textwidth}
 <<fig=TRUE, echo=FALSE, width=3.5, height=3.5>>=
@@ -1711,7 +1711,7 @@ such an extension.
 %  \label{fig:mdc}
 %\end{figure}
 
-\begin{figure}[h]
+\begin{figure}[b!]
   \centering
   \begin{minipage}{0.98\textwidth}
     \lstinputlisting{snippets/myDataGeneration.R}
