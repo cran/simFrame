@@ -52,6 +52,12 @@ draw(x, setup, \dots)
   }
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{\link{setup}}, \code{"\linkS4class{SampleSetup}"}, 
   \code{"\linkS4class{SampleControl}"}, 

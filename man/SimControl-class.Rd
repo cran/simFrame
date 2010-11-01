@@ -153,6 +153,12 @@ Objects can be created by calls of the form \code{new("SimControl", \dots)} or
   \code{vignette("simFrame-intro")} to view this vignette.
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{\link{runSimulation}}, \code{"\linkS4class{SimResults}"}
 }

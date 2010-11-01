@@ -16,6 +16,9 @@
 
 %% an abstract and keywords
 \Abstract{
+This package vignette is a slightly modified version of \citet{alfons10d}, 
+published in the \emph{Journal of Statistical Software}.
+
 Simulation studies are widely used by statisticians to gain insight into the 
 quality of developed methods. Usually some guidelines regarding, e.g., 
 simulation designs, contamination, missing data models or evaluation criteria 
@@ -181,6 +184,8 @@ simulation %that extend the example from Section~\ref{sec:use-design}
 are given in a supplementary paper. How to extend the framework is outlined in 
 Section~\ref{sec:ext}. Finally, Section~\ref{sec:conclusion} contains 
 concluding remarks and gives an outlook on future developments.
+
+\paragraph{}
 
 
 %% ----------

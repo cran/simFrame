@@ -104,12 +104,22 @@ Class \code{"\linkS4class{OptContControl}"}, by class "ContControl", distance 3.
 }
 \author{Andreas Alfons}
 \references{
-\enc{Béguin}{Beguin}, C. and Hulliger, B. (2008) The BACON-EEM algorithm for 
-multivariate outlier detection in incomplete survey data. \emph{Survey 
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+
+Alfons, A., Templ, M. and Filzmoser, P. (2010) Contamination Models in the \R 
+Package \pkg{simFrame} for Statistical Simulation. In Aivazian, S., Filzmoser, 
+P. and Kharin, Y. (editors) \emph{Computer Data Analysis and Modeling: Complex 
+Stochastic Data and Systems}, volume 2, 178--181. Minsk. ISBN 978-985-476-848-9.
+
+\enc{Béguin}{Beguin}, C. and Hulliger, B. (2008) The BACON-EEM Algorithm for 
+Multivariate Outlier Detection in Incomplete Survey Data. \emph{Survey 
 Methodology}, \bold{34}(1), 91--103.
 
-Hulliger, B. and Schoch, T. (2009) Robust multivariate imputation with survey 
-data. \emph{57th Session of the International Statistical Institute}, Durban.
+Hulliger, B. and Schoch, T. (2009) Robust Multivariate Imputation with Survey 
+Data. \emph{57th Session of the International Statistical Institute}, Durban.
 }
 \seealso{
   \code{"\linkS4class{DARContControl}"}, \code{"\linkS4class{ContControl}"}, 

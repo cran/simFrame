@@ -20,8 +20,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.3.6\cr
-Date: \tab 2010-10-18\cr
+Version: \tab 0.3.7\cr
+Date: \tab 2010-11-01\cr
 Depends: \tab R (>= 2.8.0), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
@@ -108,5 +108,11 @@ Further information is available in the following vignettes:
 Andreas Alfons
 
 Maintainer: Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}
+}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
 }
 \keyword{package}

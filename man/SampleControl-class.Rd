@@ -142,6 +142,12 @@ Class \code{"\linkS4class{OptSampleControl}"}, by class "VirtualSampleControl", 
   \code{setMethod} already exist.
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{"\linkS4class{VirtualSampleControl}"}, 
   \code{"\linkS4class{SampleSetup}"}, \code{\link{setup}}, \code{\link{draw}}

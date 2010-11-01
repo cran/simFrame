@@ -62,6 +62,12 @@ simBwplot(x, \dots)
   supplied.
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}, 
   \code{\link[lattice:xyplot]{bwplot}}, \code{"\linkS4class{SimResults}"}

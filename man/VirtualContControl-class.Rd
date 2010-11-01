@@ -69,6 +69,12 @@ Class \code{"\linkS4class{OptContControl}"}, directly.
   \code{vignette("simFrame-intro")} to view this vignette.
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{"\linkS4class{DCARContControl}"}, \code{"\linkS4class{DARContControl}"}, 
   \code{"\linkS4class{ContControl}"}, \code{\link{contaminate}}

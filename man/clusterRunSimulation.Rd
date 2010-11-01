@@ -117,20 +117,25 @@ clusterRunSimulation(cl, x, setup, nrep, control,
 }
 \author{Andreas Alfons}
 \references{
-L'Ecuyer, P., Simard, R., Chen E and Kelton, W. (2002) An object-oriented 
-random-number package with many long streams and substreams. \emph{Operations 
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+
+L'Ecuyer, P., Simard, R., Chen E and Kelton, W. (2002) An Object-Oriented 
+Random-Number Package with Many Long Streams and Substreams. \emph{Operations 
 Research}, \bold{50}(6), 1073--1075.
 
-Mascagni, M. and Srinivasan, A. (2000) Algorithm 806: \code{SPRNG}: a scalable 
-library for pseudorandom number generation. \emph{ACM Transactions on 
+Mascagni, M. and Srinivasan, A. (2000) Algorithm 806: \code{SPRNG}: A Scalable 
+Library for Pseudorandom Number Generation. \emph{ACM Transactions on 
 Mathematical Software}, \bold{26}(3), 436--461.
 
-Rossini, A., Tierney L. and Li, N. (2007) Simple parallel statistical computing 
+Rossini, A., Tierney L. and Li, N. (2007) Simple Parallel Statistical Computing 
 in \R. \emph{Journal of Computational and Graphical Statistics}, \bold{16}(2), 
 399--420.
 
-Tierney, L., Rossini, A. and Li, N. (2009) \code{snow}: A parallel computing 
-framework for the \R system. \emph{International Journal of Parallel 
+Tierney, L., Rossini, A. and Li, N. (2009) \code{snow}: A Parallel Computing 
+Framework for the \R System. \emph{International Journal of Parallel 
 Programming}, \bold{37}(1), 78--90.
 }
 \seealso{

@@ -133,6 +133,12 @@ constructor functions are not supposed to be called by the user.
   and \code{control} were added in version 0.3.
 }
 \author{Andreas Alfons}
+\references{
+Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 
+Statistical Simulation: The \R Package \pkg{simFrame}. \emph{Journal of 
+Statistical Software}, \bold{37}(3), 1--36. URL 
+\url{http://www.jstatsoft.org/v37/i03/}.
+}
 \seealso{
   \code{\link{runSimulation}}, \code{\link{simBwplot}}, 
   \code{\link{simDensityplot}}, \code{\link{simXyplot}}
