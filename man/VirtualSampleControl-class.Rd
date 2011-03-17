@@ -44,6 +44,10 @@ Class \code{"\linkS4class{OptSampleControl}"}, directly.
       x = "data.frame", setup = "VirtualSampleControl", nrep = "missing", 
       control = "SimControl")}: run a simulation experiment on a \code{snow} 
       cluster.}
+    \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
+      x = "VirtualDataControl", setup = "VirtualSampleControl", 
+      nrep = "numeric", control = "SimControl")}: run a simulation experiment 
+      on a \code{snow} cluster.}
     \item{\code{draw}}{\code{signature(x = "data.frame", 
       setup = "VirtualSampleControl")}: draw a sample.}
     \item{\code{head}}{\code{signature(x = "VirtualSampleControl")}: currently 
@@ -51,6 +55,12 @@ Class \code{"\linkS4class{OptSampleControl}"}, directly.
     \item{\code{length}}{\code{signature(x = "VirtualSampleControl")}: get the 
       number of samples to be set up.}
     \item{\code{runSimulation}}{\code{signature(x = "data.frame", 
+      setup = "VirtualSampleControl", nrep = "missing", 
+      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
+      setup = "VirtualSampleControl", nrep = "numeric", 
+      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
       setup = "VirtualSampleControl", nrep = "missing", 
       control = "SimControl")}: run a simulation experiment.}
     \item{\code{show}}{\code{signature(object = "VirtualSampleControl")}: print 
@@ -75,8 +85,8 @@ Statistical Software}, \bold{37}(3), 1--36. URL
 \url{http://www.jstatsoft.org/v37/i03/}.
 }
 \seealso{
-  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{SampleSetup}"}, 
-  \code{\link{setup}}, \code{\link{draw}}
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{TwoStageControl}"}, 
+  \code{"\linkS4class{SampleSetup}"}, \code{\link{setup}}, \code{\link{draw}}
 }
 \examples{
 showClass("VirtualSampleControl")

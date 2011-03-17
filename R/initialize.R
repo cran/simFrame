@@ -22,6 +22,15 @@ setMethod("initialize", "SampleControl",
         callNextMethod()  # call method for superclass (or default)
     })
 
+# two-stage sample control
+setMethod("initialize", "TwoStageControl", 
+    function(.Object, ...) {
+        args <- list(...)
+        # use simple random sampling as default
+        if(is.null(args$fun)) setFun(.Object, list(srs, srs))
+        callNextMethod()  # call method for superclass (or default)
+    })
+
 # contamination distributed completely at random (DCAR)
 setMethod("initialize", "DCARContControl", 
     function(.Object, ...) {

@@ -6,6 +6,7 @@
 \alias{setup,data.frame,character-method}
 \alias{setup,data.frame,missing-method}
 \alias{setup,data.frame,SampleControl-method}
+\alias{setup,data.frame,TwoStageControl-method}
 
 \title{Set up multiple samples}
 \description{
@@ -97,7 +98,7 @@ Statistical Software}, \bold{37}(3), 1--36. URL
 }
 \seealso{
   \code{\link{simSample}}, \code{\link{draw}}, 
-  \code{"\linkS4class{SampleControl}"}, 
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{TwoStageControl}"}, 
   \code{"\linkS4class{VirtualSampleControl}"}, 
   \code{"\linkS4class{SampleSetup}"}
 }

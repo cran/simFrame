@@ -18,7 +18,7 @@ simSample(x, design = character(), grouping = character(),
 }
 \arguments{
   \item{x}{the \code{data.frame} to sample from.}
-  \item{design}{a character, logical or numeric vector specifying the variables 
+  \item{design}{a character, logical or numeric vector specifying variables 
     (columns) to be used for stratified sampling.}
   \item{grouping}{a character string, single integer or logical vector 
     specifying a grouping variable (column) to be used for sampling whole 
@@ -37,7 +37,9 @@ simSample(x, design = character(), grouping = character(),
     (observations or groups) to sample.  For stratified sampling, 
     a vector of non-negative integers, each giving the number of items 
     to sample from the corresponding stratum.}
-  \item{prob}{an optional numeric vector giving the probability weights.}
+  \item{prob}{an optional numeric vector giving the probability weights, or a 
+    character string or logical vector specifying a variable (column) that 
+    contains the probability weights.}
   \item{\dots}{additional arguments to be passed to \code{fun}.}
   \item{k}{a single positive integer giving the number of samples to be set 
     up.}

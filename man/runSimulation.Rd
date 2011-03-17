@@ -10,6 +10,8 @@
 \alias{runSimulation,data.frame,VirtualSampleControl,missing,SimControl-method}
 \alias{runSimulation,VirtualDataControl,missing,missing,SimControl-method}
 \alias{runSimulation,VirtualDataControl,missing,numeric,SimControl-method}
+\alias{runSimulation,VirtualDataControl,VirtualSampleControl,missing,SimControl-method}
+\alias{runSimulation,VirtualDataControl,VirtualSampleControl,numeric,SimControl-method}
 \alias{runSim}
 %% aliases to avoid confusion due to capitalization
 \alias{runsimulation}
@@ -33,13 +35,14 @@ runSim(\dots)
 \arguments{
   \item{x}{a \code{data.frame} (for design-based simulation or simulation based 
     on real data) or a control object for data generation inheriting from 
-    \code{"VirtualDataControl"} (for model-based simulation).}
+    \code{"VirtualDataControl"} (for model-based simulation or mixed simulation 
+    designs).}
   \item{setup}{an object of class \code{"SampleSetup"}, containing previously 
     set up samples, or a control class for setting up samples inheriting 
     from \code{"VirtualSampleControl"}.}
   \item{nrep}{a non-negative integer giving the number of repetitions of the 
-    simulation experiment (for model-based simulation or simulation based on 
-    real data).}
+    simulation experiment (for model-based simulation, mixed simulation designs 
+    or simulation based on real data).}
   \item{control}{a control object of class \code{"SimControl"}}    
   \item{contControl}{an object of a class inheriting from 
     \code{"VirtualContControl"}, controlling contamination in the simulation 
@@ -47,8 +50,8 @@ runSim(\dots)
   \item{NAControl}{an object of a class inheriting from 
     \code{"VirtualNAControl"}, controlling the insertion of missing values in 
     the simulation experiment.}
-  \item{design}{a character vector specifying the variables (columns) to be 
-    used for splitting the data into domains.  The simulations, including 
+  \item{design}{a character vector specifying variables (columns) to be used 
+    for splitting the data into domains.  The simulations, including 
     contamination and the insertion of missing values (unless \code{SAE=TRUE}), 
     are then performed on every domain.}
   \item{fun}{a function to be applied in each simulation run.}
@@ -113,6 +116,13 @@ runSim(\dots)
   \item{\code{x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
     control = "SimControl"}}{run a model-based simulation experiment with 
     repetitions.}
+  \item{\code{x = "VirtualDataControl", setup = "VirtualSampleControl", 
+    nrep = "missing", control = "SimControl"}}{run a simulation experiment 
+    using a mixed simulation design without repetitions (probably useless, but 
+    for completeness).}
+  \item{\code{x = "VirtualDataControl", setup = "VirtualSampleControl", 
+    nrep = "numeric", control = "SimControl"}}{run a simulation experiment 
+    using a mixed simulation design with repetitions.}
   }
 }
 \author{Andreas Alfons}

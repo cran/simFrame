@@ -8,6 +8,7 @@
 \alias{clusterRunSimulation,ANY,data.frame,SampleSetup,missing,SimControl-method}
 \alias{clusterRunSimulation,ANY,data.frame,VirtualSampleControl,missing,SimControl-method}
 \alias{clusterRunSimulation,ANY,VirtualDataControl,missing,numeric,SimControl-method}
+\alias{clusterRunSimulation,ANY,VirtualDataControl,VirtualSampleControl,numeric,SimControl-method}
 %% aliases to avoid confusion due to capitalization
 \alias{clusterrunsimulation}
 \alias{clusterRunsimulation}
@@ -31,13 +32,14 @@ clusterRunSimulation(cl, x, setup, nrep, control,
   \item{cl}{a \code{snow} cluster.}
   \item{x}{a \code{data.frame} (for design-based simulation or simulation based 
     on real data) or a control object for data generation inheriting from 
-    \code{"VirtualDataControl"} (for model-based simulation).}
+    \code{"VirtualDataControl"} (for model-based simulation or mixed simulation 
+    designs).}
   \item{setup}{an object of class \code{"SampleSetup"}, containing previously 
     set up samples, or a control class for setting up samples inheriting 
     from \code{"VirtualSampleControl"}.}
   \item{nrep}{a non-negative integer giving the number of repetitions of the 
-    simulation experiment (for model-based simulation or simulation based on 
-    real data).}
+    simulation experiment (for model-based simulation, mixed simulation designs 
+    or simulation based on real data).}
   \item{control}{a control object of class \code{"SimControl"}}    
   \item{contControl}{an object of a class inheriting from 
     \code{"VirtualContControl"}, controlling contamination in the simulation 
@@ -45,8 +47,8 @@ clusterRunSimulation(cl, x, setup, nrep, control,
   \item{NAControl}{an object of a class inheriting from 
     \code{"VirtualNAControl"}, controlling the insertion of missing values in 
     the simulation experiment.}
-  \item{design}{a character vector specifying the variables (columns) to be 
-    used for splitting the data into domains.  The simulations, including 
+  \item{design}{a character vector specifying variables (columns) to be used 
+    for splitting the data into domains.  The simulations, including 
     contamination and the insertion of missing values (unless \code{SAE=TRUE}), 
     are then performed on every domain.}
   \item{fun}{a function to be applied in each simulation run.}
@@ -113,6 +115,10 @@ clusterRunSimulation(cl, x, setup, nrep, control,
   \item{\code{cl = "ANY", x = "VirtualDataControl", setup = "missing", 
     nrep = "numeric", control = "SimControl"}}{run a model-based simulation 
     experiment with repetitions on a \code{snow} cluster.}
+  \item{\code{cl = "ANY", x = "VirtualDataControl", 
+    setup = "VirtualSampleControl", nrep = "numeric", 
+    control = "SimControl"}}{run a simulation experiment using a mixed 
+    simulation design with repetitions on a \code{snow} cluster.}
   }
 }
 \author{Andreas Alfons}

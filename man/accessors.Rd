@@ -35,16 +35,20 @@
 \alias{setDistribution-methods}
 \alias{getDots}
 \alias{getDots-methods}
+\alias{getDots,TwoStageControl-method}
 \alias{setDots}
 \alias{setDots-methods}
+\alias{setDots,TwoStageControl-method}
 \alias{getEpsilon}
 \alias{getEpsilon-methods}
 \alias{setEpsilon}
 \alias{setEpsilon-methods}
 \alias{getFun}
 \alias{getFun-methods}
+\alias{getFun,TwoStageControl-method}
 \alias{setFun}
 \alias{setFun-methods}
+\alias{setFun,TwoStageControl-method}
 \alias{getGrouping}
 \alias{getGrouping-methods}
 \alias{setGrouping}
@@ -75,8 +79,10 @@
 \alias{getNrep-methods}
 \alias{getProb}
 \alias{getProb-methods}
+\alias{getProb,TwoStageControl-method}
 \alias{setProb}
 \alias{setProb-methods}
+\alias{setProb,TwoStageControl-method}
 \alias{getSAE}
 \alias{getSAE-methods}
 \alias{setSAE}
@@ -87,8 +93,10 @@
 \alias{getSeed-methods}
 \alias{getSize}
 \alias{getSize-methods}
+\alias{getSize,TwoStageControl-method}
 \alias{setSize}
 \alias{setSize-methods}
+\alias{setSize,TwoStageControl-method}
 \alias{getSplit}
 \alias{getSplit-methods}
 \alias{getTarget}
@@ -131,14 +139,20 @@ setDesign(x, design)
 getDistribution(x)
 setDistribution(x, distribution)
 
-getDots(x)
-setDots(x, dots)
+getDots(x, \dots)
+setDots(x, dots, \dots)
+
+\S4method{getDots}{TwoStageControl}(x, stage = NULL)
+\S4method{setDots}{TwoStageControl}(x, dots, stage = NULL)
 
 getEpsilon(x)
 setEpsilon(x, epsilon)
 
-getFun(x)
-setFun(x, fun)
+getFun(x, \dots)
+setFun(x, fun, \dots)
+
+\S4method{getFun}{TwoStageControl}(x, stage = NULL)
+\S4method{setFun}{TwoStageControl}(x, fun, stage = NULL)
 
 getGrouping(x)
 setGrouping(x, grouping)
@@ -163,8 +177,11 @@ getNr(x)
 
 getNrep(x)
 
-getProb(x)
-setProb(x, prob)
+getProb(x, \dots)
+setProb(x, prob, \dots)
+
+\S4method{getProb}{TwoStageControl}(x, stage = NULL)
+\S4method{setProb}{TwoStageControl}(x, prob, stage = NULL)
 
 getSAE(x)
 setSAE(x, SAE)
@@ -173,8 +190,11 @@ getSampleControl(x)
 
 getSeed(x)
 
-getSize(x)
-setSize(x, size)
+getSize(x, \dots)
+setSize(x, size, \dots)
+
+\S4method{getSize}{TwoStageControl}(x, stage = NULL)
+\S4method{setSize}{TwoStageControl}(x, size, stage = NULL)
 
 getSplit(x)
 
@@ -195,7 +215,8 @@ getValues(x)
   \item{contControl}{an object of class \code{"\linkS4class{ContControl}"} (see 
     \code{"\linkS4class{SimControl}"}).}
   \item{design}{a character vector specifying columns to be used for 
-    stratification (see \code{"\linkS4class{SampleControl}"} and 
+    stratification (see \code{"\linkS4class{SampleControl}"}, 
+    \code{"\linkS4class{TwoStageControl}"} and 
     \code{"\linkS4class{SimControl}"}).}
   \item{distribution}{a function generating data (see 
     \code{"\linkS4class{DataControl}"} and 
@@ -203,16 +224,20 @@ getValues(x)
   \item{dots}{additional arguments to be passed to a function (see 
     \code{"\linkS4class{DataControl}"}, \code{"\linkS4class{DARContControl}"}, 
     \code{"\linkS4class{DCARContControl}"}, 
-    \code{"\linkS4class{SampleControl}"} and 
+    \code{"\linkS4class{SampleControl}"}, 
+    \code{"\linkS4class{TwoStageControl}"} and 
     \code{"\linkS4class{SimControl}"}).}
   \item{epsilon}{a numeric vector giving contamination levels (see 
     \code{"\linkS4class{VirtualContControl}"}).}
   \item{fun}{a function (see 
-    \code{"\linkS4class{DARContControl}"}, \code{"\linkS4class{SampleControl}"} 
-    and \code{"\linkS4class{SimControl}"}).}
+    \code{"\linkS4class{DARContControl}"}, 
+    \code{"\linkS4class{SampleControl}"}, 
+    \code{"\linkS4class{TwoStageControl}"} and 
+    \code{"\linkS4class{SimControl}"}).}
   \item{grouping}{a character string specifying a grouping variable (see 
-    \code{"\linkS4class{ContControl}"}, \code{"\linkS4class{NAControl}"} and 
-     \code{"\linkS4class{SampleControl}"}).}
+    \code{"\linkS4class{ContControl}"}, \code{"\linkS4class{NAControl}"}, 
+     \code{"\linkS4class{SampleControl}"} and 
+     \code{"\linkS4class{TwoStageControl}"}).}
   \item{intoContamination}{a logical indicating whether missing values should 
     also be inserted into contaminated observations (see 
     \code{"\linkS4class{NAControl}"}).}
@@ -223,15 +248,23 @@ getValues(x)
   \item{NArate}{a numeric vector or matrix giving missing value rates (see 
     \code{"\linkS4class{VirtualNAControl}"}).}
   \item{prob}{a numeric vector giving probability weights (see 
-    \code{"\linkS4class{SampleControl}"}).}
+    \code{"\linkS4class{SampleControl}"} and 
+    \code{"\linkS4class{TwoStageControl}"}).}
   \item{SAE}{a logical indicating whether small area estimation will be used in 
     the simulation experiment (see \code{"\linkS4class{SimControl}"}).}
   \item{size}{a non-negative integer or a vector of non-negative integers (see 
-    \code{"\linkS4class{DataControl}"} and 
-    \code{"\linkS4class{SampleControl}"}).}
+    \code{"\linkS4class{DataControl}"}, \code{"\linkS4class{SampleControl}"} 
+    and \code{"\linkS4class{TwoStageControl}"}).}
+  \item{stage}{optional integer; for certain slots of 
+    \code{"\linkS4class{TwoStageControl}"}, this allows to access or modify 
+    only the list component for the specified stage.  Use \code{1} for the 
+    first stage and \code{2} for the second stage.}
   \item{target}{a character vector specifying target columns (see 
     \code{"\linkS4class{VirtualContControl}"} and 
     \code{"\linkS4class{VirtualNAControl}"}).}
+  \item{\dots}{only used to allow for the \code{stage} argument in accessor and 
+    mutator methods for \code{"\linkS4class{TwoStageControl}"}. Otherwise no 
+    additional arguments are available.}
 }
 \value{
   For accessor functions, the corresponding slot of \code{x} is returned.
@@ -302,6 +335,7 @@ getValues(x)
 \section{Methods for function getDesign}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
   \item{\code{signature(x = "SimResults")}}{}
   \item{\code{signature(x = "Strata")}}{}
@@ -310,6 +344,7 @@ getValues(x)
 \section{Methods for function setDesign}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
   }
 }
@@ -325,6 +360,7 @@ getValues(x)
   \item{\code{signature(x = "DARContControl")}}{}
   \item{\code{signature(x = "DCARContControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
   }
 }
@@ -358,6 +394,7 @@ getValues(x)
   \describe{
   \item{\code{signature(x = "DARContControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "SimControl")}}{}
   }
 }
@@ -381,6 +418,7 @@ getValues(x)
   \item{\code{signature(x = "ContControl")}}{}
   \item{\code{signature(x = "NAControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   }
 }
 \section{Methods for function getIndices}{
@@ -432,12 +470,14 @@ getValues(x)
 \section{Methods for function getProb}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "SampleSetup")}}{}
   }
 }
 \section{Methods for function setProb}{
   \describe{
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   }
 }
 \section{Methods for functions getSAE and setSAE}{
@@ -460,6 +500,7 @@ getValues(x)
   \describe{
   \item{\code{signature(x = "DataControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   \item{\code{signature(x = "Strata")}}{}
   \item{\code{signature(x = "SummarySampleSetup")}}{}
   }
@@ -468,6 +509,7 @@ getValues(x)
   \describe{
   \item{\code{signature(x = "DataControl")}}{}
   \item{\code{signature(x = "SampleControl")}}{}
+  \item{\code{signature(x = "TwoStageControl")}}{}
   }
 }
 \section{Methods for function getSplit}{
@@ -500,6 +542,8 @@ getNArate(nc)
 
 setNArate(nc, c(0.01, 0.03, 0.05, 0.07, 0.09))
 getNArate(nc)
+
+% TODO: examples for "TwoStageControl"
 }
 \keyword{classes}
 \keyword{methods}

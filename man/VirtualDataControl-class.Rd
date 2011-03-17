@@ -27,6 +27,10 @@ Class \code{"\linkS4class{OptDataControl}"}, directly.
       x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
       control = "SimControl")}: run a simulation experiment on a \code{snow} 
       cluster.}
+    \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
+      x = "VirtualDataControl", setup = "VirtualSampleControl", 
+      nrep = "numeric", control = "SimControl")}: run a simulation experiment 
+      on a \code{snow} cluster.}
     \item{\code{head}}{\code{signature(x = "VirtualContControl")}: currently 
       returns the object itself.}
     \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
@@ -35,6 +39,12 @@ Class \code{"\linkS4class{OptDataControl}"}, directly.
     \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
       setup = "missing", nrep = "missing", control = "SimControl")}: run a 
       simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
+      setup = "VirtualSampleControl", nrep = "numeric", 
+      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
+      setup = "VirtualSampleControl", nrep = "missing", 
+      control = "SimControl")}: run a simulation experiment.}
     \item{\code{summary}}{\code{signature(object = "VirtualContControl")}: 
       currently returns the object itself.}
     \item{\code{tail}}{\code{signature(x = "VirtualContControl")}: currently 

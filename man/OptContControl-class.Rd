@@ -17,7 +17,7 @@
   A virtual Class: No objects may be created from it.
 }
 \section{Methods}{
-No methods defined with class "OptContControl" in the signature.
+No methods defined with class \code{"OptContControl"} in the signature.
 }
 \section{UML class diagram}{
   A slightly simplified UML class diagram of the framework can be found in 

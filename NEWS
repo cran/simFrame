@@ -1,3 +1,23 @@
+Changes in simFrame version 0.4
+
+    + Implemented 'runSimulation' and 'clusterRunSimulation' methods for mixed 
+      simulation designs.
+    
+    + Added control class "TwoStageControl" and corresponding 'setup' and 
+      'clusterSetup' methods for two-stage sampling.
+        
+    + Probability weights or inclusion probabilities for unequal probability 
+      sampling can now be supplied by specifying a variable of the population 
+      data.
+    
+    + Using Rcpp now to incorporate C++ instead of C code.
+    
+    + Added functions 'brewer', 'midzuno' and 'tille' for Brewer, Midzuno and 
+      Tille sampling, respectively (corresponding to 'UPbrewer', 'UPmidzuno' 
+      and 'UPtille' from package 'sampling', but faster C++ implementation).
+
+
+
 Changes in simFrame version 0.3.7
 
     + Added JSS paper to references in help files and vignettes.

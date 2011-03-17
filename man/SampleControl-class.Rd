@@ -34,7 +34,7 @@ or \code{SampleControl(\dots)}.
 }
 \section{Slots}{
   \describe{
-    \item{\code{design}:}{Object of class \code{"BasicVector"} specifying the 
+    \item{\code{design}:}{Object of class \code{"BasicVector"} specifying 
       variables (columns) to be used for stratified sampling.}
     \item{\code{grouping}:}{Object of class \code{"BasicVector"} specifying a 
       grouping variable (column) to be used for sampling whole groups rather 
@@ -47,14 +47,17 @@ or \code{SampleControl(\dots)}.
       sampled individuals are collected and added to the sample.  If no 
       grouping variable is specified, this is ignored.}
     \item{\code{fun}:}{Object of class \code{"function"} to be used for 
-      sampling (defaults to \code{\link{srs}}). It should return a vector 
+      sampling (defaults to \code{\link{srs}}).  It should return a vector 
       containing the indices of the sampled items (observations or groups).}
     \item{\code{size}:}{Object of class \code{"OptNumeric"}; an optional 
       non-negative integer giving the number of items (observations or groups) 
-      to sample.  For stratified sampling, a vector of non-negative integers, 
-      each giving the number of items to sample from the corresponding stratum.}
-    \item{\code{prob}:}{Object of class \code{"OptNumeric"}; an optional 
-      numeric vector giving the probability weights.}
+      to sample.  In case of stratified sampling, a vector of non-negative 
+      integers, each giving the number of items to sample from the 
+      corresponding stratum, may be supplied.}
+    \item{\code{prob}:}{Object of class \code{"OptBasicVector"}; an optional 
+      numeric vector giving the probability weights, or a character string or 
+      logical vector specifying a variable (column) that contains the 
+      probability weights.}
     \item{\code{dots}:}{Object of class \code{"list"} containing additional 
       arguments to be passed to \code{fun}.}
     \item{\code{k}:}{Object of class \code{"numeric"}; a single positive 
@@ -150,7 +153,8 @@ Statistical Software}, \bold{37}(3), 1--36. URL
 }
 \seealso{
   \code{"\linkS4class{VirtualSampleControl}"}, 
-  \code{"\linkS4class{SampleSetup}"}, \code{\link{setup}}, \code{\link{draw}}
+  \code{"\linkS4class{TwoStageControl}"}, \code{"\linkS4class{SampleSetup}"}, 
+  \code{\link{setup}}, \code{\link{draw}}
 }
 \examples{
 data(eusilcP)

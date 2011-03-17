@@ -11,13 +11,14 @@ importFrom(utils, head, tail)
 
 # S3 functions
 export(
+    brewer,
 #    clusterAssign,
     ContControl,
     DARContControl,
     DCARContControl,
     DataControl,
     inclusionProb,
-#    midzuno,
+    midzuno,
     NAControl,
     runSim,
     SampleControl, 
@@ -26,11 +27,11 @@ export(
 #    SimResult, 
     SimResults,
     SummarySampleSetup, 
-#    TwoStageControl,
+    TwoStageControl,
     simSample,
     Strata,
     srs,
-#    tille,
+    tille,
     ups
 )
 
@@ -43,6 +44,7 @@ exportClasses(
     DataControl,
     NAControl,
     NumericMatrix,
+    OptBasicVector,
     OptCall,
     OptCharacter,
     OptContControl,
@@ -57,7 +59,7 @@ exportClasses(
     SimResults,
     Strata,
     SummarySampleSetup,
-#    TwoStageControl,
+    TwoStageControl,
     VirtualContControl,
     VirtualDataControl,
     VirtualNAControl,

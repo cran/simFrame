@@ -7,6 +7,7 @@
 
 setClassUnion("BasicVector", c("character", "logical", "numeric"))
 setClassUnion("NumericMatrix", c("numeric", "matrix"))
+setClassUnion("OptBasicVector", c("NULL", "BasicVector"))
 setClassUnion("OptCall", c("NULL", "call"))
 setClassUnion("OptCharacter", c("NULL", "character"))
 setClassUnion("OptNumeric", c("NULL", "numeric"))
@@ -51,16 +52,46 @@ setClass("VirtualSampleControl",
 
 setClassUnion("OptSampleControl", c("NULL", "VirtualSampleControl"))
 
-# sampling according to function 'simSample'
+# single-stage sampling
+#validSampleControlObject <- function(object) {
+#    l <- getSelectionLength(object@grouping)
+#    ok <- c(is.na(l) || l <= 1, 
+#        is.null(object@size) || length(object@size),
+#        is.null(object@prob) || length(object@prob), 
+#        length(object@collect) == 1)
+#    msg <- c("'grouping' must not specify more than one variable",
+#        "'size' must have positive length",
+#        "'prob' must have positive length", 
+#        "'collect' must be a single logical")
+#    if(all(ok)) TRUE
+#    else msg[!ok]
+#}
+#
+#setClass("SampleControl",
+#    representation(design = "BasicVector", grouping = "BasicVector", 
+#        collect = "logical", fun = "function", size = "OptNumeric", 
+#        prob = "OptNumeric", dots = "list"),
+#    prototype(design = character(), grouping = character(), 
+#        collect = FALSE, size = NULL, prob = NULL),
+#    contains = "VirtualSampleControl",
+#    validity = validSampleControlObject)
+
 validSampleControlObject <- function(object) {
-    l <- getSelectionLength(object@grouping)
-    ok <- c(is.na(l) || l <= 1, 
-        is.null(object@size) || length(object@size),
-        is.null(object@prob) || length(object@prob), 
+    lengthGrouping <- getSelectionLength(object@grouping)
+    prob <- object@prob
+    if(is(prob, "character") || is(prob, "logical")) {
+        lengthProb <- getSelectionLength(prob)
+        okProb <- is.na(lengthProb) || lengthProb <= 1
+        msgProb <- "'prob' must not specify more than one variable"
+    } else {
+        okProb <- is.null(prob) || length(prob)
+        msgProb <- "'prob' must have positive length"
+    }
+    ok <- c(is.na(lengthGrouping) || lengthGrouping <= 1, 
+        is.null(object@size) || length(object@size), okProb, 
         length(object@collect) == 1)
     msg <- c("'grouping' must not specify more than one variable",
-        "'size' must have positive length",
-        "'prob' must have positive length", 
+        "'size' must have positive length", msgProb, 
         "'collect' must be a single logical")
     if(all(ok)) TRUE
     else msg[!ok]
@@ -69,7 +100,7 @@ validSampleControlObject <- function(object) {
 setClass("SampleControl",
     representation(design = "BasicVector", grouping = "BasicVector", 
         collect = "logical", fun = "function", size = "OptNumeric", 
-        prob = "OptNumeric", dots = "list"),
+        prob = "OptBasicVector", dots = "list"),
     prototype(design = character(), grouping = character(), 
         collect = FALSE, size = NULL, prob = NULL),
     contains = "VirtualSampleControl",
@@ -77,6 +108,7 @@ setClass("SampleControl",
 
 SampleControl <- function(...) new("SampleControl", ...)
 
+# two-stage sampling
 #validTwoStageControlObject <- function(object) {
 #    l <- getSelectionLength(object@grouping)
 #    fun <- object@fun
@@ -89,34 +121,74 @@ SampleControl <- function(...) new("SampleControl", ...)
 #            all(sapply(size, function(s) is.null(s) || length(s) > 0)), 
 #        length(prob) == 2 && all(sapply(prob, is, "OptNumeric")) && 
 #            all(sapply(prob, function(p) is.null(p) || length(p) > 0)), 
-#        length(dots) == 2 && all(sapply(dots, is, "list")))
+#        length(dots) == 2 && 
+#            all(sapply(dots, function(x) is.null(x) || is(x, "list"))))
 #    msg <- c("'grouping' must specify either one or two variables",
-#        "'fun' must have length 2: each component should be a function", 
-#        "'size' must have length 2: each component should be NULL or a numeric vector of positive length",
-#        "'prob' must have length 2: each component should be NULL or a numeric vector of positive length",
-#        "'dots' must have length 2: each component should again be a list")
+#        "'fun' must have length 2 and each component should be a function", 
+#        "'size' must have length 2 and each component should be NULL or a numeric vector of positive length",
+#        "'prob' must have length 2 and each component should be NULL or a numeric vector of positive length",
+#        "'dots' must have length 2 and each component should again be a list")
 #    if(all(ok)) TRUE
 #    else msg[!ok]
 #}
-#
-#setClass("TwoStageControl",
-#    representation(design = "BasicVector", grouping = "BasicVector", 
-#        fun = "list", size = "list", 
-#        prob = "list", dots = "list"),
-#    prototype(design = character(), grouping = character(), 
-#        size = list(NULL, NULL), prob = list(NULL, NULL)),
-#    contains = "VirtualSampleControl",
-#    validity = validTwoStageControlObject)
-#
-#TwoStageControl <- function(design = character(), grouping, 
-#        fun = list(fun1, fun2), fun1 = srs, fun2 = srs, 
-#        size = list(size1, size2), size1 = NULL, size2 = NULL, 
-#        prob = list(prob1, prob2), prob1 = NULL, prob2 = NULL, 
-#        dots = list(dots1, dots2), dots1 = list(), dots2 = list(), 
-#        k = 1) {
-#    new("TwoStageControl", design=design, grouping=grouping, fun=fun, 
-#        size=size, prob=prob, dots=dots, k=k)
-#}
+
+validTwoStageControlObject <- function(object) {
+    l <- getSelectionLength(object@grouping)
+    fun <- object@fun
+    size <- object@size
+    prob <- object@prob
+    dots <- object@dots
+    ok <- c(is.na(l) || l %in% 1:2, 
+        length(fun) == 2 && all(sapply(fun, is, "function")), 
+        length(size) == 2 && all(sapply(size, is, "OptNumeric")) && 
+            all(sapply(size, function(s) is.null(s) || length(s) > 0)), 
+        length(prob) == 2 && all(sapply(prob, is, "OptBasicVector")) && 
+            all(sapply(prob, function(p) {
+                        if(is(p, "character") || is(p, "logical")) {
+                            lengthP <- getSelectionLength(p)
+                            is.na(lengthP) || lengthP <= 1
+                        } else is.null(p) || length(p) > 0
+                    })), 
+        length(dots) == 2 && 
+            all(sapply(dots, function(x) is.null(x) || is(x, "list"))))
+    msg <- c("'grouping' must specify either one or two variables",
+        "'fun' must have length 2 and each component should be a function", 
+        "'size' must have length 2 and each component should be NULL or a numeric vector of positive length",
+        "'prob' must have length 2 and each component should be NULL, a numeric vector of positive length, or must not specify more than one variable",
+        "'dots' must have length 2 and each component should again be a list")
+    if(all(ok)) TRUE
+    else msg[!ok]
+}
+
+setClass("TwoStageControl",
+    representation(design = "BasicVector", grouping = "BasicVector", 
+        fun = "list", size = "list", 
+        prob = "list", dots = "list"),
+    prototype(design = character(), grouping = character(), 
+        size = list(NULL, NULL), prob = list(NULL, NULL), 
+        dots = list(list(), list())),
+    contains = "VirtualSampleControl",
+    validity = validTwoStageControlObject)
+
+TwoStageControl <- function(..., fun1 = srs, fun2 = srs, 
+        size1 = NULL, size2 = NULL, prob1 = NULL, prob2 = NULL, 
+        dots1 = list(), dots2 = list()) {
+    # list components for the two stages can be supplied separately
+    args <- list(...)
+    if(is.null(args$fun) && !(missing(fun1) && missing(fun2))) {
+        args$fun <- list(fun1, fun2)
+    }
+    if(is.null(args$size) && !(missing(size1) && missing(size2))) {
+        args$size <- list(size1, size2)
+    }
+    if(is.null(args$prob) && !(missing(prob1) && missing(prob2))) {
+        args$prob <- list(prob1, prob2)
+    }
+    if(is.null(args$dots) && !(missing(dots1) && missing(dots2))) {
+        args$dots <- list(dots1, dots2)
+    }
+    do.call("new", c("TwoStageControl", args))
+}
 
 # ---------------------------------------
 

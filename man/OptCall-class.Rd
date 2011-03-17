@@ -13,7 +13,7 @@
   A virtual Class: No objects may be created from it.
 }
 \section{Methods}{
-No methods defined with class "OptCall" in the signature.
+No methods defined with class \code{"OptCall"} in the signature.
 }
 \author{Andreas Alfons}
 \examples{

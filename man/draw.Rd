@@ -60,7 +60,7 @@ Statistical Software}, \bold{37}(3), 1--36. URL
 }
 \seealso{
   \code{\link{setup}}, \code{"\linkS4class{SampleSetup}"}, 
-  \code{"\linkS4class{SampleControl}"}, 
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{TwoStageControl}"}, 
   \code{"\linkS4class{VirtualSampleControl}"}
 }
 \examples{

@@ -3,10 +3,13 @@
  *         Vienna University of Technology
  */
 
-#include <R.h>
-#include <Rinternals.h>
-#include <Rmath.h>
-#include <R_ext/Random.h>
+#ifndef _simFrame_H
+#define _simFrame_H
 
-SEXP inclusionProb(SEXP prob, SEXP size);
-//SEXP tille(SEXP prob, SEXP size);
+#include <Rcpp.h>
+
+RcppExport SEXP inclusionProb(SEXP prob, SEXP size);
+RcppExport SEXP tille(SEXP prob);
+RcppExport SEXP brewer(SEXP prob);
+
+#endif

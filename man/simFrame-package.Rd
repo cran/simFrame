@@ -20,11 +20,13 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.3.7\cr
-Date: \tab 2010-11-01\cr
-Depends: \tab R (>= 2.8.0), lattice, snow\cr
+Version: \tab 0.4\cr
+Date: \tab 2011-03-17\cr
+Depends: \tab R (>= 2.10.0), Rcpp (>= 0.8.6), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
+LinkingTo: \tab Rcpp\cr
+SystemRequirements: \tab GNU make\cr
 License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr
 }
@@ -39,6 +41,7 @@ DCARContControl-class   Class "DCARContControl"
 DataControl-class       Class "DataControl"
 NAControl-class         Class "NAControl"
 NumericMatrix-class     Class "NumericMatrix"
+OptBasicVector-class    Class "OptBasicVector"
 OptCall-class           Class "OptCall"
 OptCharacter-class      Class "OptCharacter"
 OptContControl-class    Class "OptContControl"
@@ -54,6 +57,7 @@ SimResults-class        Class "SimResults"
 Strata-class            Class "Strata"
 SummarySampleSetup-class
                         Class "SummarySampleSetup"
+TwoStageControl-class   Class "TwoStageControl"
 VirtualContControl-class
                         Class "VirtualContControl"
 VirtualDataControl-class

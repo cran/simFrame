@@ -1,9 +1,6 @@
 # ---------------------------------------
-# Authors: Andreas Alfons
-#          Vienna University of Technology
-#          
-#          Pablo Burgard
-#          University of Trier
+# Author: Andreas Alfons
+#         Vienna University of Technology
 # ---------------------------------------
 
 # simple random sampling
@@ -25,29 +22,39 @@ ups <- function(N, size, prob, replace = FALSE) {
     }
 }
 
-## Midzuno sampling
-#midzuno <- function(prob, eps = 1e-06) {
-#    prob <- 1 - tilleC(1 - prob, eps)  # call internal function for tille sampling
-#    which(prob >= 1 - eps)  # indices of sampled observations
-#}
-#
-## Tille sampling
-#tille <- function(prob, eps = 1e-06) {
-#    prob <- tilleC(prob, eps)  # call internal function
-#    which(prob >= 1 - eps)  # indices of sampled observations
-#}
-#
-## internal function for Tille sampling that calls the C function
-#tilleC <- function(prob, eps = 1e-06) {
-#    if(any(is.na(prob))) stop("there are missing values in 'prob'")
-#    list <- (prob > eps) & (prob < 1 - eps)  # indices of probabilities to be used
-#    probList <- prob[list]  # probabilities to be used
-#    N <- length(probList)
-#    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
-#    n <- sum(probList)  # number of observations to be sampled
-#    prob[list] <- .Call("tille", prob=probList, n=n)  # call C function
-#    prob
-#}
+# Midzuno sampling
+midzuno <- function(prob, eps = 1e-06) {
+    prob <- 1 - tilleCpp(1 - prob, eps)  # call internal function for tille sampling
+    which(prob >= 1 - eps)  # indices of sampled observations
+}
+
+# Tille sampling
+tille <- function(prob, eps = 1e-06) {
+    prob <- tilleCpp(prob, eps)  # call internal function
+    which(prob >= 1 - eps)  # indices of sampled observations
+}
+
+# internal function for Tille sampling that calls the C++ function
+tilleCpp <- function(prob, eps = 1e-06) {
+    if(any(is.na(prob))) stop("there are missing values in 'prob'")
+    list <- (prob > eps) & (prob < 1 - eps)  # indices of probabilities to be used
+    probList <- prob[list]  # probabilities to be used
+    N <- length(probList)
+    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
+    prob[list] <- .Call("tille", prob=probList)  # call C function
+    prob
+}
+
+# Brewer sampling
+brewer <- function(prob, eps = 1e-06) {
+    if(any(is.na(prob))) stop("there are missing values in 'prob'")
+    list <- (prob > eps) & (prob < 1 - eps)  # indices of probabilities to be used
+    probList <- prob[list]  # probabilities to be used
+    N <- length(probList)
+    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
+    prob[list] <- .Call("brewer", prob=probList)  # call C function
+    which(prob >= 1 - eps)  # indices of sampled observations
+}
 
 # for internal use (in 'contaminate' and 'setNA')
 samplex <- function(x, size, prob = NULL) {

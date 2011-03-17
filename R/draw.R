@@ -25,12 +25,12 @@ setMethod("draw",
             stop(gettextf("\"%s\" does not extend \"VirtualSampleControl\"", 
                     setup))
         }
-#        # temporary solution: constructor for class "TwoStageControl" has 
-#        # arguments that are no slots
-#        if(isTRUE(setup == "TwoStageControl")) setup <- TwoStageControl(...)
-#        else setup <- new(setup, ...)
-#        draw(x, setup)
-        draw(x, new(setup, ...))
+#        draw(x, new(setup, ...))
+        # temporary solution: constructor for class "TwoStageControl" has 
+        # arguments that aren't slots
+        if(isTRUE(setup == "TwoStageControl")) setup <- TwoStageControl(...)
+        else setup <- new(setup, ...)
+        draw(x, setup)
     })
 
 setMethod("draw", 

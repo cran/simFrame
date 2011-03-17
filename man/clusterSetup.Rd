@@ -6,6 +6,7 @@
 \alias{clusterSetup,ANY,data.frame,character-method}
 \alias{clusterSetup,ANY,data.frame,missing-method}
 \alias{clusterSetup,ANY,data.frame,SampleControl-method}
+\alias{clusterSetup,ANY,data.frame,TwoStageControl-method}
 %% aliases to avoid confusion due to capitalization
 \alias{clustersetup}
 \alias{ClusterSetup}
@@ -133,7 +134,8 @@ Programming}, \bold{37}(1), 78--90.
 \seealso{
   \code{\link[snow:snow-startstop]{makeCluster}}, 
   \code{\link[snow:snow-rand]{clusterSetupRNG}}, 
-  \code{\link{setup}}, \code{\link{draw}}, \code{"\linkS4class{SampleControl}"}, 
+  \code{\link{setup}}, \code{\link{draw}}, 
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{TwoStageControl}"}, 
   \code{"\linkS4class{VirtualSampleControl}"}, 
   \code{"\linkS4class{SampleSetup}"}
 }

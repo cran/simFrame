@@ -7,8 +7,8 @@
 setMethod("runSimulation", 
     signature(x = "ANY", setup = "ANY", nrep = "ANY", control = "missing"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         control <- SimControl(contControl=contControl, NAControl=NAControl, 
             design=design, fun=fun, dots=list(...), SAE=SAE)
         if(missing(setup)) {
@@ -26,8 +26,8 @@ setMethod("runSimulation",
     signature(x = "data.frame", setup = "VirtualSampleControl", 
         nrep = "missing", control = "SimControl"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         setup <- setup(x, setup)
         runSimulation(x, setup, control=control)
     })
@@ -36,8 +36,8 @@ setMethod("runSimulation",
     signature(x = "data.frame", setup = "SampleSetup", 
         nrep = "missing", control = "SimControl"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         # initializations
         nsam <- length(setup)
         design <- getDesign(control)
@@ -63,8 +63,8 @@ setMethod("runSimulation",
     signature(x = "VirtualDataControl", setup = "missing", 
         nrep = "numeric", control = "SimControl"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         # initializations
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
@@ -86,7 +86,33 @@ setMethod("runSimulation",
     })
 
 
-## TODO: mixed simulation designs
+## mixed simulation designs
+setMethod("runSimulation", 
+    signature(x = "VirtualDataControl", setup = "VirtualSampleControl", 
+        nrep = "numeric", control = "SimControl"),
+    function(x, setup, nrep, control, contControl = NULL, 
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
+        # initializations
+        if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
+        else if(length(nrep) > 1) nrep <- nrep[1]
+        nsam <- length(setup)
+        design <- getDesign(control)
+        if(nrep == 0 || nsam == 0) {  # nothing to do
+            return(SimResults(design=design, dataControl=x, 
+                    sampleControl=setup, nrep=nrep, control=control))
+        }
+        contControl <- getContControl(control)
+        epsilon <- if(is.null(contControl)) numeric() else getEpsilon(contControl)
+        NAControl <- getNAControl(control)
+        NArate <- if(is.null(NAControl)) numeric() else getNArate(NAControl)
+        # run the simulations (generate data repeatedly and draw samples)
+        r <- 1:nrep
+        tmp <- lapply(r, mixedSimulation, x, setup, control)
+        # construct results
+        getSimResults(tmp, 1:nsam, r, epsilon=epsilon, NArate=NArate, 
+            design=design, dataControl=x, sampleControl=setup, control=control)
+    })
 
 
 ## simulation with repetitions based on (possibly) real data
@@ -94,8 +120,8 @@ setMethod("runSimulation",
     signature(x = "data.frame", setup = "missing", 
         nrep = "numeric", control = "SimControl"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         # initializations
         if(length(nrep) == 0) stop("'nrep' must be a non-negative integer")
         else if(length(nrep) > 1) nrep <- nrep[1]
@@ -137,8 +163,8 @@ setMethod("runSimulation",
     signature(x = "data.frame", setup = "missing", 
         nrep = "missing", control = "SimControl"),
     function(x, setup, nrep, control, contControl = NULL, 
-            NAControl = NULL, design = character(), fun, ..., 
-            SAE = FALSE) {
+        NAControl = NULL, design = character(), fun, ..., 
+        SAE = FALSE) {
         runSimulation(x, nrep=1, control=control)
     })
 
@@ -150,10 +176,19 @@ setMethod("runSimulation",
         runSimulation(x, nrep=1, control=control)
     })
 
+setMethod("runSimulation",
+    signature(x = "VirtualDataControl", setup = "VirtualSampleControl",
+        nrep = "missing", control = "SimControl"),
+    function(x, setup, nrep, control, contControl = NULL, 
+        NAControl = NULL, design = character(), fun, ..., SAE = FALSE) {
+        runSimulation(x, setup, nrep=1, control=control)
+    })
 
-## these functions need to be in the namespace for parallel computing
+
+## these functions need to be available in the namespace for parallel computing
 
 designSimulation <- function(i, x, setup, control) {
+#    print(paste(Sys.time(), i, sep=": "))
     sam <- drawS3(x, setup, i)
     if(nrow(sam) == 0) return(getEmptyResults(control))
     design <- getDesign(control)
@@ -168,52 +203,6 @@ designSimulation <- function(i, x, setup, control) {
         }
     } else manageSimulation(sam, control)
 }
-
-### use an argument 'modify = c("sample", "population")' in the method for 
-### design based simulation (or something like that)
-### add contamination and nonresponse to population
-#designSimulationMP <- function(i, x, setup, control) {
-#    # initializations
-#    contControl <- getContControl(control)
-#    neps <- length(contControl)
-#    NAControl <- getNAControl(control)
-#    nNA <- length(NAControl)
-#    fun <- getFun(control)
-#    useOrig <- "orig" %in% argNames(fun)
-#    dots <- getDots(control)
-#    # get results
-#    if(neps) {
-#        if(nNA) {
-#            # contamination, missings
-#        } else {
-#            # contamination, no missings
-#            lapply(1:neps, 
-#                function(e) {
-#                    cx <- try(contaminate(x, contControl, e))
-#                    if(class(cx) == "try-error") {
-#                        # TODO
-#                    }
-#                    csam <- drawS3(cx, setup, i)
-#                    if(nrow(csam) == 0) return(list(values=numeric()))
-#                    ca <- as.call(c(fun, dots)
-#                    ca$x <- csam
-#                    if(useOrig) ca$orig <- draw(x, setup, i)
-#                    res <- eval(ca)
-#                    if(class(res) == "try-error") return(list(values=numeric()))
-#                    getSimResult(eval(ca))
-#                })
-#        }
-#    } else {
-#        if(nNA) {
-#            # no contamination, missings
-#        } else {
-#            # no contamination, no missings
-#            # this branch should be left out 
-#            #(no data modifications - use existing functions)
-#        }
-#        
-#    }
-#}
 
 # 'i' as first argument is necessary for parallel computing  with 'parLapply'
 modelSimulation <- function(i, x, control) {
@@ -230,6 +219,21 @@ modelSimulation <- function(i, x, control) {
             manageSimulationStrata(mdSpl, spl, control, leg)
         }
     } else manageSimulation(md, control)
+}
+
+mixedSimulation <- function(i, x, setup, control) {
+    nsam <- length(setup)
+    # generate data
+    md <- try(generate(x))
+    if(class(md) == "try-error") {
+        # return empty results for each sample
+        return(replicate(nsam, getEmptyResults(control), simplify=FALSE))
+    }
+    # set up samples (empty vector in case of error in one iteration)
+    setup <- setup(md, setup)
+    # run design-based simulations on the generated data with the set up samples
+    s <- 1:nsam
+    lapply(s, designSimulation, md, setup, control)
 }
 
 manageSimulation <- function(x, control) {
@@ -531,8 +535,8 @@ getSimResultStrata <- function(x, legend) {
 
 # contruct object to be returned
 getSimResults <- function(x, samples = numeric(), reps = numeric(), 
-        epsilon = numeric(), NArate = numeric(), design = character(), 
-        dataControl = NULL, sampleControl = NULL, control) {
+    epsilon = numeric(), NArate = numeric(), design = character(), 
+    dataControl = NULL, sampleControl = NULL, control) {
     nsam <- length(samples)
     .nrep <- if(missing(reps)) numeric() else length(reps)
     nrep <- length(reps)

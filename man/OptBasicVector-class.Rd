@@ -1,23 +1,21 @@
-\name{OptNAControl-class}
+\name{OptBasicVector-class}
 \Rdversion{1.1}
 \docType{class}
-\alias{OptNAControl-class}
+\alias{OptBasicVector-class}
 %% aliases to avoid confusion due to capitalization
-\alias{optNAControl-class}
-\alias{optnaControl-class}
-\alias{optNAcontrol-class}
-\alias{optnacontrol-class}
-\alias{OptnaControl-class}
-\alias{Optnacontrol-class}
-\alias{OptNAcontrol-class}
+\alias{optBasicVector-class}
+\alias{optbasicVector-class}
+\alias{optBasicvector-class}
+\alias{optbasicvector-class}
+\alias{OptbasicVector-class}
+\alias{Optsbasicvector-class}
+\alias{OptBasicvector-class}
 
-\title{Class "OptNAControl"}
+\title{Class "OptBasicVector"}
 \description{Virtual class used internally for convenience.}
-\section{Objects from the Class}{
-  A virtual Class: No objects may be created from it.
-}
+\section{Objects from the Class}{A virtual Class: No objects may be created from it.}
 \section{Methods}{
-No methods defined with class \code{"OptNAControl"} in the signature.
+No methods defined with class \code{"OptBasicVector"} in the signature.
 }
 \section{UML class diagram}{
   A slightly simplified UML class diagram of the framework can be found in 
@@ -27,9 +25,9 @@ No methods defined with class \code{"OptNAControl"} in the signature.
 }
 \author{Andreas Alfons}
 \seealso{
-  \code{"\linkS4class{SimControl}"}
+  \code{"\linkS4class{SampleControl}"}
 }
 \examples{
-showClass("OptNAControl")
+showClass("OptBasicVector")
 }
 \keyword{classes}

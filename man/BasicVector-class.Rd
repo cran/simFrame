@@ -12,6 +12,9 @@
 \section{Objects from the Class}{
   A virtual Class: No objects may be created from it.
 }
+\section{Extends}{
+Class \code{"\linkS4class{OptBasicVector}"}, directly.
+}
 \section{Methods}{
   \describe{
     \item{\code{getStrataLegend}}{\code{signature(x = "data.frame", 

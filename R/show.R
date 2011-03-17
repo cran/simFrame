@@ -30,6 +30,7 @@ setMethod("show", "VirtualSampleControl",
         print(getK(object))
     })
 
+# single-stage sampling
 setMethod("show", "SampleControl", 
     function(object) {
         callNextMethod()
@@ -41,7 +42,6 @@ setMethod("show", "SampleControl",
         }
         group <- getGrouping(object)
         if(length(group) > 0) {
-#            cat("\nGrouping variable for cluster sampling:\n")
             cat("\nGrouping variable giving sampling units:\n")
             print(group)
         }
@@ -49,7 +49,7 @@ setMethod("show", "SampleControl",
         if(!is.null(size)) {
             tmp <- "\nSize of the resulting samples"
             if(haveDesign) {
-                if(length(size) == 1) tmp <- paste(tmp, "for every stratum")
+                if(length(size) == 1) tmp <- paste(tmp, "for each stratum")
                 else tmp <- paste(tmp, "by stratum")
             }
             cat(paste(tmp, ":\n", sep=""))
@@ -57,7 +57,41 @@ setMethod("show", "SampleControl",
         }
     })
 
-# TODO: two-stage sample control
+# two-stage sampling
+setMethod("show", "TwoStageControl", 
+    function(object) {
+        callNextMethod()
+        design <- getDesign(object)
+        haveDesign <- length(design) > 0
+        if(haveDesign) {
+            cat("\nDesign variable(s) for stratified sampling:\n")
+            print(design)
+        }
+        group <- getGrouping(object)
+        haveSSUs <- length(group) > 1
+        if(haveSSUs) {
+            cat("\nGrouping variables giving PSUs and SSUs, respectively:\n")
+        } else cat("\nGrouping variable giving PSUs:\n")
+        print(group)
+        size <- getSize(object, stage=1)
+        if(!is.null(size)) {
+            tmp <- "\nNumber of PSUs to be sampled"
+            if(haveDesign) {
+                if(length(size) == 1) tmp <- paste(tmp, "for each stratum")
+                else tmp <- paste(tmp, "by stratum")
+            }
+            cat(paste(tmp, ":\n", sep=""))
+            print(size)
+        }
+        size <- getSize(object, stage=2)
+        if(!is.null(size)) {
+            tmp <- if(haveSSUs) "SSUs" else "individuals"
+            tmp <- paste("\nNumber of", tmp, "to be sampled")
+            tmp <- paste(tmp, if(length(size) == 1) "for each " else "by ")
+            cat(paste(tmp, "PSU:\n", sep=""))
+            print(size)
+        }
+    })
 
 ## sample setup
 setMethod("show", "SampleSetup", 

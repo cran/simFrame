@@ -36,7 +36,7 @@ Objects can be created by calls of the form \code{new("SimControl", \dots)} or
       control object for contamination, or \code{NULL}.}
     \item{\code{NAControl}:}{Object of class \code{"OptNAControl"}; a control 
       object for inserting missing values, or \code{NULL}.}
-    \item{\code{design}:}{Object of class \code{"character"} specifying the 
+    \item{\code{design}:}{Object of class \code{"character"} specifying 
       variables (columns) to be used for splitting the data into domains.  The 
       simulations, including contamination and the insertion of missing values 
       (unless \code{SAE=TRUE}), are then performed on every domain.}
@@ -118,6 +118,10 @@ Objects can be created by calls of the form \code{new("SimControl", \dots)} or
       x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
       control = "SimControl")}: run a simulation experiment on a \code{snow} 
       cluster.}
+    \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
+      x = "VirtualDataControl", setup = "VirtualSampleControl", 
+      nrep = "numeric", control = "SimControl")}: run a simulation experiment 
+      on a \code{snow} cluster.}
     \item{\code{head}}{\code{signature(x = "SimControl")}: currently returns 
       the object itself.}
     \item{\code{runSimulation}}{\code{signature(x = "data.frame", 
@@ -138,6 +142,12 @@ Objects can be created by calls of the form \code{new("SimControl", \dots)} or
     \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
       setup = "missing", nrep = "missing", control = "SimControl")}: run a 
       simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
+      setup = "VirtualSampleControl", nrep = "numeric", 
+      control = "SimControl")}: run a simulation experiment.}
+    \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 
+      setup = "VirtualSampleControl", nrep = "missing", 
+      control = "SimControl")}: run a simulation experiment.}
     \item{\code{show}}{\code{signature(object = "SimControl")}: print the 
       object on the \R console.}
     \item{\code{summary}}{\code{signature(object = "SimControl")}: currently 

@@ -130,7 +130,7 @@ Statistical Software}, \bold{37}(3), 1--36. URL
 \url{http://www.jstatsoft.org/v37/i03/}.
 }
 \seealso{
-  \code{"\linkS4class{SampleControl}"}, 
+  \code{"\linkS4class{SampleControl}"}, \code{"\linkS4class{TwoStageControl}"}, 
   \code{"\linkS4class{VirtualSampleControl}"}, 
   \code{\link{setup}}, \code{\link{draw}}
 }
