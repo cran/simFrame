@@ -13,7 +13,7 @@ Union Statistics on Income and Living Conditions) data.
 }
 \usage{data(eusilcP)}
 \format{
-  A \code{data.frame} with 58 654 observations on the following 27 variables:
+  A \code{data.frame} with 58 654 observations on the following 28 variables:
   \describe{
     \item{\code{hid}}{integer; the household ID.}
     \item{\code{region}}{factor; the federal state in which the household is 
@@ -63,6 +63,8 @@ Union Statistics on Income and Living Conditions) data.
     \item{\code{hy130n}}{numeric; regular inter-household cash transfer paid 
       (net).}
     \item{\code{hy145n}}{numeric; repayments/receipts for tax adjustment (net).}
+    \item{\code{main}}{logical; indicates the main income holder (i.e., the 
+      person with the highest income) of each household.}
   }
 }
 \details{

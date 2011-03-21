@@ -1,3 +1,9 @@
+Changes in simFrame version 0.4.1
+
+    + Added column to example data 'eusilcP' that indicates the main income 
+      holder of each household.
+
+
 Changes in simFrame version 0.4
 
     + Implemented 'runSimulation' and 'clusterRunSimulation' methods for mixed 

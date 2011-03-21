@@ -20,8 +20,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.4\cr
-Date: \tab 2011-03-17\cr
+Version: \tab 0.4.1\cr
+Date: \tab 2011-03-21\cr
 Depends: \tab R (>= 2.10.0), Rcpp (>= 0.8.6), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
