@@ -124,7 +124,7 @@ the data simulation methodology by \citet{alfons10a}, which is implemented
 \section{Application of different simulation designs to EU-SILC}
 
 %% specify folder and name for Sweave graphics
-\SweaveOpts{prefix.string=figures-eusilc/fig}
+%\SweaveOpts{prefix.string=figures-eusilc/fig}
 
 First, the required packages and the data set need to be loaded.
 <<results=hide>>=

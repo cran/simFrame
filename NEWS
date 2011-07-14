@@ -1,3 +1,9 @@
+Changes in simFrame version 0.4.2
+
+    + Midzuno and Tille sampling now give a warning instead of throwing an error 
+      when all inclusion probabilities are outside the interval (eps, 1-eps).
+
+
 Changes in simFrame version 0.4.1
 
     + Added column to example data 'eusilcP' that indicates the main income 

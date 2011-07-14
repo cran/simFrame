@@ -39,9 +39,12 @@ tilleCpp <- function(prob, eps = 1e-06) {
     if(any(is.na(prob))) stop("there are missing values in 'prob'")
     list <- (prob > eps) & (prob < 1 - eps)  # indices of probabilities to be used
     probList <- prob[list]  # probabilities to be used
-    N <- length(probList)
-    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
-    prob[list] <- .Call("tille", prob=probList)  # call C function
+#    N <- length(probList)
+#    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
+#    prob[list] <- .Call("tille", prob=probList)  # call C function
+	if(length(probList) > 0) {
+		prob[list] <- .Call("tille", prob=probList)  # call C function
+	} else warning("all values in 'prob' outside the interval (eps, 1-eps)")
     prob
 }
 

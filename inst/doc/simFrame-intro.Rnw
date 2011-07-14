@@ -99,7 +99,7 @@ set.seed(1234)
 @
 
 %% specify folder and name for Sweave graphics
-\SweaveOpts{prefix.string=figures-intro/fig}
+%\SweaveOpts{prefix.string=figures-intro/fig}
 
 
 %% ----------
@@ -337,7 +337,7 @@ class diagram of \pkg{simFrame}.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.95\textwidth]{figures-intro/fig-UML}
+\includegraphics[width=0.95\textwidth]{figure-UML}
 \caption{Slightly simplified \proglang{UML} class diagram of \pkg{simFrame}.}
 \label{fig:UML}
 \end{center}
