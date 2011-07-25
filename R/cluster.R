@@ -6,7 +6,7 @@
 clusterAssign <- function(cl, x, value) {
     ans <- clusterCall(cl, 
         function(x, value) {
-            assign(x, value, env=.GlobalEnv)
+            assign(x, value, envir=.GlobalEnv)
             NULL
         }, 
         x=x, value=value)

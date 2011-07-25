@@ -118,7 +118,7 @@ getAdd(x)
 getAux(x)
 setAux(x, aux)
 
-getCall(x)
+getCall(x, \dots)
 
 getCollect(x)
 setCollect(x, collect)

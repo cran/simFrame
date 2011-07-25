@@ -20,8 +20,8 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.4.2\cr
-Date: \tab 2011-07-14\cr
+Version: \tab 0.4.3\cr
+Date: \tab 2011-07-25\cr
 Depends: \tab R (>= 2.10.0), Rcpp (>= 0.8.6), lattice, snow\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
@@ -111,7 +111,7 @@ Further information is available in the following vignettes:
 \author{
 Andreas Alfons
 
-Maintainer: Andreas Alfons, \email{alfons@statistik.tuwien.ac.at}
+Maintainer: Andreas Alfons, \email{andreas.alfons@econ.kuleuven.be}
 }
 \references{
 Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 

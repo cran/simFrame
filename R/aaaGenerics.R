@@ -130,7 +130,7 @@ setGeneric("getAdd", function(x) standardGeneric("getAdd"))
 setGeneric("getAux", function(x) standardGeneric("getAux"))
 setGeneric("setAux", function(x, aux) standardGeneric("setAux"))
 
-setGeneric("getCall", function(x) standardGeneric("getCall"))
+setGeneric("getCall", function(x, ...) standardGeneric("getCall"))
 
 setGeneric("getCollect", function(x) standardGeneric("getCollect"))
 setGeneric("setCollect", function(x, collect) standardGeneric("setCollect"))

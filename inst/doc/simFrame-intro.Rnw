@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% almost as usual
-\author{Andreas Alfons\\Vienna University of\\Technology \And Matthias Templ\\Vienna University of\\Technology,\\Statistics Austria \And Peter Filzmoser\\Vienna University of\\Technology}
+\author{Andreas Alfons\\K.U.Leuven \And Matthias Templ\\Vienna University of\\Technology,\\Statistics Austria \And Peter Filzmoser\\Vienna University of\\Technology}
 \title{An Object-Oriented Framework for Statistical Simulation: The \proglang{R} Package \pkg{simFrame}}
 
 %% for pretty printing and a nice hypersummary also set:
@@ -51,12 +51,12 @@ different simulation designs.
 %% in the following format:
 \Address{
   Andreas Alfons\\
-  Department of Statistics and Probability Theory\\
-  Vienna University of Technology\\
-  Wiedner Hauptstra\ss e 7\\
-  1040 Vienna, Austria\\
-  E-mail: \email{alfons@statistik.tuwien.ac.at}\\
-  URL: \url{http://www.statistik.tuwien.ac.at/public/alfons/}
+  Faculty of Business and Economics\\ 
+  K.U.Leuven\\
+  Naamsestraat 69\\
+  3000 Leuven, Belgium\\
+  E-mail: \email{andreas.alfons@econ.kuleuven.be}\\
+  URL: \url{http://www.econ.kuleuven.be/andreas.alfons/public/}
 }
 %% It is also possible to add a telephone and fax number
 %% before the e-mail in the following format:
@@ -337,7 +337,7 @@ class diagram of \pkg{simFrame}.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.95\textwidth]{figure-UML}
+\includegraphics[width=0.95\textwidth]{UML}
 \caption{Slightly simplified \proglang{UML} class diagram of \pkg{simFrame}.}
 \label{fig:UML}
 \end{center}
