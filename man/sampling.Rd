@@ -47,7 +47,7 @@ without replacement and fixed sample size.
   An integer vector giving the indices of the sampled observations.
 }
 \note{
-  \code{brewer}, \code{midzuno} and \code{tille} are faster C implementations 
+  \code{brewer}, \code{midzuno} and \code{tille} are faster C++ implementations 
   of \code{\link[sampling]{UPbrewer}}, \code{\link[sampling]{UPmidzuno}} and 
   \code{\link[sampling]{UPtille}}, respectively, from package \code{sampling}.
 }

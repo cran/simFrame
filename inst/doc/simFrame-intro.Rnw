@@ -424,7 +424,7 @@ to many others, including the fast low-level languages \proglang{C} and
 \proglang{Fortran}. The \proglang{S4} system \citep{chambers98, chambers08} 
 complies with all requirements for an object-oriented framework for statistical 
 simulation. Thus most of \pkg{simFrame} is implemented as \proglang{S4} classes 
-and methods, except some utility functions and some \proglang{C} code. 
+and methods, except some utility functions and some \proglang{C++} code. 
 
 Method selection for generic functions is based on \emph{control classes}, 
 which in most cases provides the interfaces for extensions by developers (see 

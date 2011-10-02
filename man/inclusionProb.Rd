@@ -22,7 +22,7 @@ inclusionProb(prob, size)
   A numeric vector of the first-order inclusion probabilities.
 }
 \note{
-  This is a faster C implementation of 
+  This is a faster C++ implementation of 
   \code{\link[sampling]{inclusionprobabilities}} from package \code{sampling}.
 }
 \author{Andreas Alfons}

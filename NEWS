@@ -1,3 +1,8 @@
+Changes in simFrame version 0.4.4
+
+    + Rewrote parts of the C++ code.
+
+
 Changes in simFrame version 0.4.3
 
     + S4 generic 'getCall' now has '...' argument to be consistent with 

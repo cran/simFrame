@@ -43,7 +43,8 @@ tilleCpp <- function(prob, eps = 1e-06) {
 #    if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
 #    prob[list] <- .Call("tille", prob=probList)  # call C function
 	if(length(probList) > 0) {
-		prob[list] <- .Call("tille", prob=probList)  # call C function
+#		prob[list] <- .Call("tille", prob=probList)  # call C++ function
+		prob[list] <- .Call("R_tille", R_prob=probList)  # call C++ function
 	} else warning("all values in 'prob' outside the interval (eps, 1-eps)")
     prob
 }
@@ -55,8 +56,9 @@ brewer <- function(prob, eps = 1e-06) {
     probList <- prob[list]  # probabilities to be used
     N <- length(probList)
     if(N < 1) stop("all values in 'prob' outside the interval (eps, 1-eps)")
-    prob[list] <- .Call("brewer", prob=probList)  # call C function
-    which(prob >= 1 - eps)  # indices of sampled observations
+#    prob[list] <- .Call("brewer", prob=probList)  # call C++ function
+    prob[list] <- .Call("R_brewer", R_prob=probList)  # call C++ function
+	which(prob >= 1 - eps)  # indices of sampled observations
 }
 
 # for internal use (in 'contaminate' and 'setNA')
