@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 ## sample control
 setMethod("length", "VirtualSampleControl", function(x) getK(x))

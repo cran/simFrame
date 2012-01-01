@@ -25,12 +25,11 @@ Class \code{"\linkS4class{OptDataControl}"}, directly.
   \describe{
     \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "VirtualDataControl", setup = "missing", nrep = "numeric", 
-      control = "SimControl")}: run a simulation experiment on a \code{snow} 
-      cluster.}
+      control = "SimControl")}: run a simulation experiment on a cluster.}
     \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "VirtualDataControl", setup = "VirtualSampleControl", 
       nrep = "numeric", control = "SimControl")}: run a simulation experiment 
-      on a \code{snow} cluster.}
+      on a cluster.}
     \item{\code{head}}{\code{signature(x = "VirtualContControl")}: currently 
       returns the object itself.}
     \item{\code{runSimulation}}{\code{signature(x = "VirtualDataControl", 

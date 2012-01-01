@@ -103,7 +103,8 @@ Statistical Software}, \bold{37}(3), 1--36. URL
   \code{"\linkS4class{SampleSetup}"}
 }
 \examples{
-data(eusilcP)
+set.seed(12345)  # for reproducibility
+data(eusilcP)    # load data
 
 ## simple random sampling
 srss <- setup(eusilcP, size = 20, k = 4)

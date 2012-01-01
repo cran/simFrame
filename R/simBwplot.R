@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 setMethod("simBwplot", 
     signature(x = "SimResults"),

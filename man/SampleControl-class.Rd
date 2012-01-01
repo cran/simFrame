@@ -123,8 +123,7 @@ Class \code{"\linkS4class{OptSampleControl}"}, by class "VirtualSampleControl", 
   
   \describe{
     \item{\code{clusterSetup}}{\code{signature(cl = "ANY", x = "data.frame", 
-      control = "SampleControl")}: set up multiple samples on a \code{snow} 
-      cluster.}
+      control = "SampleControl")}: set up multiple samples on a cluster.}
     \item{\code{setup}}{\code{signature(x = "data.frame", 
       control = "SampleControl")}: set up multiple samples.}
     \item{\code{show}}{\code{signature(object = "SampleControl")}: print the 

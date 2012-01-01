@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 setMethod("generate",
     signature(control = "DataControl"),

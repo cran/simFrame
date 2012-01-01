@@ -1,6 +1,6 @@
 /*
  * Author: Andreas Alfons
- *         Vienna University of Technology
+ *         KU Leuven
  */
 
 #ifndef _simFrame_H

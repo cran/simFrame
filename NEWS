@@ -1,3 +1,12 @@
+Changes in simFrame version 0.5.0
+
+    + Using package 'parallel' now for parallel computing instead of 'snow'.
+    
+    + 'runSimulation' and 'clusterRunSimulation' no longer produce a warning 
+      when simulations are performed separately on different domains.
+
+
+
 Changes in simFrame version 0.4.4
 
     + Rewrote parts of the C++ code.

@@ -6,7 +6,7 @@
 ## initializations
 library(simFrame)
 
-## start snow cluster
+## start cluster
 cl <- makeCluster(4, type="SOCK")
 
 ## load required packages on workers
@@ -17,7 +17,7 @@ clusterEvalQ(cl, {
     })
 
 ## setup random number stream
-clusterSetupRNG(cl, seed=12345)
+clusterSetRNGStream(cl, iseed=12345)
 
 ## define function and control class for generating data
 crnorm <- function(n, mean, sigma) invilr(rmvnorm(n, mean, sigma))
@@ -43,7 +43,7 @@ clusterExport(cl, c("crnorm", "sigma", "dc", "nc", "sim"))
 ## run simulation
 results <- clusterRunSimulation(cl, dc, nrep = 100, NAControl = nc, fun = sim)
 
-## stop snow cluster
+## stop cluster
 stopCluster(cl)
 
 ## inspect results

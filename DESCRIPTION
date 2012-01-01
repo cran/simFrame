@@ -1,10 +1,10 @@
 Package: simFrame
-Version: 0.4.4
-Date: 2011-10-02
+Version: 0.5.0
+Date: 2012-01-01
 Title: Simulation framework
 Author: Andreas Alfons
 Maintainer: Andreas Alfons <andreas.alfons@econ.kuleuven.be>
-Depends: R (>= 2.10.0), Rcpp (>= 0.8.6), lattice, snow
+Depends: R (>= 2.14.0), Rcpp (>= 0.8.6), lattice, parallel
 Imports: lattice, methods, stats, stats4, utils
 Suggests: laeken, mvtnorm, robCompositions, sampling
 LinkingTo: Rcpp
@@ -12,6 +12,6 @@ SystemRequirements: GNU make
 Description: A general framework for statistical simulation.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2011-10-02 20:56:30 UTC; andi
+Packaged: 2012-01-01 22:35:48 UTC; andi
 Repository: CRAN
-Date/Publication: 2011-10-03 05:40:17
+Date/Publication: 2012-01-02 18:45:55

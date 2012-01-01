@@ -20,9 +20,9 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.4.4\cr
-Date: \tab 2011-10-02\cr
-Depends: \tab R (>= 2.10.0), Rcpp (>= 0.8.6), lattice, snow\cr
+Version: \tab 0.5.0\cr
+Date: \tab 2012-01-01\cr
+Depends: \tab R (>= 2.14.0), Rcpp (>= 0.8.6), lattice, parallel\cr
 Imports: \tab lattice, methods, stats, stats4, utils\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
 LinkingTo: \tab Rcpp\cr
@@ -67,8 +67,8 @@ VirtualNAControl-class
 VirtualSampleControl-class
                         Class "VirtualSampleControl"
 aggregate-methods       Method for aggregating simulation results
-clusterRunSimulation    Run a simulation experiment on a snow cluster
-clusterSetup            Set up multiple samples on a snow cluster
+clusterRunSimulation    Run a simulation experiment on a cluster
+clusterSetup            Set up multiple samples on a cluster
 contaminate             Contaminate data
 draw                    Draw a sample
 eusilcP                 Synthetic EU-SILC data

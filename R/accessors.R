@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 # mutator functions, whose generic functions contain the '...' argument:
 # the expression needs to be defined in the environment of the generic 

@@ -80,8 +80,7 @@ be called by the user.
   \describe{
     \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "data.frame", setup = "SampleSetup", nrep = "missing", 
-      control = "SimControl")}: run a simulation experiment on a \code{snow} 
-      cluster.}
+      control = "SimControl")}: run a simulation experiment on a cluster.}
     \item{\code{draw}}{\code{signature(x = "data.frame", 
       setup = "SampleSetup")}: draw a sample.}
     \item{\code{head}}{\code{signature(x = "SampleSetup")}: returns the first 

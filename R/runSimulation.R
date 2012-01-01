@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 ## for convenience: construct "SimControl" object and re-call function
 setMethod("runSimulation", 
@@ -567,7 +567,8 @@ getSimResults <- function(x, samples = numeric(), reps = numeric(),
     if(length(design)) {
         # additional information needs to be adjusted
         reps <- sapply(values, getRepetitions)
-        info <- info[rep(1:nrow(info), each=reps), , drop=FALSE]
+#        info <- info[rep(1:nrow(info), each=reps), , drop=FALSE]
+        info <- info[rep.int(1:nrow(info), reps), , drop=FALSE]
     }
     values <- do.call("rbind", values)
     # put it all together

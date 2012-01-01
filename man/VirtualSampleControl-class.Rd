@@ -42,12 +42,11 @@ Class \code{"\linkS4class{OptSampleControl}"}, directly.
   \describe{
     \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "data.frame", setup = "VirtualSampleControl", nrep = "missing", 
-      control = "SimControl")}: run a simulation experiment on a \code{snow} 
-      cluster.}
+      control = "SimControl")}: run a simulation experiment on a cluster.}
     \item{\code{clusterRunSimulation}}{\code{signature(cl = "ANY", 
       x = "VirtualDataControl", setup = "VirtualSampleControl", 
       nrep = "numeric", control = "SimControl")}: run a simulation experiment 
-      on a \code{snow} cluster.}
+      on a cluster.}
     \item{\code{draw}}{\code{signature(x = "data.frame", 
       setup = "VirtualSampleControl")}: draw a sample.}
     \item{\code{head}}{\code{signature(x = "VirtualSampleControl")}: currently 

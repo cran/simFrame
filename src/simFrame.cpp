@@ -1,6 +1,6 @@
 /*
  * Author: Andreas Alfons
- *         Vienna University of Technology
+ *         KU Leuven
  *
  *         based on R code by Yves Tille and Alina Matei
  */

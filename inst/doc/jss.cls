@@ -20,13 +20,13 @@
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
-\def\fileversion{1.8}
+\def\fileversion{2.0}
 \def\filename{jss}
-\def\filedate{2008/04/07}
+\def\filedate{2009/09/24}
 %%
-%% Package `jss' to use with LaTeX2e for JSS publications
-%%   http://www.jstatsoft.org/
-%% Copyright (C) 2004 Achim Zeileis
+%% Package `jss' to use with LaTeX2e for JSS publications (http://www.jstatsoft.org/)
+%% License: GPL-2
+%% Copyright: (C) Achim Zeileis
 %% Please report errors to Achim.Zeileis@R-project.org
 %%
 \NeedsTeXFormat{LaTeX2e}
@@ -39,6 +39,8 @@
 \newif\if@review
 \newif\if@shortnames
 \newif\if@nojss
+\newif\if@notitle
+\newif\if@noheadings
 
 \@articletrue
 \@codesnippetfalse
@@ -47,6 +49,8 @@
 \@reviewfalse
 \@shortnamesfalse
 \@nojssfalse
+\@notitlefalse
+\@noheadingsfalse
 
 \DeclareOption{article}{\@articletrue%
   \@codesnippetfalse \@bookreviewfalse \@softwarereviewfalse}
@@ -58,6 +62,8 @@
   \@codesnippetfalse \@bookreviewfalse \@softwarereviewtrue}
 \DeclareOption{shortnames}{\@shortnamestrue}
 \DeclareOption{nojss}{\@nojsstrue}
+\DeclareOption{notitle}{\@notitletrue}
+\DeclareOption{noheadings}{\@noheadingstrue}
 
 \ProcessOptions
 \LoadClass[11pt,a4paper,twoside]{article}
@@ -301,13 +307,18 @@
      \@maketitle \@thanks
    \endgroup
    \setcounter{footnote}{0}
-   \thispagestyle{empty}
-    \if@nojss
-      \markboth{\centerline{\@Shorttitle}}{\centerline{\@Hyperauthor}}
+
+   \if@noheadings
+    %% \markboth{\centerline{\@Shorttitle}}{\centerline{\@Hypersubject}}
     \else
-      \markboth{\centerline{\@Shorttitle}}{\centerline{\@Hypersubject}}
-    \fi
-   \pagestyle{myheadings}
+     \thispagestyle{empty}
+      \if@nojss
+        \markboth{\centerline{\@Shorttitle}}{\centerline{\@Hyperauthor}}
+      \else
+        \markboth{\centerline{\@Shorttitle}}{\centerline{\@Hypersubject}}
+      \fi
+     \pagestyle{myheadings}
+   \fi
 
    \let\maketitle\relax \let\@maketitle\relax
    \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax
@@ -452,7 +463,11 @@
     }
   }
 \fi
-\AtBeginDocument{\maketitle}
+\if@notitle
+  %% \AtBeginDocument{\maketitle}
+\else
+  \AtBeginDocument{\maketitle}
+\fi
 %% commands
 \makeatletter
 \newcommand\code{\bgroup\@makeother\_\@makeother\~\@makeother\$\@codex}

@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% almost as usual
-\author{Andreas Alfons\\K.U.Leuven \And Matthias Templ\\Vienna University of\\Technology,\\Statistics Austria \And Peter Filzmoser\\Vienna University of\\Technology}
+\author{Andreas Alfons\\KU Leuven \And Matthias Templ\\Vienna University of\\Technology,\\Statistics Austria \And Peter Filzmoser\\Vienna University of\\Technology}
 \title{An Object-Oriented Framework for Statistical Simulation: The \proglang{R} Package \pkg{simFrame}}
 
 %% for pretty printing and a nice hypersummary also set:
@@ -16,8 +16,8 @@
 
 %% an abstract and keywords
 \Abstract{
-This package vignette is a slightly modified version of \citet{alfons10d}, 
-published in the \emph{Journal of Statistical Software}.
+This package vignette is a modified version of \citet{alfons10d}, published in 
+the \emph{Journal of Statistical Software}.
 
 Simulation studies are widely used by statisticians to gain insight into the 
 quality of developed methods. Usually some guidelines regarding, e.g., 
@@ -51,8 +51,9 @@ different simulation designs.
 %% in the following format:
 \Address{
   Andreas Alfons\\
+  ORSTAT Research Center\\
   Faculty of Business and Economics\\ 
-  K.U.Leuven\\
+  KU Leuven\\
   Naamsestraat 69\\
   3000 Leuven, Belgium\\
   E-mail: \email{andreas.alfons@econ.kuleuven.be}\\
@@ -1210,35 +1211,54 @@ print(simDensityplot(results, true = tv))
 
 \section{Parallel computing} \label{sec:parallel}
 Statistical simulation is \emph{embarrassingly parallel}, hence computational 
-performance can be increased by parallel computing. In \pkg{simFrame}, parallel 
-computing is implemented using the \proglang{R} package \pkg {snow} 
-\citep{rossini07, tierney08, tierney09}, which is recommended by 
-\citet{schmidberger09} in an analysis of the state-of-the-art in parallel 
-computing with \proglang{R}. For setting up multiple samples and 
-running simulations on a cluster, the functions \code{clusterSetup()} and 
-\code{clusterRunSimulation()} are implemented. Note that all objects and 
-packages required for the computations (including \pkg{simFrame}) need to be 
-made available on every worker process. An example for parallel computing is 
+performance can be increased by parallel computing. 
+%In \pkg{simFrame}, parallel computing is implemented using the \proglang{R} 
+%package \pkg{snow} \citep{rossini07, tierney08, tierney09}, which is 
+%recommended by \citet{schmidberger09} in an analysis of the state-of-the-art in 
+%parallel computing with \proglang{R}. For setting up multiple samples and 
+%running simulations on a cluster, the functions \code{clusterSetup()} and 
+%\code{clusterRunSimulation()} are implemented. Note that all objects and 
+%packages required for the computations (including \pkg{simFrame}) need to be 
+%made available on every worker process. An example for parallel computing is 
+%presented in Section~\ref{sec:use-parallel}.
+Since version 0.5.0, parallel computing in \pkg{simFrame} is implemented using 
+the package \pkg{parallel}, which is part of the \proglang{R} base distribution 
+since version 2.14.0 and builds upon work done for the contributed packages 
+\pkg{multicore} \citep{urbanek09} and \pkg{snow} \citep{rossini07, tierney08, 
+tierney09}. The latter was recommended by \citet{schmidberger09} in an analysis 
+of the state-of-the-art in parallel computing with \proglang{R}. For setting up 
+multiple samples and running simulations on a cluster, the functions 
+\code{clusterSetup()} and \code{clusterRunSimulation()} are implemented. Note 
+that all objects and packages required for the computations (including 
+\pkg{simFrame}) need to be made available on every worker process unless the 
+worker processes are created by forking. An example for parallel computing is 
 presented in Section~\ref{sec:use-parallel}.
 
 In order to ensure reproducibility of the simulation results, random number 
-streams should be used. The \proglang{R} packages \pkg{rlecuyer} 
-\citep{lecuyer02, sevcikova09} and \pkg{rsprng} \citep{mascagni00, li10} for 
-creating random number streams are supported by \pkg{snow} via the function 
-\code{clusterSetupRNG()}. It should be noted that the package \pkg{rstream} 
-\citep{lecuyer05,leydold10} provides a faster connection to the \proglang{C} 
-library by \cite{lecuyer02} than \pkg{rlecuyer}. Support in \pkg{simFrame} may 
-thus be beneficial and may be added as a future task.
+streams should be used. 
+%The \proglang{R} packages \pkg{rlecuyer} \citep{lecuyer02, sevcikova09} and 
+%\pkg{rsprng} \citep{mascagni00, li10} for creating random number streams are 
+%supported by \pkg{snow} via the function \code{clusterSetupRNG()}. It should 
+%be noted that the package \pkg{rstream} \citep{lecuyer05,leydold10} provides a 
+%faster connection to the \proglang{C} library by \cite{lecuyer02} than 
+%\pkg{rlecuyer}. Support in \pkg{simFrame} may thus be beneficial and may be 
+%added as a future task.
+For this purpose, \pkg{parallel} contains an \proglang{R} re-implementation of 
+the \proglang{C} library \pkg{RngStreams} \citep{lecuyer02}. Random number 
+streams can thereby be created via the function \code{clusterSetRNGStream()}. 
+It should be noted that the packages \pkg{rlecuyer} \citep{sevcikova09} and 
+\pkg{rstream} \citep{lecuyer05, leydold10} provide interfaces to the 
+\proglang{C} library by \cite{lecuyer02}.
 
-The \proglang{R} package \pkg{multicore} \citep{urbanek09} offers parallel 
-computing on machines with multiple cores or CPUs. No data or code needs to be 
-initialized and no additional \proglang{R} instances need to be started, hence 
-spawning parallel processes is very fast.  In addition, worker processes share 
-memory and no network traffic is required, which allows fast computations on 
-machines with a sufficient number of cores. However, \pkg{multicore} is not 
-available for Microsoft Windows operating systems and it does not support 
-random number streams out-of-the-box (as \pkg{snow} does). The incorporation of 
-\pkg{multicore} into \pkg{simFrame} may be investigated in the future.
+%The \proglang{R} package \pkg{multicore} \citep{urbanek09} offers parallel 
+%computing on machines with multiple cores or CPUs. No data or code needs to be 
+%initialized and no additional \proglang{R} instances need to be started, hence 
+%spawning parallel processes is very fast.  In addition, worker processes share 
+%memory and no network traffic is required, which allows fast computations on 
+%machines with a sufficient number of cores. However, \pkg{multicore} is not 
+%available for Microsoft Windows operating systems and it does not support 
+%random number streams out-of-the-box (as \pkg{snow} does). The incorporation of 
+%\pkg{multicore} into \pkg{simFrame} may be investigated in the future.
 
 
 %% ----------
@@ -1303,7 +1323,6 @@ be achieved with one command.
 <<>>=
 set <- setup(eusilcP, design = "region", grouping = "hid", 
     size = c(75, 250, 250, 125, 200, 225, 125, 150, 100), k = 100)
-#    size = c(75, 250, 250, 125, 200, 225, 125, 150, 100), k=3)
 @
 
 Since a robust method is going to be compared to two classical ones, a control 
@@ -1498,7 +1517,6 @@ The simulation can then be run with the following command:
 
 <<>>=
 results <- runSimulation(dc, nrep = 50, NAControl = nc, fun = sim)
-#results <- runSimulation(dc, nrep = 6, NAControl = nc, fun = sim)
 @
 
 As in the previous example, the results are inspected using \code{head()} and 
@@ -1554,11 +1572,12 @@ objects are already defined above, but in order to provide a complete
 description on how to perform parallel computing with \pkg{simFrame}, these 
 definitions are repeated here.
 
-The first step is to start a \pkg{snow} cluster. In this example, four 
-parallel worker processes on the local machine are initialized.
+%The first step is to start a \pkg{snow} cluster. 
+The first step is to start a cluster for parallel computing. In this example, 
+four parallel worker processes on the local machine are initialized.
  
 <<>>=
-cl <- makeCluster(4, type="SOCK")
+cl <- makeCluster(4, type="PSOCK")
 @ 
 
 All the functions and packages required for the computations (including 
@@ -1575,7 +1594,7 @@ clusterEvalQ(cl, {
 For reproducibility of the results, a random number stream is generated.
 
 <<results=hide>>=
-clusterSetupRNG(cl, seed=12345)
+clusterSetRNGStream(cl, iseed=12345)
 @
 
 Control objects for data generation and the insertion of missing values, as 
@@ -1611,7 +1630,6 @@ Then only one more command is needed to run the simulation.
 
 <<>>=
 results <- clusterRunSimulation(cl, dc, nrep = 50, NAControl = nc, fun = sim)
-#results <- clusterRunSimulation(cl, dc, nrep = 2, NAControl = nc, fun = sim)
 @
 
 Last, the cluster needs to be stopped after carrying out the simulation study 
@@ -1872,16 +1890,17 @@ structure of the simulation results, an appropriate plot method is selected
 automatically. Hence \pkg{simFrame} is widely applicable for gaining insight 
 into the quality of statistical methods. Furthermore, since the workload in 
 statistical simulation is embarrassingly parallel, \pkg{simFrame} supports 
-parallel computing using \pkg{snow} to increase computational performance.
+parallel computing using %\pkg{snow}
+the package \pkg{parallel} to increase computational performance.
 
 Future plans include to further develop the model-based data generation 
 facilities and implement mixed simulation designs, to improve the support for 
 small area estimation, as well as to extend the framework with different 
-sampling methods and more specialized contamination and missing data models. In 
-addition, adding support of additional packages for parallel computing and 
-random number streams may be considered. Concerning large data sets, the 
-incorporation of the package \pkg{ff} for memory-efficient storage may be 
-investigated.
+sampling methods and more specialized contamination and missing data models. 
+%In addition, adding support of additional packages for parallel computing and 
+%random number streams may be considered. 
+Concerning large data sets, the incorporation of the package \pkg{ff} for 
+memory-efficient storage may be investigated.
 
 
 %% ----------

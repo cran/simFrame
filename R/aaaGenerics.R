@@ -1,7 +1,7 @@
-# ---------------------------------------
+# ----------------------
 # Author: Andreas Alfons
-#         Vienna University of Technology
-# ---------------------------------------
+#         KU Leuven
+# ----------------------
 
 setGeneric("clusterRunSimulation",
     function(cl, x, setup, nrep, control, contControl = NULL, 
