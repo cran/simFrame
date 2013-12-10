@@ -22,7 +22,7 @@ setMethod("clusterSetup",
         # arguments that aren't slots
         if(isTRUE(control == "TwoStageControl")) control <- TwoStageControl(...)
         else control <- new(control, ...)
-        clusterAssign(cl, "control", control)
+        clusterExport(cl, "control", envir=sys.frame())
         clusterSetup(cl, x, control)
     })
 

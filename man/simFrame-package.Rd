@@ -20,10 +20,10 @@ A general framework for statistical simulation.
 \details{
 \tabular{ll}{
 Package: \tab simFrame\cr
-Version: \tab 0.5.0\cr
-Date: \tab 2012-01-01\cr
+Version: \tab 0.5.1\cr
+Date: \tab 2013-12-10\cr
 Depends: \tab R (>= 2.14.0), Rcpp (>= 0.8.6), lattice, parallel\cr
-Imports: \tab lattice, methods, stats, stats4, utils\cr
+Imports: \tab methods, stats4\cr
 Suggests: \tab laeken, mvtnorm, robCompositions, sampling\cr
 LinkingTo: \tab Rcpp\cr
 SystemRequirements: \tab GNU make\cr
@@ -109,9 +109,9 @@ Further information is available in the following vignettes:
   \code{vignette("simFrame-intro")} to view this vignette.
 }
 \author{
-Andreas Alfons
+Andreas Alfons [aut, cre]
 
-Maintainer: Andreas Alfons, \email{andreas.alfons@econ.kuleuven.be}
+Maintainer: Andreas Alfons <alfons@ese.eur.nl>
 }
 \references{
 Alfons, A., Templ, M. and Filzmoser, P. (2010) An Object-Oriented Framework for 

@@ -1,3 +1,13 @@
+Changes in simFrame version 0.5.1
+
+    + Slight optimizations in C++ code to compute inclusion probabilities.
+    
+    + Modified vignette according to changes in package 'robCompositions' 
+      (function 'invilr' renamed to 'isomLRinv').
+    
+    + Moved vignettes to 'vignettes' folder.
+
+
 Changes in simFrame version 0.5.0
 
     + Using package 'parallel' now for parallel computing instead of 'snow'.

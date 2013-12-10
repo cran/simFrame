@@ -10,7 +10,7 @@ library(mvtnorm)
 set.seed(12345)
 
 ## define function and control class for generating data
-crnorm <- function(n, mean, sigma) invilr(rmvnorm(n, mean, sigma))
+crnorm <- function(n, mean, sigma) isomLRinv(rmvnorm(n, mean, sigma))
 sigma <- matrix(c(1, -0.5, 1.4, -0.5, 1, -0.6, 1.4, -0.6, 2), 3, 3)
 dc <- DataControl(size = 150, distribution = crnorm, 
     dots = list(mean = c(0, 2, 3), sigma = sigma))

@@ -87,8 +87,7 @@ SEXP R_inclusionProb(SEXP R_prob, SEXP R_size) {
 
     // initializations
 	NumericVector prob(R_prob);	// probability weights
-	IntegerVector Rcpp_size(R_size);	// sample size
-	int size = Rcpp_size[0];
+	int size = as<int>(R_size);	// sample size
 
 	// call native C++ function
 	return inclusionProb(prob, size);
@@ -153,8 +152,7 @@ SEXP R_tille(SEXP R_prob) {
 	// computations
 	int numIterations = N - n;	// number of iterations of outer loop
 	int j;						// index for inner loops
-//	IntegerVector ni(1);		// reverse sample size in each iteration
-	int ni;		// reverse sample size in each iteration
+	int ni;						// reverse sample size in each iteration
 	double v;					// temporary variable
 	NumericVector p(N);			// cumulative probabilities
 	for(i = 0; i < numIterations; i++) {
@@ -162,7 +160,6 @@ SEXP R_tille(SEXP R_prob) {
 		// compute inclusion probabilities for current iteration
 		NumericVector a = inclusionProb(prob, ni);
 		// compute probabilities according to R implementation
-//		if(i == 1) break;
 		for(j = 0; j < N; j++) {
 			v = 1.0 - a[j]/b[j];
 			b[j] = a[j];

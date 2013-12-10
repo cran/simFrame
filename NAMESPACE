@@ -1,7 +1,9 @@
 useDynLib(simFrame)
 
 # import packages
+import(Rcpp)
 import(lattice)
+import(parallel)
 import(methods)
 
 # import specific functions from packages
