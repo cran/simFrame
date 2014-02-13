@@ -4,16 +4,16 @@
 # ---------------------------------------
 
 ## initializations
-library(simFrame)
+library("simFrame")
 
 ## start cluster
-cl <- makeCluster(4, type="SOCK")
+cl <- makeCluster(4, type="PSOCK")
 
 ## load required packages on workers
 clusterEvalQ(cl, {
-        library(simFrame)
-        library(robCompositions)
-        library(mvtnorm)
+        library("simFrame")
+        library("robCompositions")
+        library("mvtnorm")
     })
 
 ## setup random number stream

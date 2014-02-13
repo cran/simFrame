@@ -4,8 +4,8 @@
 # ---------------------------------------
 
 ## initializations
-library(simFrame)
-data(eusilcP)
+library("simFrame")
+data("eusilcP")
 
 ## control objects for sampling and contamination
 sc <- SampleControl(size = 500, k = 50)

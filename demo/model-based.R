@@ -4,9 +4,9 @@
 # ---------------------------------------
 
 ## initializations
-library(simFrame)
-library(robCompositions)
-library(mvtnorm)
+library("simFrame")
+library("robCompositions")
+library("mvtnorm")
 set.seed(12345)
 
 ## define function and control class for generating data

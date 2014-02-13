@@ -4,9 +4,9 @@
 # ---------------------------------------
 
 ## initializations
-library(simFrame)
-library(laeken)
-data(eusilcP)
+library("simFrame")
+library("laeken")
+data("eusilcP")
 set.seed(12345)
 
 ## set up samples

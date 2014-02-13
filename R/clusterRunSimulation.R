@@ -12,7 +12,7 @@ setMethod("clusterRunSimulation",
         SAE = FALSE) {
         control <- SimControl(contControl=contControl, NAControl=NAControl, 
             design=design, fun=fun, dots=list(...), SAE=SAE)
-        clusterExport(cl, "control", envir=sys.frame())
+        clusterCall(cl, assign, "control", control, envir=.GlobalEnv)
         if(missing(setup)) {
             if(missing(nrep)) clusterRunSimulation(cl, x, control=control)
             else clusterRunSimulation(cl, x, nrep=nrep, control=control)

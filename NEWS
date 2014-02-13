@@ -1,3 +1,11 @@
+Changes in simFrame version 0.5.2
+
+    + Bugfix in 'clusterRunSimulation' regarding export of internal object to 
+      worker processes.
+    
+    + Bugfix in demo for model-based simulation with parallel computing.
+
+
 Changes in simFrame version 0.5.1
 
     + Slight optimizations in C++ code to compute inclusion probabilities.
