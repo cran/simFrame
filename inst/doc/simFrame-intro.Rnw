@@ -1576,7 +1576,7 @@ The first step is to start a cluster for parallel computing. In this example,
 four parallel worker processes on the local machine are initialized.
  
 <<>>=
-cl <- makeCluster(4, type="PSOCK")
+cl <- makeCluster(2, type="PSOCK")
 @ 
 
 All the functions and packages required for the computations (including 

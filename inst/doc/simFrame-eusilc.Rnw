@@ -501,7 +501,7 @@ In addition, random number streams
 generator.
 
 <<results=hide>>=
-cl <- makeCluster(4, type="PSOCK")
+cl <- makeCluster(2, type="PSOCK")
 clusterEvalQ(cl, {
         library("simFrame")
         library("laeken")

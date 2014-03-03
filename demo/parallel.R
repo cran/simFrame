@@ -7,7 +7,7 @@
 library("simFrame")
 
 ## start cluster
-cl <- makeCluster(4, type="PSOCK")
+cl <- makeCluster(2, type="PSOCK")
 
 ## load required packages on workers
 clusterEvalQ(cl, {

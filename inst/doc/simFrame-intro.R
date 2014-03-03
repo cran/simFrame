@@ -236,7 +236,7 @@ print(simDensityplot(results, alpha = alpha, xlab = "Relative Aitchison distance
 ###################################################
 ### code chunk number 31: simFrame-intro.Rnw:1578-1579
 ###################################################
-cl <- makeCluster(4, type="PSOCK")
+cl <- makeCluster(2, type="PSOCK")
 
 
 ###################################################

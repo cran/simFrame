@@ -1,3 +1,9 @@
+Changes in simFrame version 0.5.3
+
+    + Number of worker processes in examples for parallel computing is now 
+      limited to 2.
+    
+
 Changes in simFrame version 0.5.2
 
     + Bugfix in 'clusterRunSimulation' regarding export of internal object to 

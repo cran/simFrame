@@ -190,7 +190,7 @@ print(plot(results, true = tv))
 ###################################################
 ### code chunk number 22: simFrame-eusilc.Rnw:503-520
 ###################################################
-cl <- makeCluster(4, type="PSOCK")
+cl <- makeCluster(2, type="PSOCK")
 clusterEvalQ(cl, {
         library("simFrame")
         library("laeken")
